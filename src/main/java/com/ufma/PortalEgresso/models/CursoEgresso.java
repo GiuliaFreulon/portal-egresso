@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "curso_egresso")
+@Table(name = "CURSO_EGRESSO")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
