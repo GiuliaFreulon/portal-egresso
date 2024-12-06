@@ -12,28 +12,28 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "CURSO")
+@Table(name = "COORDENADOR")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Curso implements Serializable {
+public class Coordenador implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id_curso;
-
-    @ManyToOne
-    @JoinColumn(name = "id_coordenador")
-    private Coordenador coordenador;
+    private UUID id_coordenador;
 
     @Column(nullable = false)
-    private String nome;
+    private String login;
+
     @Column(nullable = false)
-    private String nivel;
+    private String senha;
+
+    @Column(nullable = false)
+    private String tipo;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
-    private Set<CursoEgresso> egressos = new HashSet<>();
+    @OneToMany(mappedBy = "coordenador", fetch = FetchType.LAZY)
+    private Set<Curso> cursos = new HashSet<>();
 
 }

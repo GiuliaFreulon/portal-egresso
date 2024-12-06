@@ -26,6 +26,7 @@ public class Egresso implements Serializable {
 
     @Column(nullable = false)
     private String nome;
+
     @Column(nullable = false, unique = true)
     @Email
     private String email;

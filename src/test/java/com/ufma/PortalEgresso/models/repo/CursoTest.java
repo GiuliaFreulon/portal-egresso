@@ -1,7 +1,6 @@
-package com.ufma.PortalEgresso.model.repo;
+package com.ufma.PortalEgresso.models.repo;
 
 import com.ufma.PortalEgresso.models.Egresso;
-import com.ufma.PortalEgresso.models.repo.EgressoRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class EgressoTest {
+public class CursoTest {
     @Autowired
     EgressoRepo repo;
 
