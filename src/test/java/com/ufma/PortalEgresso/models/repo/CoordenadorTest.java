@@ -1,6 +1,6 @@
 package com.ufma.PortalEgresso.models.repo;
 
-import com.ufma.PortalEgresso.models.Egresso;
+import com.ufma.PortalEgresso.models.Coordenador;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,54 +17,43 @@ import java.util.UUID;
 @ActiveProfiles("test")
 public class CoordenadorTest {
     @Autowired
-    EgressoRepo repo;
+    CoordenadorRepo repo;
 
     @Test
-    public void deveVerificarSalvarEgresso() {
+    public void deveVerificarSalvarCoordenador() {
         //cenário
-        Egresso egresso = new Egresso();
-        egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
-        egresso.setDescricao("teste descrição");
-        egresso.setFoto("teste foto");
-        egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
-        egresso.setCurriculo("teste Curriculo");
+        Coordenador coordenador = new Coordenador();
+        coordenador.setLogin("teste login");
+        coordenador.setSenha("teste senha");
+        coordenador.setTipo("teste tipo");
 
         //ação
-        Egresso salvo = repo.save(egresso); //salva?
+        Coordenador salvo = repo.save(coordenador); //salva?
 
         //Verificação
         Assertions.assertNotNull(salvo);
-        Assertions.assertEquals(egresso.getNome(), salvo.getNome());
-        Assertions.assertEquals(egresso.getEmail(), salvo.getEmail());
-        Assertions.assertEquals(egresso.getDescricao(), salvo.getDescricao());
-        Assertions.assertEquals(egresso.getFoto(), salvo.getFoto());
-        Assertions.assertEquals(egresso.getLinkedin(), salvo.getLinkedin());
-        Assertions.assertEquals(egresso.getInstagram(), salvo.getInstagram());
-        Assertions.assertEquals(egresso.getCurriculo(), salvo.getCurriculo());
-
+        Assertions.assertEquals(coordenador.getId_coordenador(), salvo.getId_coordenador());
+        Assertions.assertEquals(coordenador.getCursos(), salvo.getCursos());
+        Assertions.assertEquals(coordenador.getLogin(), salvo.getLogin());
+        Assertions.assertEquals(coordenador.getSenha(), salvo.getSenha());
+        Assertions.assertEquals(coordenador.getTipo(), salvo.getTipo());
     }
 
     @Test
-    public void deveVerificarRemoverEgresso() {
+    public void deveVerificarRemoverCoordenador() {
         //cenário
-        Egresso egresso = new Egresso();
-        egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
-        egresso.setDescricao("teste descrição");
-        egresso.setFoto("teste foto");
-        egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
-        egresso.setCurriculo("teste Curriculo");
+        Coordenador coordenador = new Coordenador();
+        coordenador.setLogin("teste login");
+        coordenador.setSenha("teste senha");
+        coordenador.setTipo("teste tipo");
 
         //ação
-        Egresso salvo = repo.save(egresso); //salva
-        UUID id = salvo.getId_egresso();
-        repo.deleteById(salvo.getId_egresso());
+        Coordenador salvo = repo.save(coordenador); //salva
+        UUID id = salvo.getId_coordenador();
+        repo.deleteById(id);
 
         //verificação
-        Optional<Egresso> temp = repo.findById(id);
+        Optional<Coordenador> temp = repo.findById(id);
         Assertions.assertFalse(temp.isPresent());
     }
 }

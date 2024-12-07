@@ -1,7 +1,6 @@
 package com.ufma.PortalEgresso.models.repo;
 
 import com.ufma.PortalEgresso.models.Cargo;
-import com.ufma.PortalEgresso.models.Egresso;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,77 +18,43 @@ import java.util.UUID;
 public class CargoTest {
     @Autowired
     CargoRepo repo;
-    @Autowired
-    EgressoRepo egressoRepo;
 
     @Test
     public void deveVerificarSalvarCargo() {
         //cenário
-        Egresso egresso = new Egresso();
-        egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
-        egresso.setDescricao("teste descrição egresso");
-        egresso.setFoto("teste foto");
-        egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
-        egresso.setCurriculo("teste Curriculo");
-
-
-        Egresso egressoSalvo = egressoRepo.save(egresso); //salva egresso
-        UUID egressoID = egressoSalvo.getId_egresso();
-        Optional<Egresso> EgressoTemp = egressoRepo.findById(egressoID);
-
         Cargo cargo = new Cargo();
-        cargo.setEgresso(EgressoTemp.get());
         cargo.setDescricao("teste descrição cargo");
         cargo.setLocal("teste local");
         cargo.setAnoInicio(2000);
 
         //ação
-        Cargo cargoSalvo = repo.save(cargo);
-
+        Cargo salvo = repo.save(cargo);
 
         //Verificação
-        Assertions.assertNotNull(cargoSalvo);
-        Assertions.assertEquals(cargo.getId_cargo(), cargoSalvo.getId_cargo());
-        Assertions.assertEquals(cargo.getEgresso(), cargoSalvo.getEgresso());
-        Assertions.assertEquals(cargo.getDescricao(), cargoSalvo.getDescricao());
-        Assertions.assertEquals(cargo.getLocal(), cargoSalvo.getLocal());
-        Assertions.assertEquals(cargo.getAnoInicio(), cargoSalvo.getAnoInicio());
-        Assertions.assertEquals(cargo.getAnoFim(), cargoSalvo.getAnoFim());
-
+        Assertions.assertNotNull(salvo);
+        Assertions.assertEquals(cargo.getId_cargo(), salvo.getId_cargo());
+        Assertions.assertEquals(cargo.getEgresso(), salvo.getEgresso());
+        Assertions.assertEquals(cargo.getDescricao(), salvo.getDescricao());
+        Assertions.assertEquals(cargo.getLocal(), salvo.getLocal());
+        Assertions.assertEquals(cargo.getAnoInicio(), salvo.getAnoInicio());
+        Assertions.assertEquals(cargo.getAnoFim(), salvo.getAnoFim());
     }
 
     @Test
     public void deveVerificarRemoverCargo() {
         //cenário
-        Egresso egresso = new Egresso();
-        egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
-        egresso.setDescricao("teste descrição egresso");
-        egresso.setFoto("teste foto");
-        egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
-        egresso.setCurriculo("teste Curriculo");
-
-
-        Egresso egressoSalvo = egressoRepo.save(egresso); //salva egresso
-        UUID egressoID = egressoSalvo.getId_egresso();
-        Optional<Egresso> EgressoTemp = egressoRepo.findById(egressoID);
-
         Cargo cargo = new Cargo();
-        cargo.setEgresso(EgressoTemp.get());
         cargo.setDescricao("teste descrição cargo");
         cargo.setLocal("teste local");
         cargo.setAnoInicio(2000);
 
         //ação
-        Cargo cargoSalvo = repo.save(cargo);
-        UUID cargoId = cargoSalvo.getId_cargo();
-        repo.deleteById(cargoId);
+        Cargo salvo = repo.save(cargo);
+        UUID id = salvo.getId_cargo();
+        repo.deleteById(id);
 
         //verificação
-        Optional<Cargo> cargoTemp = repo.findById(cargoId);
-        Assertions.assertFalse(cargoTemp.isPresent());
+        Optional<Cargo> temp = repo.findById(id);
+        Assertions.assertFalse(temp.isPresent());
     }
 }

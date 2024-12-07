@@ -1,6 +1,6 @@
 package com.ufma.PortalEgresso.models.repo;
 
-import com.ufma.PortalEgresso.models.Egresso;
+import com.ufma.PortalEgresso.models.CursoEgresso;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,54 +17,39 @@ import java.util.UUID;
 @ActiveProfiles("test")
 public class CursoEgressoTest {
     @Autowired
-    EgressoRepo repo;
+    CursoEgressoRepo repo;
 
     @Test
-    public void deveVerificarSalvarEgresso() {
+    public void deveVerificarSalvarCursoEgresso() {
         //cenário
-        Egresso egresso = new Egresso();
-        egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
-        egresso.setDescricao("teste descrição");
-        egresso.setFoto("teste foto");
-        egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
-        egresso.setCurriculo("teste Curriculo");
+        CursoEgresso cursoEgresso = new CursoEgresso();
+        cursoEgresso.setAnoInicio(2000);
 
         //ação
-        Egresso salvo = repo.save(egresso); //salva?
+        CursoEgresso salvo = repo.save(cursoEgresso); //salva?
 
         //Verificação
         Assertions.assertNotNull(salvo);
-        Assertions.assertEquals(egresso.getNome(), salvo.getNome());
-        Assertions.assertEquals(egresso.getEmail(), salvo.getEmail());
-        Assertions.assertEquals(egresso.getDescricao(), salvo.getDescricao());
-        Assertions.assertEquals(egresso.getFoto(), salvo.getFoto());
-        Assertions.assertEquals(egresso.getLinkedin(), salvo.getLinkedin());
-        Assertions.assertEquals(egresso.getInstagram(), salvo.getInstagram());
-        Assertions.assertEquals(egresso.getCurriculo(), salvo.getCurriculo());
-
+        Assertions.assertEquals(cursoEgresso.getId_curso_egresso(), salvo.getId_curso_egresso());
+        Assertions.assertEquals(cursoEgresso.getEgresso(), salvo.getEgresso());
+        Assertions.assertEquals(cursoEgresso.getCurso(), salvo.getCurso());
+        Assertions.assertEquals(cursoEgresso.getAnoInicio(), salvo.getAnoInicio());
+        Assertions.assertEquals(cursoEgresso.getAnoFim(), salvo.getAnoFim());
     }
 
     @Test
-    public void deveVerificarRemoverEgresso() {
+    public void deveVerificarRemoverCursoEgresso() {
         //cenário
-        Egresso egresso = new Egresso();
-        egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
-        egresso.setDescricao("teste descrição");
-        egresso.setFoto("teste foto");
-        egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
-        egresso.setCurriculo("teste Curriculo");
+        CursoEgresso cursoEgresso = new CursoEgresso();
+        cursoEgresso.setAnoInicio(2000);
 
         //ação
-        Egresso salvo = repo.save(egresso); //salva
-        UUID id = salvo.getId_egresso();
-        repo.deleteById(salvo.getId_egresso());
+        CursoEgresso salvo = repo.save(cursoEgresso); //salva
+        UUID id = salvo.getId_curso_egresso();
+        repo.deleteById(id);
 
         //verificação
-        Optional<Egresso> temp = repo.findById(id);
+        Optional<CursoEgresso> temp = repo.findById(id);
         Assertions.assertFalse(temp.isPresent());
     }
 }

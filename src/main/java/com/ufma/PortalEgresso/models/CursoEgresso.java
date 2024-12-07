@@ -29,6 +29,7 @@ public class CursoEgresso implements Serializable{
 
     @Column(nullable = false)
     private Integer anoInicio;
+
     @Column
     private Integer anoFim;
 }

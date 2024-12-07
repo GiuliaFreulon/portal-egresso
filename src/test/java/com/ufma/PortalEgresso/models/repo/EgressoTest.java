@@ -43,7 +43,6 @@ public class EgressoTest {
         Assertions.assertEquals(egresso.getLinkedin(), salvo.getLinkedin());
         Assertions.assertEquals(egresso.getInstagram(), salvo.getInstagram());
         Assertions.assertEquals(egresso.getCurriculo(), salvo.getCurriculo());
-
     }
 
     @Test
