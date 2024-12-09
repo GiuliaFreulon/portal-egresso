@@ -1,6 +1,6 @@
-package com.ufma.PortalEgresso.models.repo;
+package com.ufma.PortalEgresso.model.repo;
 
-import com.ufma.PortalEgresso.models.CursoEgresso;
+import com.ufma.PortalEgresso.model.entity.CursoEgresso;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

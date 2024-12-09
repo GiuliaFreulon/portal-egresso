@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.models;
+package com.ufma.PortalEgresso.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,29 +6,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "DEPOIMENTO")
+@Table(name = "CARGO")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Depoimento implements Serializable {
+public class Cargo implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id_depoimento;
+    private UUID id_cargo;
 
     @ManyToOne
     @JoinColumn(name = "id_egresso")
     private Egresso egresso;
 
+    @Column(nullable = false)
+    private String descricao;
+    @Column(nullable = false)
+    private String local;
+    @Column(nullable = false)
+    private Integer anoInicio;
     @Column
-    private String texto;
-    @Column
-    private Date data;
+    private Integer anoFim;
 
 
 }

@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.models;
+package com.ufma.PortalEgresso.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -28,6 +28,7 @@ public class Egresso implements Serializable {
     private String nome;
 
     @Column(nullable = false, unique = true)
+
     @Email
     private String email;
 

@@ -1,6 +1,6 @@
-package com.ufma.PortalEgresso.models.repo;
+package com.ufma.PortalEgresso.model.repo;
 
-import com.ufma.PortalEgresso.models.Coordenador;
+import com.ufma.PortalEgresso.model.entity.Coordenador;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

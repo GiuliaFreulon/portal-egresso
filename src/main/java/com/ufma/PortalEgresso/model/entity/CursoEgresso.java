@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.models;
+package com.ufma.PortalEgresso.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class CursoEgresso implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id_curso_egresso;
+    private UUID idCursoEgresso;
 
     @ManyToOne
     @JoinColumn(name = "id_egresso")

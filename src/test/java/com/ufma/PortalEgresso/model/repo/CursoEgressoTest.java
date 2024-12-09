@@ -1,6 +1,6 @@
-package com.ufma.PortalEgresso.models.repo;
+package com.ufma.PortalEgresso.model.repo;
 
-import com.ufma.PortalEgresso.models.CursoEgresso;
+import com.ufma.PortalEgresso.model.entity.CursoEgresso;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ public class CursoEgressoTest {
 
         //Verificação
         Assertions.assertNotNull(salvo);
-        Assertions.assertEquals(cursoEgresso.getId_curso_egresso(), salvo.getId_curso_egresso());
+        Assertions.assertEquals(cursoEgresso.getIdCursoEgresso(), salvo.getIdCursoEgresso());
         Assertions.assertEquals(cursoEgresso.getEgresso(), salvo.getEgresso());
         Assertions.assertEquals(cursoEgresso.getCurso(), salvo.getCurso());
         Assertions.assertEquals(cursoEgresso.getAnoInicio(), salvo.getAnoInicio());
@@ -45,7 +45,7 @@ public class CursoEgressoTest {
 
         //ação
         CursoEgresso salvo = repo.save(cursoEgresso); //salva
-        UUID id = salvo.getId_curso_egresso();
+        UUID id = salvo.getIdCursoEgresso();
         repo.deleteById(id);
 
         //verificação
