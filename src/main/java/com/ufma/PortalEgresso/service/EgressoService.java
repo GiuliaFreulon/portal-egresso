@@ -3,6 +3,7 @@ package com.ufma.PortalEgresso.service;
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
+import com.ufma.PortalEgresso.model.entity.Coordenador;
 import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
@@ -24,14 +25,25 @@ public class EgressoService {
     @Autowired
     private EgressoRepo repo;
 
+    // TODO: Fazer autocadastro
+    // TODO: Integração com redes sociais
+
+    public boolean efetuarLogin(String login, String senha) {
+        Optional<Egresso> egresso = repo.findByEmail(login);
+        if ((!egresso.isPresent()) || (!egresso.get().getSenha().equals(senha)))
+            throw new RegraNegocioRunTime("Erro de autenticação");
+
+        return true;
+    }
+
     @Transactional
     public Egresso salvar(@Valid Egresso egresso) {
+
+        verificarEgresso(egresso);
 
         verificarEmailUnico(egresso.getEmail());
 
         Egresso salvo = repo.save(egresso);
-
-        verificarEgresso(egresso);
 
 //        try {
 //            return salvo;
@@ -47,21 +59,21 @@ public class EgressoService {
     public Egresso atualizar(Egresso egresso) {
         verificarEgresso(egresso);
 
-        Egresso egressoExistente = repo.findById(egresso.getId_egresso())
-                .orElseThrow(() -> new RegraNegocioRunTime("Egresso não encontrado"));
+        verificarId(egresso.getId_egresso());
+
+        Egresso egressoExistente = repo.findById(egresso.getId_egresso()).get();
 
         // Verifica se o e-mail foi alterado
         if (!egressoExistente.getEmail().equals(egresso.getEmail())) {
             verificarEmailUnico(egresso.getEmail());
+            // Validar E-mail
         }
 
         return repo.save(egresso);
     }
 
     public Optional<Egresso> buscarPorId(UUID id) {
-        if (!repo.existsById(id)){
-            throw new BuscaVaziaRunTime();
-        }
+        verificarId(id);
 
         return repo.findById(id);
     }
@@ -105,16 +117,16 @@ public class EgressoService {
     }
 
     private void verificarId(UUID id) {
-        if ((id == null) || !repo.existsById(id))
-            throw new RegraNegocioRunTime("ID inválido ou não encontrado");
+        if (id == null)
+            throw new RegraNegocioRunTime("ID inválido");
+        if (!repo.existsById(id)){
+            throw new RegraNegocioRunTime("ID não encontrado");
+        }
     }
 
     private void verificarEgresso(Egresso egresso) {
         if (egresso == null)
             throw new RegraNegocioRunTime("Egresso inválido");
-
-        if ((egresso.getId_egresso() == null))
-            throw new RegraNegocioRunTime("O ID do egresso deve estar preenchido");
 
         if ((egresso.getNome() == null) || (egresso.getNome().trim().isEmpty()))
             throw new RegraNegocioRunTime("O nome do egresso deve estar preenchido");
@@ -122,6 +134,8 @@ public class EgressoService {
         if ((egresso.getEmail() == null) || (egresso.getEmail().trim().isEmpty()))
             throw new RegraNegocioRunTime("O e-mail do egresso deve estar preenchido");
 
+        if ((egresso.getSenha() == null) || (egresso.getSenha().trim().isEmpty()))
+            throw new RegraNegocioRunTime("A senha do egresso deve estar preenchida");
     }
 
     private void verificarEmailUnico(String email) {

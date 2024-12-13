@@ -2,10 +2,7 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Cargo;
-import com.ufma.PortalEgresso.model.entity.Coordenador;
-import com.ufma.PortalEgresso.model.entity.Curso;
-import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.CoordenadorRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +51,13 @@ public class CoordenadorService {
         CargoService cargoService = new CargoService();
         cargo.setEgresso(egresso);
         cargoService.salvar(cargo);
-        //TODO muitos para muitos?
+    }
+
+    @Transactional
+    public void associarDepoimentoAEgresso(Egresso egresso, Depoimento depoimento){
+        DepoimentoService depoimentoService = new DepoimentoService();
+        depoimento.setEgresso(egresso);
+        depoimentoService.salvar(depoimento);
     }
 
     @Transactional
@@ -106,9 +109,6 @@ public class CoordenadorService {
     private void verificarCoordenador(Coordenador coordenador) {
         if (coordenador == null)
             throw new RegraNegocioRunTime("Coordenador inválido");
-
-        if ((coordenador.getId_coordenador() == null))
-            throw new RegraNegocioRunTime("O ID do coordenador deve estar preenchido");
 
         if ((coordenador.getTipo() == null) || (coordenador.getTipo().trim().isEmpty()))
             throw new RegraNegocioRunTime("O tipo do coordenador deve estar preenchido");

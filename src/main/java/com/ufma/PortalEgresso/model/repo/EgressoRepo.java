@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface EgressoRepo extends JpaRepository<Egresso, UUID> {
@@ -17,4 +18,6 @@ public interface EgressoRepo extends JpaRepository<Egresso, UUID> {
     List<Egresso> findByCursoId(UUID idCurso);
 
     boolean existsByEmail(String email);
+
+    Optional<Egresso> findByEmail(String email);
 }

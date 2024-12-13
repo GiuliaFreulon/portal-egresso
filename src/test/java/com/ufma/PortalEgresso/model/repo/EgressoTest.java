@@ -24,7 +24,8 @@ public class EgressoTest {
         //cenário
         Egresso egresso = new Egresso();
         egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
+        egresso.setEmail("testesave@teste.com");
+        egresso.setSenha("senha teste");
         egresso.setDescricao("teste descrição");
         egresso.setFoto("teste foto");
         egresso.setLinkedin("teste Linkedin");
@@ -38,6 +39,7 @@ public class EgressoTest {
         Assertions.assertNotNull(salvo);
         Assertions.assertEquals(egresso.getNome(), salvo.getNome());
         Assertions.assertEquals(egresso.getEmail(), salvo.getEmail());
+        Assertions.assertEquals(egresso.getSenha(), salvo.getSenha());
         Assertions.assertEquals(egresso.getDescricao(), salvo.getDescricao());
         Assertions.assertEquals(egresso.getFoto(), salvo.getFoto());
         Assertions.assertEquals(egresso.getLinkedin(), salvo.getLinkedin());
@@ -50,7 +52,8 @@ public class EgressoTest {
         //cenário
         Egresso egresso = new Egresso();
         egresso.setNome("teste nome");
-        egresso.setEmail("teste@teste.com");
+        egresso.setEmail("testesave@teste.com");
+        egresso.setSenha("senha teste");
         egresso.setDescricao("teste descrição");
         egresso.setFoto("teste foto");
         egresso.setLinkedin("teste Linkedin");
