@@ -7,9 +7,11 @@ import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,24 +19,28 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Validated
 public class EgressoService {
     @Autowired
     private EgressoRepo repo;
 
     @Transactional
-    public Egresso salvar(Egresso egresso) {
+    public Egresso salvar(@Valid Egresso egresso) {
+
+        verificarEmailUnico(egresso.getEmail());
+
         Egresso salvo = repo.save(egresso);
 
         verificarEgresso(egresso);
 
-        verificarEmailUnico(egresso.getEmail());
-
-        try {
-            return salvo;
-        } catch (ConstraintViolationException e) {
-            // Trata o erro de e-mail inválido
-            throw new RegraNegocioRunTime("E-mail inválido. Verifique o formato.");
-        }
+//        try {
+//            return salvo;
+//        } catch (ConstraintViolationException e) {
+//            // Trata o erro de e-mail inválido
+//            throw new RegraNegocioRunTime("E-mail inválido. Verifique o formato");
+//        }
+//        TODO fazer validação de Email no controller
+        return salvo;
     }
 
     @Transactional
@@ -80,17 +86,6 @@ public class EgressoService {
         return lista;
     }
 
-    public List<Egresso> buscarPorAno(Integer ano) {
-        LocalDate inicioAno = LocalDate.of(ano, 1, 1);
-        LocalDate fimAno = LocalDate.of(ano, 12, 31);
-        List<Egresso> lista = repo.findByDataBetween(inicioAno, fimAno);
-
-        if (lista.isEmpty()){
-            throw new BuscaVaziaRunTime();
-        }
-
-        return lista;
-    }
 
     public List<Egresso> listarTodos() {
         List<Egresso> lista = repo.findAll();
@@ -131,7 +126,7 @@ public class EgressoService {
 
     private void verificarEmailUnico(String email) {
         if (repo.existsByEmail(email)) {
-            throw new RegraNegocioRunTime("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente.");
+            throw new RegraNegocioRunTime("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
         }
     }
 }

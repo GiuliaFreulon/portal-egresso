@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EgressoRepo extends JpaRepository<Egresso, UUID> {
-    List<Egresso> findByDataBetween(LocalDate start, LocalDate end);
 
     @Query("SELECT e FROM Egresso e JOIN e.cargos c WHERE c.id_cargo = :idCargo")
     List<Egresso> findByCargoId(UUID idCargo);

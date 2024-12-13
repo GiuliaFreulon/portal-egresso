@@ -2,8 +2,10 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Coordenador;
 import com.ufma.PortalEgresso.model.entity.Curso;
+import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.CoordenadorRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class CoordenadorService {
     }
 
     @Transactional
-    public boolean cadastrarCurso(String login, String nome, String nivel){
+    public void cadastrarCurso(String login, String nome, String nivel){
         Optional<Coordenador> coordenador = repo.findByLogin(login);
 
         CursoService service = new CursoService();
@@ -39,8 +41,20 @@ public class CoordenadorService {
         curso.setNivel(nivel);
 
         service.salvar(curso);
+    }
 
-        return true;
+    @Transactional
+    public void homologarEgresso(Egresso egresso){
+        EgressoService service = new EgressoService();
+        service.salvar(egresso);
+    }
+
+    @Transactional
+    public void associarCargoAEgresso(Egresso egresso, Cargo cargo){
+        CargoService cargoService = new CargoService();
+        cargo.setEgresso(egresso);
+        cargoService.salvar(cargo);
+        //TODO muitos para muitos?
     }
 
     @Transactional
