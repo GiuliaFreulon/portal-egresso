@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -23,6 +24,7 @@ public class CoordenadorServiceTest {
     CoordenadorRepo repo;
 
     @Test
+    @Transactional
     public void deveVerificarSalvarOCoordenador() {
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("login teste");

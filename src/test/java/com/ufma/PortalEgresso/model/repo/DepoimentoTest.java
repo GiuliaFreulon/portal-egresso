@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ public class DepoimentoTest {
     DepoimentoRepo repo;
 
     @Test
+    @Transactional
     public void deveVerificarSalvarDepoimento() throws ParseException {
         //cenário
         Depoimento depoimento = new Depoimento();
@@ -45,6 +47,7 @@ public class DepoimentoTest {
     }
 
     @Test
+    @Transactional
     public void deveVerificarRemoverDepoimento() throws ParseException {
         //cenário
         Depoimento depoimento = new Depoimento();

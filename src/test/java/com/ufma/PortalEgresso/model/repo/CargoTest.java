@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class CargoTest {
     CargoRepo repo;
 
     @Test
+    @Transactional
     public void deveVerificarSalvarCargo() {
         //cenário
         Cargo cargo = new Cargo();
@@ -41,6 +43,7 @@ public class CargoTest {
     }
 
     @Test
+    @Transactional
     public void deveVerificarRemoverCargo() {
         //cenário
         Cargo cargo = new Cargo();

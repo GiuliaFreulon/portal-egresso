@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class EgressoTest {
     EgressoRepo repo;
 
     @Test
+    @Transactional
     public void deveVerificarSalvarEgresso() {
         //cenário
         Egresso egresso = new Egresso();
@@ -48,6 +50,7 @@ public class EgressoTest {
     }
 
     @Test
+    @Transactional
     public void deveVerificarRemoverEgresso() {
         //cenário
         Egresso egresso = new Egresso();

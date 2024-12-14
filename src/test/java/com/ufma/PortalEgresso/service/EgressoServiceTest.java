@@ -2,10 +2,7 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Coordenador;
-import com.ufma.PortalEgresso.model.entity.Curso;
-import com.ufma.PortalEgresso.model.entity.CursoEgresso;
-import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.validation.Valid;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,7 +85,9 @@ public class EgressoServiceTest {
         Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso2), "O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
     }
 
+
     @Test
+    @Transactional
     public void deveVerificarSalvarOEgresso() {
         Egresso egresso = new Egresso();
         egresso.setNome("nome teste");
@@ -172,6 +172,7 @@ public class EgressoServiceTest {
     }
 
     @Test
+    @Transactional
     public void deveVerificarAtualizarOEgresso() {
         Egresso egresso = new Egresso();
         egresso.setNome("nome teste");
@@ -239,44 +240,98 @@ public class EgressoServiceTest {
         Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.buscarPorCurso(curso2), "Nenhum resultado para a busca");
     }
 
-    @Transactional
     @Test
+    @Transactional
     public void deveBuscarPorCursoExistente() {
-        List<Egresso> egressosEsperados = new ArrayList<>();
         Egresso egresso = new Egresso();
         egresso.setNome("nome teste");
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("salvar@teste.com");
         egresso.setSenha("senha teste");
-        egressosEsperados.add(egresso);
-        service.salvar(egresso);
+
 
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("teste");
         coordenador.setSenha("teste");
         coordenador.setTipo("teste");
-        coordenadorService.salvar(coordenador);
+
 
         Curso curso = new Curso();
         curso.setNivel("testeNivel");
         curso.setNome("teste");
         curso.setCoordenador(coordenador);
-        cursoService.salvar(curso);
 
-        Set<CursoEgresso> cursos = new HashSet<>();
         CursoEgresso cursoEgresso = new CursoEgresso();
         cursoEgresso.setEgresso(egresso);
         cursoEgresso.setCurso(curso);
         cursoEgresso.setAnoInicio(2024);
-        cursoEgressoService.salvar(cursoEgresso);
 
-        cursos.add(cursoEgresso);
+        egresso.getCursos().add(cursoEgresso);
 
-        egresso.setCursos(cursos);
+
+        coordenadorService.salvar(coordenador);
+        cursoService.salvar(curso);
+        service.salvar(egresso);
+
+
+        List<Egresso> egressosEsperados = new ArrayList<>();
+        egressosEsperados.add(egresso);
 
         List<Egresso> egressos = service.buscarPorCurso(cursoEgresso.getCurso());
 
-
         Assertions.assertEquals(egressos, egressosEsperados);
     }
+
+//    @Test
+//    @Commit
+//    public void deveSalvarTudo() {
+//        Egresso egresso = new Egresso();
+//        egresso.setNome("nome teste");
+//        egresso.setDescricao("Descricao teste");
+//        egresso.setEmail("salvar@teste.com");
+//        egresso.setSenha("senha teste");
+//
+//
+//        Cargo cargo = new Cargo();
+//        cargo.setEgresso(egresso);
+//        cargo.setDescricao("teste");
+//        cargo.setLocal("teste");
+//        cargo.setAnoInicio(2000);
+//
+//        Depoimento depoimento = new Depoimento();
+//        depoimento.setEgresso(egresso);
+//
+//        Coordenador coordenador = new Coordenador();
+//        coordenador.setLogin("teste");
+//        coordenador.setSenha("teste");
+//        coordenador.setTipo("teste");
+//
+//
+//        Curso curso = new Curso();
+//        curso.setNivel("testeNivel");
+//        curso.setNome("teste");
+//        curso.setCoordenador(coordenador);
+//
+//        CursoEgresso cursoEgresso = new CursoEgresso();
+//        cursoEgresso.setEgresso(egresso);
+//        cursoEgresso.setCurso(curso);
+//        cursoEgresso.setAnoInicio(2024);
+//
+//        egresso.getCursos().add(cursoEgresso);
+//        egresso.getCargos().add(cargo);
+//        egresso.getDepoimentos().add(depoimento);
+//
+//        coordenadorService.salvar(coordenador);
+//        cursoService.salvar(curso);
+//        service.salvar(egresso);
+//
+//
+//        List<Egresso> egressosEsperados = new ArrayList<>();
+//        egressosEsperados.add(egresso);
+//
+//        List<Egresso> egressos = service.buscarPorCurso(cursoEgresso.getCurso());
+//
+//
+//        Assertions.assertEquals(egressos, egressosEsperados);
+//    }
 }

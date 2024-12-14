@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class CoordenadorTest {
     CoordenadorRepo repo;
 
     @Test
+    @Transactional
     public void deveVerificarSalvarCoordenador() {
         //cenário
         Coordenador coordenador = new Coordenador();
@@ -40,6 +42,7 @@ public class CoordenadorTest {
     }
 
     @Test
+    @Transactional
     public void deveVerificarRemoverCoordenador() {
         //cenário
         Coordenador coordenador = new Coordenador();
