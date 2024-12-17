@@ -1,13 +1,12 @@
 package com.ufma.PortalEgresso.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -38,42 +37,39 @@ public class Egresso implements Serializable {
     private String email;
 
     @Column(nullable = false)
-    @EqualsAndHashCode.Include
     private String senha;
 
     @Column
-    @EqualsAndHashCode.Include
     private String descricao;
 
     @Column
-    @EqualsAndHashCode.Include
     private String foto;
 
     @Column
-    @EqualsAndHashCode.Include
     private String linkedin;
 
     @Column
-    @EqualsAndHashCode.Include
     private String instagram;
 
     @Column
-    @EqualsAndHashCode.Include
     private String curriculo;
 
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "egresso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Cargo> cargos = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "egresso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Depoimento> depoimentos = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "egresso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<CursoEgresso> cursos = new HashSet<>();
 

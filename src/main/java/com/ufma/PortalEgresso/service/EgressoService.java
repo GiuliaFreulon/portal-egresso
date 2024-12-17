@@ -9,7 +9,9 @@ import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +43,7 @@ public class EgressoService {
 
         verificarEgresso(egresso);
 
-        verificarEmailUnico(egresso.getEmail());
+        verificarEmailUnico(egresso.getEmail(), egresso.getId_egresso());
 
         Egresso salvo = repo.save(egresso);
 
@@ -59,17 +61,12 @@ public class EgressoService {
     public Egresso atualizar(Egresso egresso) {
         verificarEgresso(egresso);
 
+        verificarEmailUnico(egresso.getEmail(), egresso.getId_egresso());
+
         verificarId(egresso.getId_egresso());
 
-        Egresso egressoExistente = repo.findById(egresso.getId_egresso()).get();
-
-        // Verifica se o e-mail foi alterado
-        if (!egressoExistente.getEmail().equals(egresso.getEmail())) {
-            verificarEmailUnico(egresso.getEmail());
-            // Validar E-mail
-        }
-
         return repo.save(egresso);
+
     }
 
     public Optional<Egresso> buscarPorId(UUID id) {
@@ -99,6 +96,7 @@ public class EgressoService {
     }
 
 
+    @Transactional
     public List<Egresso> listarTodos() {
         List<Egresso> lista = repo.findAll();
 
@@ -117,6 +115,7 @@ public class EgressoService {
     }
 
     private void verificarId(UUID id) {
+
         if (id == null)
             throw new RegraNegocioRunTime("ID inválido");
         if (!repo.existsById(id)){
@@ -138,9 +137,20 @@ public class EgressoService {
             throw new RegraNegocioRunTime("A senha do egresso deve estar preenchida");
     }
 
-    private void verificarEmailUnico(String email) {
-        if (repo.existsByEmail(email)) {
+    private void verificarEmailUnico(String email, UUID id) {
+        try {
+            boolean emailExiste = repo.existsByEmail(email);
+
+            if(emailExiste){
+                Egresso existente = repo.findByEmail(email).orElse(null);
+
+                if(existente != null && !existente.getId_egresso().equals(id)) {
+                    throw new RegraNegocioRunTime("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
+                }
+            }
+        } catch (DataIntegrityViolationException ex) {
             throw new RegraNegocioRunTime("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
         }
     }
+
 }

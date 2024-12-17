@@ -1,10 +1,7 @@
 package com.ufma.PortalEgresso.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -24,11 +21,13 @@ public class CursoEgresso implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "id_egresso")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Egresso egresso;
 
     @ManyToOne
     @JoinColumn(name = "id_curso")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Curso curso;
 

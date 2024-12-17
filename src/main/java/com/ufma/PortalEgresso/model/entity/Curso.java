@@ -2,10 +2,7 @@ package com.ufma.PortalEgresso.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -28,6 +25,7 @@ public class Curso implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_coordenador")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Coordenador coordenador;
 
@@ -41,6 +39,7 @@ public class Curso implements Serializable {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<CursoEgresso> egressos = new HashSet<>();
 

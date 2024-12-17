@@ -1,10 +1,7 @@
 package com.ufma.PortalEgresso.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,6 +23,7 @@ public class Depoimento implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_egresso")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Egresso egresso;
 

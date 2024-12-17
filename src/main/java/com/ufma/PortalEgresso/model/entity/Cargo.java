@@ -1,10 +1,9 @@
 package com.ufma.PortalEgresso.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -25,23 +24,20 @@ public class Cargo implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "id_egresso")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Egresso egresso;
 
     @Column(nullable = false)
-    @EqualsAndHashCode.Include
     private String descricao;
 
     @Column(nullable = false)
-    @EqualsAndHashCode.Include
     private String local;
 
     @Column(nullable = false)
-    @EqualsAndHashCode.Include
     private Integer anoInicio;
 
     @Column
-    @EqualsAndHashCode.Include
     private Integer anoFim;
 
 }
