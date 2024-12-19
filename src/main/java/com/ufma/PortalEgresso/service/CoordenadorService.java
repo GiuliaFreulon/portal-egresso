@@ -6,6 +6,7 @@ import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.CoordenadorRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,24 +63,26 @@ public class CoordenadorService {
 
     @Transactional
     public Coordenador salvar(Coordenador coordenador) {
-        Coordenador salvo = repo.save(coordenador);
-
         verificarCoordenador(coordenador);
 
-        return salvo;
+        verificarLoginUnico(coordenador.getLogin(), coordenador.getId_coordenador());
+
+        return repo.save(coordenador);
     }
 
     @Transactional
     public Coordenador atualizar(Coordenador coordenador) {
         verificarCoordenador(coordenador);
 
-        return salvar(coordenador);
+        verificarLoginUnico(coordenador.getLogin(), coordenador.getId_coordenador());
+
+        verificarId(coordenador.getId_coordenador());
+
+        return repo.save(coordenador);
     }
 
     public Optional<Coordenador> buscarPorId(UUID id) {
-        if (!repo.existsById(id)){
-            throw new BuscaVaziaRunTime();
-        }
+        verificarId(id);
 
         return repo.findById(id);
     }
@@ -102,8 +105,11 @@ public class CoordenadorService {
     }
 
     private void verificarId(UUID id) {
-        if ((id == null) || !repo.existsById(id))
-            throw new RegraNegocioRunTime("ID inválido ou não encontrado");
+        if (id == null)
+            throw new RegraNegocioRunTime("ID inválido");
+        if (!repo.existsById(id)){
+            throw new RegraNegocioRunTime("ID não encontrado");
+        }
     }
 
     private void verificarCoordenador(Coordenador coordenador) {
@@ -118,6 +124,22 @@ public class CoordenadorService {
 
         if ((coordenador.getSenha() == null) || (coordenador.getSenha().trim().isEmpty()))
             throw new RegraNegocioRunTime("A senha do coordenador deve estar preenchida");
+    }
+
+    private void verificarLoginUnico(String login, UUID id) {
+        try {
+            boolean existsByLogin = repo.existsByLogin(login);
+
+            if(existsByLogin){
+                Coordenador existente = repo.findByLogin(login).orElse(null);
+
+                if(existente != null && !existente.getId_coordenador().equals(id)) {
+                    throw new RegraNegocioRunTime("Já existe um coordenador com esse login. Por favor, utilize um login diferente");
+                }
+            }
+        } catch (DataIntegrityViolationException ex) {
+            throw new RegraNegocioRunTime("Já existe um coordenador com esse login. Por favor, utilize um login diferente");
+        }
     }
 
 }
