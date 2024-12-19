@@ -48,7 +48,8 @@ public class EgressoServiceTest {
         egresso.setEmail("teste@teste.com");
         egresso.setSenha("senha teste");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "O nome do egresso deve estar preenchido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "O nome do egresso deve estar preenchido");
+        Assertions.assertEquals("O nome do egresso deve estar preenchido", exception.getMessage());
     }
 
     @Test
@@ -59,7 +60,8 @@ public class EgressoServiceTest {
         egresso.setDescricao("Descricao teste");
         egresso.setSenha("senha teste");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "O e-mail do egresso deve estar preenchido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "O e-mail do egresso deve estar preenchido");
+        Assertions.assertEquals("O e-mail do egresso deve estar preenchido", exception.getMessage());
     }
 
     @Test
@@ -70,7 +72,8 @@ public class EgressoServiceTest {
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("teste@teste.com");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "A senha do egresso deve estar preenchida");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "A senha do egresso deve estar preenchida");
+        Assertions.assertEquals("A senha do egresso deve estar preenchida", exception.getMessage());
     }
 
     @Test
@@ -83,7 +86,8 @@ public class EgressoServiceTest {
         egresso.setEmail("egresso1@email.com");
         egresso.setSenha("senha teste");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
+        Assertions.assertEquals("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente", exception.getMessage());
     }
 
 //    @Test
@@ -104,7 +108,8 @@ public class EgressoServiceTest {
         egresso.setEmail("teste@teste.com");
         egresso.setSenha("senha teste");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "O nome do egresso deve estar preenchido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "O nome do egresso deve estar preenchido");
+        Assertions.assertEquals("O nome do egresso deve estar preenchido", exception.getMessage());
     }
 
     @Test
@@ -115,7 +120,8 @@ public class EgressoServiceTest {
         egresso.setDescricao("Descricao teste");
         egresso.setSenha("senha teste");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "O e-mail do egresso deve estar preenchido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "O e-mail do egresso deve estar preenchido");
+        Assertions.assertEquals("O e-mail do egresso deve estar preenchido", exception.getMessage());
     }
 
     @Test
@@ -126,7 +132,8 @@ public class EgressoServiceTest {
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("teste@teste.com");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "A senha do egresso deve estar preenchida");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "A senha do egresso deve estar preenchida");
+        Assertions.assertEquals("A senha do egresso deve estar preenchida", exception.getMessage());
     }
 
     @Test
@@ -138,7 +145,8 @@ public class EgressoServiceTest {
                 .getSingleResult();
 
         egressoSalvo.setEmail("egresso2@email.com");
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egressoSalvo), "O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egressoSalvo), "O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
+        Assertions.assertEquals("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente", exception.getMessage());
     }
 
 //    @Test
@@ -155,17 +163,20 @@ public class EgressoServiceTest {
     @Transactional
     public void deveGerarErroAoAtualizarUmEgressoNaoExistente() {
         Egresso egresso = new Egresso();
+        egresso.setId_egresso(UUID.randomUUID());
         egresso.setNome("nome teste");
         egresso.setEmail("teste@teste.com");
         egresso.setSenha("senha teste");
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "Nenhum resultado para a busca");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "ID não encontrado");
+        Assertions.assertEquals("ID não encontrado", exception.getMessage());
     }
 
     @Test
     @Transactional
     public void deveGerarErroAoBuscarPorIdVazio() {
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.buscarPorId(null), "ID inválido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.buscarPorId(null), "ID inválido");
+        Assertions.assertEquals("ID inválido", exception.getMessage());
     }
 
     @Test
@@ -173,7 +184,8 @@ public class EgressoServiceTest {
     public void deveGerarErroAoBuscarPorIdInexistente() {
         UUID idInexistente = UUID.randomUUID();
 
-        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.buscarPorId(idInexistente), "ID não encontrado");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.buscarPorId(idInexistente), "ID não encontrado");
+        Assertions.assertEquals("ID não encontrado", exception.getMessage());
     }
 
     @Test
@@ -181,14 +193,16 @@ public class EgressoServiceTest {
     public void deveGerarErroAoBuscarPorCursoInexistente() {
         Curso curso = new Curso();
 
-        Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.buscarPorCurso(curso), "Nenhum resultado para a busca");
+        Exception exception = Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.buscarPorCurso(curso), "Nenhum resultado para a busca");
+        Assertions.assertEquals("Nenhum resultado para a busca", exception.getMessage());
     }
 
     @Test
     @Transactional
     public void deveGerarErroAoBuscarPorCargoInexistente() {
         Cargo cargo = new Cargo();
-        Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.buscarPorCargo(cargo), "Nenhum resultado para a busca");
+        Exception exception = Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.buscarPorCargo(cargo), "Nenhum resultado para a busca");
+        Assertions.assertEquals("Nenhum resultado para a busca", exception.getMessage());
     }
 
     @Test
@@ -204,15 +218,17 @@ public class EgressoServiceTest {
         deleteCursoEgresso.executeUpdate();
         deleteEgresso.executeUpdate();
 
-        Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.listarTodos() , "Nenhum resultado para a busca");
+        Exception exception = Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.listarTodos() , "Nenhum resultado para a busca");
+        Assertions.assertEquals("Nenhum resultado para a busca", exception.getMessage());
     }
 
     @Test
     @Transactional
     public void deveGerarErroQuandoLoginIncorreto() {
-        Assertions.assertThrows(RegraNegocioRunTime.class,
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class,
                 () -> service.efetuarLogin("loginIncorreto@example.com", "senhaIncorreta"),
                 "Erro de autenticação");
+        Assertions.assertEquals("Erro de autenticação", exception.getMessage());
     }
 
     @Test
@@ -270,8 +286,7 @@ public class EgressoServiceTest {
         Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
         assert egresso != null;
 
-        Egresso encontrado = service.buscarPorId(egresso.getId_egresso())
-                .orElseThrow(() -> new RegraNegocioRunTime("ID não encontrado"));
+        Egresso encontrado = service.buscarPorId(egresso.getId_egresso()).orElse(null);
 
         Assertions.assertEquals(egresso, encontrado);
     }
