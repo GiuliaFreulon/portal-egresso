@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface CoordenadorRepo extends JpaRepository<Coordenador, UUID> {
     Optional<Coordenador> findByLogin(String login);
+
+    boolean existsByLogin(String email);
 }

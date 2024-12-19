@@ -22,7 +22,7 @@ public class Coordenador implements Serializable {
     @EqualsAndHashCode.Include
     private UUID id_coordenador;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @EqualsAndHashCode.Include
     private String login;
 

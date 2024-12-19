@@ -1,13 +1,9 @@
 package com.ufma.PortalEgresso.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
