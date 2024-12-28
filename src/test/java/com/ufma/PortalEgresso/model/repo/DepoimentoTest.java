@@ -10,10 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,14 +23,11 @@ public class DepoimentoTest {
 
     @Test
     @Transactional
-    public void deveVerificarSalvarDepoimento() throws ParseException {
+    public void deveVerificarSalvarDepoimento(){
         //cenário
         Depoimento depoimento = new Depoimento();
         depoimento.setTexto("teste texto depoimento");
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
-        String dateInString = "06-12-2024";
-        Date data = formatter.parse(dateInString);
-        depoimento.setData(data);
+        depoimento.setData(LocalDate.of(2024, 12, 6));
 
         //ação
         Depoimento salvo = repo.save(depoimento);
@@ -48,14 +42,11 @@ public class DepoimentoTest {
 
     @Test
     @Transactional
-    public void deveVerificarRemoverDepoimento() throws ParseException {
+    public void deveVerificarRemoverDepoimento(){
         //cenário
         Depoimento depoimento = new Depoimento();
         depoimento.setTexto("teste texto depoimento");
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
-        String dateInString = "06-12-2024";
-        Date data = formatter.parse(dateInString);
-        depoimento.setData(data);
+        depoimento.setData(LocalDate.of(2024, 12, 6));
 
         //ação
         Depoimento salvo = repo.save(depoimento);
