@@ -2,10 +2,8 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Coordenador;
 import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.repo.CursoRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,24 +19,23 @@ public class CursoService {
 
     @Transactional
     public Curso salvar(Curso curso) {
-        Curso salvo = repo.save(curso);
-
         verificarCurso(curso);
+
+        Curso salvo = repo.save(curso);
 
         return salvo;
     }
 
     @Transactional
     public Curso atualizar(Curso curso) {
+        verificarId(curso.getId_curso());
         verificarCurso(curso);
 
-        return salvar(curso);
+        return repo.save(curso);
     }
 
     public Optional<Curso> buscarPorId(UUID id) {
-        if (!repo.existsById(id)){
-            throw new BuscaVaziaRunTime();
-        }
+        verificarId(id);
 
         return repo.findById(id);
     }
@@ -61,16 +58,16 @@ public class CursoService {
     }
 
     private void verificarId(UUID id) {
-        if ((id == null) || !repo.existsById(id))
-            throw new RegraNegocioRunTime("ID inválido ou não encontrado");
+        if (id == null)
+            throw new RegraNegocioRunTime("ID inválido");
+        if (!repo.existsById(id)){
+            throw new RegraNegocioRunTime("ID não encontrado");
+        }
     }
 
     private void verificarCurso(Curso curso) {
         if (curso == null)
             throw new RegraNegocioRunTime("Curso inválido");
-
-        if ((curso.getId_curso() == null))
-            throw new RegraNegocioRunTime("O ID do curso deve estar preenchido");
 
         if ((curso.getCoordenador() == null))
             throw new RegraNegocioRunTime("O coordenador do curso deve estar preenchido");

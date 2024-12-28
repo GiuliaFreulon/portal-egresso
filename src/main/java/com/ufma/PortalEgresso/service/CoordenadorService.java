@@ -3,7 +3,7 @@ package com.ufma.PortalEgresso.service;
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
-import com.ufma.PortalEgresso.model.repo.CoordenadorRepo;
+import com.ufma.PortalEgresso.model.repo.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,8 +16,21 @@ import java.util.UUID;
 
 @Service
 public class CoordenadorService {
+
     @Autowired
     private CoordenadorRepo repo;
+
+    @Autowired
+    private EgressoRepo egressoRepo;
+
+    @Autowired
+    private CursoRepo cursoRepo;
+
+    @Autowired
+    private DepoimentoRepo depoimentoRepo;
+
+    @Autowired
+    private CargoRepo cargoRepo;
 
     public boolean efetuarLogin(String login, String senha) {
         Optional<Coordenador> coordenador = repo.findByLogin(login);
@@ -28,37 +41,47 @@ public class CoordenadorService {
     }
 
     @Transactional
-    public void cadastrarCurso(String login, String nome, String nivel){
-        Optional<Coordenador> coordenador = repo.findByLogin(login);
+    public Curso cadastrarCurso(String login, UUID id, String nome, String nivel){
 
-        CursoService service = new CursoService();
+        Optional<Coordenador> coordenador = repo.findByLogin(login);
+        verificarId(id);
+
         Curso curso = new Curso();
 
         curso.setCoordenador(coordenador.get());
         curso.setNome(nome);
         curso.setNivel(nivel);
 
-        service.salvar(curso);
+        Curso cursoSalvo = cursoRepo.save(curso);
+
+        return cursoSalvo;
     }
 
     @Transactional
-    public void homologarEgresso(Egresso egresso){
-        EgressoService service = new EgressoService();
-        service.salvar(egresso);
+    public Egresso homologarEgresso(Egresso egresso){
+        // Como homologar egresso?
+        try{
+            return egressoRepo.save(egresso);
+        } catch (DataIntegrityViolationException e){
+            throw new RegraNegocioRunTime("Egresso inválido");
+        }
     }
 
     @Transactional
-    public void associarCargoAEgresso(Egresso egresso, Cargo cargo){
-        CargoService cargoService = new CargoService();
-        cargo.setEgresso(egresso);
-        cargoService.salvar(cargo);
+    public Cargo associarCargoAEgresso(Egresso egresso, Cargo cargo){
+        try{
+            cargo.setEgresso(egresso);
+            return cargoRepo.save(cargo);
+        } catch (DataIntegrityViolationException e){
+            throw new RegraNegocioRunTime("Cargo inválido");
+        }
+
     }
 
     @Transactional
-    public void associarDepoimentoAEgresso(Egresso egresso, Depoimento depoimento){
-        DepoimentoService depoimentoService = new DepoimentoService();
+    public Depoimento associarDepoimentoAEgresso(Egresso egresso, Depoimento depoimento){
         depoimento.setEgresso(egresso);
-        depoimentoService.salvar(depoimento);
+        return depoimentoRepo.save(depoimento);
     }
 
     @Transactional

@@ -2,10 +2,8 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.model.repo.DepoimentoRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +20,8 @@ public class DepoimentoService {
 
     @Transactional
     public Depoimento salvar(Depoimento depoimento) {
-        Depoimento salvo = repo.save(depoimento);
-
         verificarDepoimento(depoimento);
+        Depoimento salvo = repo.save(depoimento);
 
         return salvo;
     }
@@ -32,14 +29,13 @@ public class DepoimentoService {
     @Transactional
     public Depoimento atualizar(Depoimento depoimento) {
         verificarDepoimento(depoimento);
+        verificarId(depoimento.getId_depoimento());
 
         return salvar(depoimento);
     }
 
     public Optional<Depoimento> buscarPorId(UUID id) {
-        if (!repo.existsById(id)){
-            throw new BuscaVaziaRunTime();
-        }
+        verificarId(id);
 
         return repo.findById(id);
     }
@@ -58,6 +54,7 @@ public class DepoimentoService {
 
     public List<Depoimento> buscarRecentes() {
         LocalDate trintaDiasAtras = LocalDate.now().minusDays(30);
+
         List<Depoimento> lista = repo.findRecent(trintaDiasAtras);
 
         if (lista.isEmpty()){
@@ -85,16 +82,17 @@ public class DepoimentoService {
     }
 
     private void verificarId(UUID id) {
-        if ((id == null) || !repo.existsById(id))
-            throw new RegraNegocioRunTime("ID inválido ou não encontrado");
+
+        if (id == null)
+            throw new RegraNegocioRunTime("ID inválido");
+        if (!repo.existsById(id)){
+            throw new RegraNegocioRunTime("ID não encontrado");
+        }
     }
 
     private void verificarDepoimento(Depoimento depoimento) {
         if (depoimento == null)
             throw new RegraNegocioRunTime("Depoimento inválido");
-
-        if ((depoimento.getId_depoimento() == null))
-            throw new RegraNegocioRunTime("O ID do depoimento deve estar preenchido");
 
         if ((depoimento.getEgresso() == null))
             throw new RegraNegocioRunTime("O depoimento deve estar associado a um egresso");

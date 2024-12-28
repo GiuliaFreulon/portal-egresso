@@ -2,7 +2,6 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.CursoEgresso;
 import com.ufma.PortalEgresso.model.repo.CursoEgressoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +29,13 @@ public class CursoEgressoService {
     @Transactional
     public CursoEgresso atualizar(CursoEgresso cursoEgresso) {
         verificarCursoEgresso(cursoEgresso);
+        verificarId(cursoEgresso.getIdCursoEgresso());
 
         return salvar(cursoEgresso);
     }
 
     public Optional<CursoEgresso> buscarPorId(UUID id) {
-        if (!repo.existsById(id)) {
-            throw new BuscaVaziaRunTime();
-        }
+        verificarId(id);
 
         return repo.findById(id);
     }
@@ -60,16 +58,17 @@ public class CursoEgressoService {
     }
 
     private void verificarId(UUID id) {
-        if ((id == null) || !repo.existsById(id))
-            throw new RegraNegocioRunTime("ID inválido ou não encontrado");
+
+        if (id == null)
+            throw new RegraNegocioRunTime("ID inválido");
+        if (!repo.existsById(id)){
+            throw new RegraNegocioRunTime("ID não encontrado");
+        }
     }
 
     private void verificarCursoEgresso(CursoEgresso cursoEgresso) {
         if (cursoEgresso == null)
             throw new RegraNegocioRunTime("CursoEgresso inválido");
-
-        if ((cursoEgresso.getIdCursoEgresso() == null))
-            throw new RegraNegocioRunTime("O ID do cursoEgresso deve estar preenchido");
 
         if ((cursoEgresso.getAnoInicio() == null))
             throw new RegraNegocioRunTime("O ano de início do cursoEgresso deve estar preenchido");

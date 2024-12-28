@@ -3,9 +3,7 @@ package com.ufma.PortalEgresso.service;
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
-import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.repo.CargoRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +19,8 @@ public class CargoService {
 
     @Transactional
     public Cargo salvar(Cargo cargo) {
-        Cargo salvo = repo.save(cargo);
-
         verificarCargo(cargo);
+        Cargo salvo = repo.save(cargo);
 
         return salvo;
     }
@@ -31,14 +28,13 @@ public class CargoService {
     @Transactional
     public Cargo atualizar(Cargo cargo) {
         verificarCargo(cargo);
+        verificarId(cargo.getId_cargo());
 
         return salvar(cargo);
     }
 
     public Optional<Cargo> buscarPorId(UUID id) {
-        if (!repo.existsById(id)){
-            throw new BuscaVaziaRunTime();
-        }
+        verificarId(id);
 
         return repo.findById(id);
     }
@@ -61,16 +57,16 @@ public class CargoService {
     }
 
     private void verificarId(UUID id) {
-        if ((id == null) || !repo.existsById(id))
-            throw new RegraNegocioRunTime("ID inválido ou não encontrado");
+        if (id == null)
+            throw new RegraNegocioRunTime("ID inválido");
+        if (!repo.existsById(id)){
+            throw new RegraNegocioRunTime("ID não encontrado");
+        }
     }
 
     private void verificarCargo(Cargo cargo) {
         if (cargo == null)
             throw new RegraNegocioRunTime("Cargo inválido");
-
-        if ((cargo.getId_cargo() == null))
-            throw new RegraNegocioRunTime("O ID do cargo deve estar preenchido");
 
         if ((cargo.getLocal() == null) || (cargo.getLocal().trim().isEmpty()))
             throw new RegraNegocioRunTime("O local do cargo deve estar preenchido");
