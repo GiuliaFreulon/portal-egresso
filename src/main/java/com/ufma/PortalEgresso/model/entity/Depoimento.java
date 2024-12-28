@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +33,6 @@ public class Depoimento implements Serializable {
 
     @Column
     @EqualsAndHashCode.Include
-    private Date data;
+    private LocalDate data;
 
 }
