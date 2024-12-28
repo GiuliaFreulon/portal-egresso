@@ -2,8 +2,9 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Coordenador;
+import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.CoordenadorRepo;
+import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -29,6 +30,9 @@ public class CoordenadorServiceTest {
 
     @Autowired
     CoordenadorRepo repo;
+
+    @Autowired
+    EgressoRepo egressoRepo;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -81,7 +85,10 @@ public class CoordenadorServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemLogin() {
-        Coordenador coordenador = new Coordenador();
+        Coordenador coordenador = repo.findById(UUID.fromString("7e12d990-6d73-47d1-9e62-8e84201417a4")).orElse(null);
+        assert coordenador != null;
+
+        coordenador.setLogin(null);
         coordenador.setSenha("senha teste");
         coordenador.setTipo("tipo teste");
 
@@ -92,7 +99,10 @@ public class CoordenadorServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemSenha() {
-        Coordenador coordenador = new Coordenador();
+        Coordenador coordenador = repo.findById(UUID.fromString("7e12d990-6d73-47d1-9e62-8e84201417a4")).orElse(null);
+        assert coordenador != null;
+
+        coordenador.setSenha(null);
         coordenador.setLogin("login teste");
         coordenador.setTipo("tipo teste");
 
@@ -103,7 +113,10 @@ public class CoordenadorServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemTipo() {
-        Coordenador coordenador = new Coordenador();
+        Coordenador coordenador = repo.findById(UUID.fromString("7e12d990-6d73-47d1-9e62-8e84201417a4")).orElse(null);
+        assert coordenador != null;
+
+        coordenador.setTipo(null);
         coordenador.setLogin("login teste");
         coordenador.setSenha("senha teste");
 
@@ -183,10 +196,126 @@ public class CoordenadorServiceTest {
         Assertions.assertEquals("Erro de autenticação", exception.getMessage());
     }
 
+    @Test
+    @Transactional
+    public void deveGerarErroAoCadastrarCursoComCoordenadorInvalido() {
+        Coordenador coordenador = new Coordenador();
+        coordenador.setLogin("loginInvalido");
+        coordenador.setSenha("senha teste");
+        coordenador.setTipo("tipo teste");
 
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class,
+                () -> service.cadastrarCurso(coordenador.getLogin(), coordenador.getId_coordenador(), "nome teste", "nivel teste"),
+                "ID inválido");
 
+        Assertions.assertEquals("ID inválido", exception.getMessage());
+    }
 
+    @Test
+    @Transactional
+    public void deveGerarErroAoTentarHomologarEgressoSemNome() {
+        Egresso egresso = new Egresso();
+        egresso.setDescricao("Descricao teste");
+        egresso.setEmail("teste@teste.com");
+        egresso.setSenha("senha teste");
 
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.homologarEgresso(egresso), "Egresso inválido");
+        Assertions.assertEquals("Egresso inválido", exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoTentarHomologarEgressoSemEmail() {
+        Egresso egresso = new Egresso();
+        egresso.setNome("teste nome");
+        egresso.setDescricao("Descricao teste");
+        egresso.setSenha("senha teste");
+
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.homologarEgresso(egresso), "O Egresso inválido");
+        Assertions.assertEquals("Egresso inválido", exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoTentarHomologarEgressoSemSenha() {
+        Egresso egresso = new Egresso();
+        egresso.setNome("teste nome");
+        egresso.setDescricao("Descricao teste");
+        egresso.setEmail("teste@teste.com");
+
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.homologarEgresso(egresso), "Egresso inválido");
+        Assertions.assertEquals("Egresso inválido", exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoTentarAssociarCargoInvalidoAEgresso() {
+        Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        Cargo cargo = new Cargo();
+        cargo.setEgresso(egresso);
+
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.associarCargoAEgresso(egresso, cargo), "Cargo inválido");
+        Assertions.assertEquals("Cargo inválido", exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void deveCadastrarCurso() {
+        Coordenador coordenador = repo.findById(UUID.fromString("7e12d990-6d73-47d1-9e62-8e84201417a4")).orElse(null);
+        assert coordenador != null;
+
+        Curso cursoSalvo = service.cadastrarCurso(coordenador.getLogin(), coordenador.getId_coordenador(), "nome teste", "nivel teste");
+
+        Assertions.assertEquals(coordenador, cursoSalvo.getCoordenador());
+        Assertions.assertEquals("nome teste", cursoSalvo.getNome());
+        Assertions.assertEquals("nivel teste", cursoSalvo.getNivel());
+    }
+
+    @Test
+    @Transactional
+    public void deveHomologarEgresso() {
+        Egresso egresso = new Egresso();
+        egresso.setNome("nome teste");
+        egresso.setDescricao("Descricao teste");
+        egresso.setEmail("salvar@teste.com");
+        egresso.setSenha("senha teste");
+
+        Egresso egressoSalvo = service.homologarEgresso(egresso);
+
+        Assertions.assertEquals(egresso, egressoSalvo);
+    }
+
+    @Test
+    @Transactional
+    public void deveAssociarCargoAEgresso() {
+        Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        Cargo cargo = new Cargo();
+        cargo.setEgresso(egresso);
+        cargo.setLocal("teste local");
+        cargo.setDescricao("teste descrição");
+        cargo.setAnoInicio(2024);
+
+        Cargo cargoSalvo = service.associarCargoAEgresso(egresso, cargo);
+
+        Assertions.assertEquals(cargo, cargoSalvo);
+    }
+
+    @Test
+    @Transactional
+    public void deveAssociarDepoimentoAEgresso() {
+        Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        Depoimento depoimento = new Depoimento();
+
+        Depoimento depoimentoSalvo = service.associarDepoimentoAEgresso(egresso, depoimento);
+
+        Assertions.assertEquals(depoimento, depoimentoSalvo);
+    }
 
     @Test
     @Transactional

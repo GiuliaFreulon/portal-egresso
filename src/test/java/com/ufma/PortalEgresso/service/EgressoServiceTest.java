@@ -103,7 +103,10 @@ public class EgressoServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemNome() {
-        Egresso egresso = new Egresso();
+        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        egresso.setNome(null);
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("teste@teste.com");
         egresso.setSenha("senha teste");
@@ -115,7 +118,10 @@ public class EgressoServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemEmail() {
-        Egresso egresso = new Egresso();
+        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        egresso.setEmail(null);
         egresso.setNome("teste nome");
         egresso.setDescricao("Descricao teste");
         egresso.setSenha("senha teste");
@@ -127,7 +133,10 @@ public class EgressoServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemSenha() {
-        Egresso egresso = new Egresso();
+        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        egresso.setSenha(null);
         egresso.setNome("teste nome");
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("teste@teste.com");
