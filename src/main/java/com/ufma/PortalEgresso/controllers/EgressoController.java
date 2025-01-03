@@ -84,7 +84,9 @@ public class EgressoController {
     public ResponseEntity obter(@PathVariable UUID id) {
         try {
             Optional<Egresso> egresso = service.buscarPorId(id);
-            return ResponseEntity.ok(egresso.get());
+            if (egresso.isPresent())
+                return ResponseEntity.ok(egresso.get());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Egresso não encontrado");
         
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());
