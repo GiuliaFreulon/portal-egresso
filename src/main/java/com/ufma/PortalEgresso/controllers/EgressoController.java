@@ -81,15 +81,13 @@ public class EgressoController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity obter(@PathVariable UUID id) {
+    public ResponseEntity buscar(@PathVariable UUID id) {
         try {
-            Optional<Egresso> egresso = service.buscarPorId(id);
-            if (egresso.isPresent())
-                return ResponseEntity.ok(egresso.get());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Egresso não encontrado");
+            Egresso egresso = service.buscarPorId(id);
+            return ResponseEntity.ok(egresso);
         
         } catch (RegraNegocioRunTime e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
     

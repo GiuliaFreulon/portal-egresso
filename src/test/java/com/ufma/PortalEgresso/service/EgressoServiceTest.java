@@ -295,7 +295,7 @@ public class EgressoServiceTest {
         Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
         assert egresso != null;
 
-        Egresso encontrado = service.buscarPorId(egresso.getId_egresso()).orElse(null);
+        Egresso encontrado = service.buscarPorId(egresso.getId_egresso());
 
         Assertions.assertEquals(egresso, encontrado);
     }

@@ -65,10 +65,10 @@ public class EgressoService {
 
     }
 
-    public Optional<Egresso> buscarPorId(UUID id) {
+    public Egresso buscarPorId(UUID id) {
         verificarId(id);
 
-        return repo.findById(id);
+        return repo.findById(id).get();
     }
 
     public List<Egresso> buscarPorCurso(Curso curso) {
