@@ -96,7 +96,7 @@ public class EgressoController {
     public ResponseEntity deletar(@PathVariable UUID id){
         try {
             service.deletar(id);
-            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
