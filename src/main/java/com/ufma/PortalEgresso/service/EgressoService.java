@@ -6,19 +6,17 @@ import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Validated
 public class EgressoService {
     @Autowired
     private EgressoRepo repo;
@@ -35,7 +33,7 @@ public class EgressoService {
     }
 
     @Transactional
-    public Egresso salvar(@Valid Egresso egresso) {
+    public Egresso salvar(Egresso egresso) {
 
         verificarEgresso(egresso);
 
@@ -43,32 +41,24 @@ public class EgressoService {
 
         Egresso salvo = repo.save(egresso);
 
-//        try {
-//            return salvo;
-//        } catch (ConstraintViolationException e) {
-//            // Trata o erro de e-mail inválido
-//            throw new RegraNegocioRunTime("E-mail inválido. Verifique o formato");
-//        }
-//        TODO fazer validação de Email no controller
         return salvo;
     }
 
     @Transactional
     public Egresso atualizar(Egresso egresso) {
-        verificarEgresso(egresso);
 
+        verificarEgresso(egresso);
         verificarEmailUnico(egresso.getEmail(), egresso.getId_egresso());
 
         verificarId(egresso.getId_egresso());
 
         return repo.save(egresso);
-
     }
 
-    public Egresso buscarPorId(UUID id) {
+    public Optional<Egresso> buscarPorId(UUID id) {
         verificarId(id);
 
-        return repo.findById(id).get();
+        return repo.findById(id);
     }
 
     public List<Egresso> buscarPorCurso(Curso curso) {
@@ -90,7 +80,6 @@ public class EgressoService {
 
         return lista;
     }
-
 
     @Transactional
     public List<Egresso> listarTodos() {
@@ -118,6 +107,7 @@ public class EgressoService {
             throw new RegraNegocioRunTime("ID não encontrado");
         }
     }
+
 
     private void verificarEgresso(Egresso egresso) {
         if (egresso == null)

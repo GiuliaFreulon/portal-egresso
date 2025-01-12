@@ -205,10 +205,10 @@ public class CoordenadorServiceTest {
         coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class,
-                () -> service.cadastrarCurso(coordenador.getLogin(), coordenador.getId_coordenador(), "nome teste", "nivel teste"),
-                "ID inválido");
+                () -> service.cadastrarCurso(coordenador.getLogin(), "nome teste", "nivel teste"),
+                "Login inválido");
 
-        Assertions.assertEquals("ID inválido", exception.getMessage());
+        Assertions.assertEquals("Login inválido", exception.getMessage());
     }
 
     @Test
@@ -266,7 +266,7 @@ public class CoordenadorServiceTest {
         Coordenador coordenador = repo.findById(UUID.fromString("7e12d990-6d73-47d1-9e62-8e84201417a4")).orElse(null);
         assert coordenador != null;
 
-        Curso cursoSalvo = service.cadastrarCurso(coordenador.getLogin(), coordenador.getId_coordenador(), "nome teste", "nivel teste");
+        Curso cursoSalvo = service.cadastrarCurso(coordenador.getLogin(), "nome teste", "nivel teste");
 
         Assertions.assertEquals(coordenador, cursoSalvo.getCoordenador());
         Assertions.assertEquals("nome teste", cursoSalvo.getNome());

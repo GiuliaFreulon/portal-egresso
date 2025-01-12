@@ -31,7 +31,7 @@ public class CursoEgressoService {
         verificarCursoEgresso(cursoEgresso);
         verificarId(cursoEgresso.getIdCursoEgresso());
 
-        return salvar(cursoEgresso);
+        return repo.save(cursoEgresso);
     }
 
     public Optional<CursoEgresso> buscarPorId(UUID id) {

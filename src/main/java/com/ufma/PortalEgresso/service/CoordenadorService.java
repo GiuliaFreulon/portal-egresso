@@ -4,12 +4,10 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,10 +39,15 @@ public class CoordenadorService {
     }
 
     @Transactional
-    public Curso cadastrarCurso(String login, UUID id, String nome, String nivel){
+    public Curso cadastrarCurso(String login, String nome, String nivel){
 
         Optional<Coordenador> coordenador = repo.findByLogin(login);
-        verificarId(id);
+
+        if (coordenador.isEmpty()) {
+            throw new RegraNegocioRunTime("Login inválido");
+        }
+
+        verificarId(coordenador.get().getId_coordenador());
 
         Curso curso = new Curso();
 
@@ -61,7 +64,9 @@ public class CoordenadorService {
     public Egresso homologarEgresso(Egresso egresso){
         // Como homologar egresso?
         try{
-            return egressoRepo.save(egresso);
+            Egresso salvo = egressoRepo.save(egresso);
+            egressoRepo.flush();
+            return salvo;
         } catch (DataIntegrityViolationException e){
             throw new RegraNegocioRunTime("Egresso inválido");
         }
@@ -71,7 +76,9 @@ public class CoordenadorService {
     public Cargo associarCargoAEgresso(Egresso egresso, Cargo cargo){
         try{
             cargo.setEgresso(egresso);
-            return cargoRepo.save(cargo);
+            Cargo salvo = cargoRepo.save(cargo);
+            cargoRepo.flush();
+            return salvo;
         } catch (DataIntegrityViolationException e){
             throw new RegraNegocioRunTime("Cargo inválido");
         }

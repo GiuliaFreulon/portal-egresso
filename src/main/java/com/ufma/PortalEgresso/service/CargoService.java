@@ -30,7 +30,7 @@ public class CargoService {
         verificarCargo(cargo);
         verificarId(cargo.getId_cargo());
 
-        return salvar(cargo);
+        return repo.save(cargo);
     }
 
     public Optional<Cargo> buscarPorId(UUID id) {

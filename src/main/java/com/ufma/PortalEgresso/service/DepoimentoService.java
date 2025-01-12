@@ -31,7 +31,7 @@ public class DepoimentoService {
         verificarDepoimento(depoimento);
         verificarId(depoimento.getId_depoimento());
 
-        return salvar(depoimento);
+        return repo.save(depoimento);
     }
 
     public Optional<Depoimento> buscarPorId(UUID id) {

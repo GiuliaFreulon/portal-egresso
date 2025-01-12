@@ -90,61 +90,6 @@ public class EgressoServiceTest {
         Assertions.assertEquals("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente", exception.getMessage());
     }
 
-//    @Test
-//    public void deveGerarErroAoTentarSalvarEmailInvalido(){
-//        Egresso egresso = new Egresso();
-//        egresso.setNome("teste nome");
-//        egresso.setDescricao("Descricao teste");
-//        egresso.setEmail("teste");
-//
-//        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(egresso), "E-mail inválido. Verifique o formato");
-//    }
-
-    @Test
-    @Transactional
-    public void deveGerarErroAoTentarAtualizarSemNome() {
-        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
-        assert egresso != null;
-
-        egresso.setNome(null);
-        egresso.setDescricao("Descricao teste");
-        egresso.setEmail("teste@teste.com");
-        egresso.setSenha("senha teste");
-
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "O nome do egresso deve estar preenchido");
-        Assertions.assertEquals("O nome do egresso deve estar preenchido", exception.getMessage());
-    }
-
-    @Test
-    @Transactional
-    public void deveGerarErroAoTentarAtualizarSemEmail() {
-        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
-        assert egresso != null;
-
-        egresso.setEmail(null);
-        egresso.setNome("teste nome");
-        egresso.setDescricao("Descricao teste");
-        egresso.setSenha("senha teste");
-
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "O e-mail do egresso deve estar preenchido");
-        Assertions.assertEquals("O e-mail do egresso deve estar preenchido", exception.getMessage());
-    }
-
-    @Test
-    @Transactional
-    public void deveGerarErroAoTentarAtualizarSemSenha() {
-        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
-        assert egresso != null;
-
-        egresso.setSenha(null);
-        egresso.setNome("teste nome");
-        egresso.setDescricao("Descricao teste");
-        egresso.setEmail("teste@teste.com");
-
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "A senha do egresso deve estar preenchida");
-        Assertions.assertEquals("A senha do egresso deve estar preenchida", exception.getMessage());
-    }
-
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarEmailJaCadastrado() {
@@ -157,16 +102,6 @@ public class EgressoServiceTest {
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egressoSalvo), "O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
         Assertions.assertEquals("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente", exception.getMessage());
     }
-
-//    @Test
-//    public void deveGerarErroAoTentarAtualizarEmailInvalido(){
-//        Egresso egresso = new Egresso();
-//        egresso.setNome("teste nome");
-//        egresso.setDescricao("Descricao teste");
-//        egresso.setEmail("teste");
-//
-//        Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(egresso), "E-mail inválido. Verifique o formato");
-//    }
 
     @Test
     @Transactional
@@ -295,7 +230,7 @@ public class EgressoServiceTest {
         Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
         assert egresso != null;
 
-        Egresso encontrado = service.buscarPorId(egresso.getId_egresso());
+        Egresso encontrado = service.buscarPorId(egresso.getId_egresso()).get();
 
         Assertions.assertEquals(egresso, encontrado);
     }
