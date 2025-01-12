@@ -30,7 +30,6 @@ public class Egresso implements Serializable {
 
     @Column(nullable = false, unique = true)
     @EqualsAndHashCode.Include
-    @Email
     private String email;
 
     @Column(nullable = false)
