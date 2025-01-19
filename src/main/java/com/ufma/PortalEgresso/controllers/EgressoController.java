@@ -1,6 +1,7 @@
 package com.ufma.PortalEgresso.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
@@ -38,6 +41,7 @@ public class EgressoController {
     CursoService cursoService;
 
     // -------------------- AUTENTICAÇÃO ---------------------
+    
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody EgressoDTO request) {
         try {
@@ -115,49 +119,14 @@ public class EgressoController {
         }
     }
 
+    
+
     @GetMapping("/buscarPorId/{id}")
     public ResponseEntity buscarPorId(@PathVariable UUID id) {
         try {
-            Egresso egresso = egressoService.buscarPorId(id).get();
-            return ResponseEntity.ok(egresso);
+            Optional<Egresso> egresso = egressoService.buscarPorId(id);
+            return ResponseEntity.ok(egresso.get());
         
-        } catch (RegraNegocioRunTime e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/buscarPorCurso/{idCurso}")
-    public ResponseEntity buscarPorCurso(@PathVariable UUID idCurso) {
-        try {
-            Curso curso = cursoService.buscarPorId(idCurso).get();
-
-            List<Egresso> lista = egressoService.buscarPorCurso(curso);
-            return ResponseEntity.ok(lista);
-
-        } catch (RegraNegocioRunTime e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/buscarPorCargo/{idCargo}")
-    public ResponseEntity buscarPorCargo(@PathVariable UUID idCargo) {
-        try {
-            Cargo cargo = cargoService.buscarPorId(idCargo).get();
-
-            List<Egresso> lista = egressoService.buscarPorCargo(cargo);
-            return ResponseEntity.ok(lista);
-
-        } catch (RegraNegocioRunTime e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/listarTodos")
-    public ResponseEntity listarTodos() {
-        try {
-            List<Egresso> lista = egressoService.listarTodos();
-            return ResponseEntity.ok(lista);
-
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -173,4 +142,44 @@ public class EgressoController {
         }
     }
 
+    // -------------------- endpoints de consulta ---------------------
+
+    @GetMapping("/buscarPorCurso/{idCurso}")
+    public ResponseEntity buscarPorCurso(@PathVariable UUID idCurso) {
+        try {
+            Curso curso = cursoService.buscarPorId(idCurso).get();
+
+            List<Egresso> lista = egressoService.buscarPorCurso(curso);
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/buscarPorCargo/{idCargo}")
+    public ResponseEntity buscarPorCargo(@PathVariable UUID idCargo) {
+        try {
+            Cargo cargo = cargoService.buscarPorId(idCargo).get();
+
+            List<Egresso> lista = egressoService.buscarPorCargo(cargo);
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/listarTodos")
+    public ResponseEntity listarTodos() {
+        try {
+            List<Egresso> lista = egressoService.listarTodos();
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    
 }
