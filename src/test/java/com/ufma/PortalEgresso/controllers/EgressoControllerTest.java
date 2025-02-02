@@ -1,59 +1,158 @@
 package com.ufma.PortalEgresso.controllers;
 
-import java.lang.module.ModuleDescriptor.Builder;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.apache.tomcat.util.http.parser.MediaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.service.CargoService;
+import com.ufma.PortalEgresso.service.CursoService;
+import com.ufma.PortalEgresso.service.EgressoService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Egresso;
-import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
-import com.ufma.PortalEgresso.service.CargoService;
-import com.ufma.PortalEgresso.service.CursoService;
-import com.ufma.PortalEgresso.service.EgressoService;
+import java.util.UUID;
 
-@WebMvcTest(controllers = EgressoController.class)
 @AutoConfigureMockMvc
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@ActiveProfiles("test")
 public class EgressoControllerTest {
     final static String API = "/api/egressos";
     @Autowired
     MockMvc mvc;
 
-    @MockitoBean
+    @Autowired
     EgressoService service;
 
-    @MockitoBean
+    @Autowired
     CargoService cargoService;
 
-    @MockitoBean
+    @Autowired
     CursoService cursoService;
 
     @Test
+    @Transactional
+    public void deveGerarErroQuandoLoginIncorreto() throws Exception{
+        // cenário
+        EgressoDTO egressoDTO = EgressoDTO.builder().nome("teste")
+                .email("teste@teste.com")
+                .senha("teste senha").build();
+        // converte DTO para json
+        String json = new ObjectMapper().writeValueAsString(egressoDTO);
+        // ação
+        // constrói a requisição POST
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/login"))
+                .accept(org.springframework.http.MediaType.APPLICATION_JSON)
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json);
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isBadRequest()) // Espera 400 BadRequest
+                .andExpect(MockMvcResultMatchers.content().string("Erro de autenticação"));
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroQuandoSalvaEmailJaCadastrado() throws Exception{
+        // cenário
+        EgressoDTO egressoDTO = EgressoDTO.builder().nome("teste")
+                .email("egresso1@email.com")
+                .senha("teste senha")
+                .build();
+        // converte DTO para json
+        String json = new ObjectMapper().writeValueAsString(egressoDTO);
+        // ação
+        // constrói a requisição POST
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/salvar"))
+                .accept(org.springframework.http.MediaType.APPLICATION_JSON)
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json);
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isBadRequest()) // Espera 400 BadRequest
+                .andExpect(MockMvcResultMatchers.content().string("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente"));
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAtualizarEgressoInvalido() throws Exception {
+        // Cenário
+        UUID id = UUID.randomUUID();
+
+        EgressoDTO egressoDTO = EgressoDTO.builder()
+                .nome("Nome qualquer")
+                .email("emailqualquer@teste.com")
+                .senha("senha qualquer")
+                .build();
+
+
+        // Converte o DTO para JSON
+        String json = new ObjectMapper().writeValueAsString(egressoDTO);
+
+        // Ação
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(API.concat("/" + id))
+                .accept(org.springframework.http.MediaType.APPLICATION_JSON)
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json);
+
+        // Verificação
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Verifica status 400 Bad Request
+                .andExpect(MockMvcResultMatchers.content().string("ID não encontrado"));
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroQuandoBuscaEgressoInexistente() throws Exception{
+        // cenário
+        UUID id = UUID.randomUUID();
+
+        // ação
+        // constrói a requisição GET
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(API.concat("/buscarPorId/" + id));
+
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isNotFound()) // Espera 404 Not Found
+                .andExpect(MockMvcResultMatchers.content().string("ID não encontrado"));
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoDeletarEgressoInexistente(){
+        UUID id = UUID.randomUUID();
+
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoBuscarEgressosPorCursoInvalido(){
+
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoBuscarEgressosPorCargoInvalido(){
+
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoListarQuandoNaoExistemEgressos(){
+
+    }
+
+    @Test
+    @Transactional
     public void deveAutenticarEgresso() throws Exception{
         // cenário
         // dto para virar json
         // body da requisição
         EgressoDTO egressoDTO = EgressoDTO.builder().nome("teste")
-                                .email("teste@teste.com")
-                                .senha("teste senha").build();
-        Mockito.when(service.efetuarLogin(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+                                .email("egresso1@email.com")
+                                .senha("senha1").build();
         // converte DTO para json
         String json = new ObjectMapper().writeValueAsString(egressoDTO);
         // ação
@@ -67,27 +166,7 @@ public class EgressoControllerTest {
     }
 
     @Test
-    public void deveGerarErroQuandoLoginIncorreto() throws Exception{
-        // cenário
-        // dto para virar json
-        // body da requisição
-        EgressoDTO egressoDTO = EgressoDTO.builder().nome("teste")
-                                .email("teste@teste.com")
-                                .senha("teste senha").build();
-        Mockito.when(service.efetuarLogin(Mockito.anyString(), Mockito.anyString())).thenThrow(new RegraNegocioRunTime("Erro de autenticação"));
-        // converte DTO para json
-        String json = new ObjectMapper().writeValueAsString(egressoDTO);
-        // ação
-        // constrói a requisição POST
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/login"))
-                                                .accept(org.springframework.http.MediaType.APPLICATION_JSON)
-                                                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                                                .content(json);
-        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isBadRequest()) // Espera 400 BadRequest
-                            .andExpect(MockMvcResultMatchers.content().string("Erro de autenticação")); 
-    }
-
-    @Test
+    @Transactional
     public void deveSalvarEgresso() throws Exception{
         // cenário
         // dto para virar json
@@ -95,13 +174,6 @@ public class EgressoControllerTest {
         EgressoDTO egressoDTO = EgressoDTO.builder().nome("teste")
                                 .email("teste@teste.com")
                                 .senha("teste senha").build();
-        // reposta que será mock
-        // egresso que vira o body da resposta
-        Egresso egresso = Egresso.builder().id_egresso(UUID.randomUUID())
-                            .nome("teste")
-                            .email("teste@teste.com")
-                            .senha("teste senha").build();
-        Mockito.when(service.salvar(Mockito.any(Egresso.class))).thenReturn(egresso);
         // converte DTO para json
         String json = new ObjectMapper().writeValueAsString(egressoDTO);
         // ação
@@ -115,32 +187,10 @@ public class EgressoControllerTest {
     }
 
     @Test
-    public void deveGerarErroQuandoSalvaEmailJaCadastrado() throws Exception{
-        // cenário
-        // dto para virar json
-        // body da requisição
-        EgressoDTO egressoDTO = EgressoDTO.builder().nome("teste")
-                                .email("teste@teste.com")
-                                .senha("teste senha")
-                                .build();
-        Mockito.when(service.salvar(Mockito.any(Egresso.class))).
-                                thenThrow(new RegraNegocioRunTime("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente"));
-        // converte DTO para json
-        String json = new ObjectMapper().writeValueAsString(egressoDTO);
-        // ação
-        // constrói a requisição POST
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/salvar"))
-                                                .accept(org.springframework.http.MediaType.APPLICATION_JSON)
-                                                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                                                .content(json);
-        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isBadRequest()) // Espera 400 BadRequest
-        .andExpect(MockMvcResultMatchers.content().string("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente"));
-    }
-    
-    @Test
+    @Transactional
     public void deveAtualizarEgresso() throws Exception {
         // cenário
-        UUID id = UUID.randomUUID();
+        UUID id = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
 
         EgressoDTO egressoDTO = EgressoDTO.builder()
                 .nome("Novo Nome")
@@ -148,26 +198,6 @@ public class EgressoControllerTest {
                 .senha("nova senha")
                 .descricao("Nova descrição")
                 .build();
-
-        Egresso egressoExistente = Egresso.builder()
-                .id_egresso(id)
-                .nome("Nome Antigo")
-                .email("emailantigo@teste.com")
-                .senha("senha antiga")
-                .descricao("Descrição antiga")
-                .build();
-
-        Egresso egressoAtualizado = Egresso.builder()
-                .id_egresso(id)
-                .nome("Novo Nome")
-                .email("novoemail@teste.com")
-                .senha("nova senha")
-                .descricao("Nova descrição")
-                .build();
-
-        // mocks
-        Mockito.when(service.buscarPorId(id)).thenReturn(Optional.of(egressoExistente));
-        Mockito.when(service.atualizar(Mockito.any(Egresso.class))).thenReturn(egressoAtualizado);
 
         // Converte o DTO para JSON
         String json = new ObjectMapper().writeValueAsString(egressoDTO);
@@ -189,54 +219,10 @@ public class EgressoControllerTest {
     }
 
     @Test
-    public void deveGerarErroAtualizarEgressoInvalido() throws Exception {
-        // Cenário
-        UUID id = UUID.randomUUID();
-
-        EgressoDTO egressoDTO = EgressoDTO.builder()
-                .nome("Nome qualquer")
-                .email("emailqualquer@teste.com")
-                .senha("senha qualquer")
-                .build();
-
-        Egresso egressoExistente = Egresso.builder()
-                .id_egresso(id)
-                .nome("Nome Antigo")
-                .email("emailantigo@teste.com")
-                .senha("senha antiga")
-                .build();
-
-        // Configurações dos mocks
-        Mockito.when(service.buscarPorId(id)).thenReturn(Optional.of(egressoExistente));
-        Mockito.when(service.atualizar(Mockito.any(Egresso.class)))
-                .thenThrow(new RegraNegocioRunTime("Erro de negócio ao atualizar o egresso."));
-
-        // Converte o DTO para JSON
-        String json = new ObjectMapper().writeValueAsString(egressoDTO);
-
-        // Ação
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(API.concat("/" + id))
-                .accept(org.springframework.http.MediaType.APPLICATION_JSON)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(json);
-
-        // Verificação
-        mvc.perform(request)
-                .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Verifica status 400 Bad Request
-                .andExpect(MockMvcResultMatchers.content().string("Erro de negócio ao atualizar o egresso."));
-}
-
-    @Test
+    @Transactional
     public void deveBuscarEgressoPorID() throws Exception {
         // cenário
-        UUID id = UUID.randomUUID();
-        Egresso egresso = Egresso.builder()
-                                .id_egresso(id)
-                                .nome("teste")
-                                .email("teste@teste.com")
-                                .senha("teste senha")
-                                .build();
-        Mockito.when(service.buscarPorId(id)).thenReturn(Optional.of(egresso));
+        UUID id = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
 
         // ação
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(API.concat("/buscarPorId/") + id);                                            
@@ -245,62 +231,32 @@ public class EgressoControllerTest {
         mvc.perform(request)
         .andExpect(MockMvcResultMatchers.status().isOk()) // Espera 200 OK
         .andExpect(MockMvcResultMatchers.jsonPath("$.id_egresso").value(id.toString()))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("teste"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("teste@teste.com"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.senha").value("teste senha"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Egresso 1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("egresso1@email.com"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.senha").value("senha1"));
     }
 
     @Test
-    public void deveGerarErroQuandoBuscaEgressoInexistente() throws Exception{
-        // cenário
-        UUID id = UUID.randomUUID();
-        Mockito.when(service.buscarPorId(id)).thenThrow(new RegraNegocioRunTime("ID não encontrado"));
-   
-        // ação
-        // constrói a requisição GET
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(API.concat("/buscarPorId/" + id));
-    
-        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isNotFound()) // Espera 404 Not Found
-                            .andExpect(MockMvcResultMatchers.content().string("ID não encontrado")); 
-    }
-
-    @Test
+    @Transactional
     public void deveDeletarEgresso(){
 
     }
 
     @Test
-    public void deveGerarErroAoDeletarEgressoInexistente(){
-
-    }
-
-    @Test
+    @Transactional
     public void deveBuscarEgressosPorCurso(){
 
     }
 
     @Test
-    public void deveGerarErroAoBuscarEgressosPorCursoInvalido(){
-
-    }
-
-    @Test
+    @Transactional
     public void deveBuscarEgressosPorCargo(){
 
     }
 
     @Test
-    public void deveGerarErroAoBuscarEgressosPorCargoInvalido(){
-
-    }
-
-    @Test
+    @Transactional
     public void deveListarTodos() throws Exception{
-
-    }
-
-    @Test
-    public void deveGerarErroAoListarQuandoNaoExistemEgressos(){
 
     }
 }
