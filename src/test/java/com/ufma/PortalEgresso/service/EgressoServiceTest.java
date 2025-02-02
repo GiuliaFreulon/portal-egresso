@@ -2,7 +2,9 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.*;
+import com.ufma.PortalEgresso.model.entity.Cargo;
+import com.ufma.PortalEgresso.model.entity.Curso;
+import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.CargoRepo;
 import com.ufma.PortalEgresso.model.repo.CursoRepo;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.UUID;
 

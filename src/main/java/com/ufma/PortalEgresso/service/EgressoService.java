@@ -8,7 +8,6 @@ import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,7 @@ import java.util.UUID;
 @Service
 public class EgressoService {
     @Autowired
-    private EgressoRepo repo;
+    EgressoRepo repo;
 
     // TODO: Fazer autocadastro
     // TODO: Integração com redes sociais
@@ -57,7 +56,6 @@ public class EgressoService {
 
     public Optional<Egresso> buscarPorId(UUID id) {
         verificarId(id);
-
         return repo.findById(id);
     }
 
@@ -100,7 +98,6 @@ public class EgressoService {
     }
 
     private void verificarId(UUID id) {
-
         if (id == null)
             throw new RegraNegocioRunTime("ID inválido");
         if (!repo.existsById(id)){

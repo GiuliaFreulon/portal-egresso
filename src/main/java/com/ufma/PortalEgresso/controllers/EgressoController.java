@@ -1,31 +1,24 @@
 package com.ufma.PortalEgresso.controllers;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
+import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
+import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.service.CargoService;
 import com.ufma.PortalEgresso.service.CursoService;
+import com.ufma.PortalEgresso.service.EgressoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
-import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Egresso;
-import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
-import com.ufma.PortalEgresso.service.EgressoService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.GetMapping;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/egressos")
@@ -78,7 +71,8 @@ public class EgressoController {
     public ResponseEntity atualizar(@PathVariable UUID id, @RequestBody @Valid EgressoDTO request) {
         try {
             // Recupera o egresso existente do banco de dados
-            Egresso egressoExistente = egressoService.buscarPorId(id).get();
+            Optional<Egresso> egressoExistenteOptional = egressoService.buscarPorId(id);
+            Egresso egressoExistente = egressoExistenteOptional.get();
 
             if (egressoExistente == null) {
                 return ResponseEntity.notFound().build(); // Retorna 404 se o egresso não for encontrado
@@ -118,8 +112,6 @@ public class EgressoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    
 
     @GetMapping("/buscarPorId/{id}")
     public ResponseEntity buscarPorId(@PathVariable UUID id) {

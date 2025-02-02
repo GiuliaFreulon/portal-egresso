@@ -3,11 +3,7 @@ package com.ufma.PortalEgresso.controllers;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Coordenador;
-import com.ufma.PortalEgresso.model.entity.DTOs.CargoDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.CoordenadorDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.CursoDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.DepoimentoDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.model.entity.DTOs.*;
 import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.service.CoordenadorService;
@@ -16,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 
