@@ -1,9 +1,11 @@
-package com.ufma.PortalEgresso.controllers;
+package com.ufma.PortalEgresso.controller;
 
-import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
+import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.DTOs.CargoDTO;
 import com.ufma.PortalEgresso.service.CargoService;
+import com.ufma.PortalEgresso.service.EgressoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +19,15 @@ import java.util.UUID;
 public class CargoController {
     @Autowired
     CargoService cargoService;
+    @Autowired
+    private EgressoService egressoService;
 
     // -------------------- endpoints CRUD ---------------------
 
-    @PostMapping("/salvar")
-    public ResponseEntity salvar(@RequestBody CargoDTO request) {
+    @PostMapping("{id}")
+    public ResponseEntity salvar(@PathVariable UUID id, @RequestBody CargoDTO request) {
         Cargo cargo = Cargo.builder()
+                .egresso(egressoService.buscarPorId(id).get())
                 .descricao(request.getDescricao())
                 .local(request.getLocal())
                 .anoInicio(request.getAnoInicio())
@@ -86,7 +91,7 @@ public class CargoController {
             List<Cargo> lista = cargoService.listarTodos();
             return ResponseEntity.ok(lista);
 
-        } catch (RegraNegocioRunTime e) {
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

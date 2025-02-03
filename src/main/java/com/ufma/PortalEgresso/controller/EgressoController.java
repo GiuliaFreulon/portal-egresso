@@ -1,7 +1,7 @@
-package com.ufma.PortalEgresso.controllers;
+package com.ufma.PortalEgresso.controller;
 
-import com.ufma.PortalEgresso.exceptions.BuscaVaziaRunTime;
-import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
+import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;

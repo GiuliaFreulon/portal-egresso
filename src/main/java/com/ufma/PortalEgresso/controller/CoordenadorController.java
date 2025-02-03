@@ -1,6 +1,7 @@
-package com.ufma.PortalEgresso.controllers;
+package com.ufma.PortalEgresso.controller;
 
-import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
+import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Coordenador;
 import com.ufma.PortalEgresso.model.entity.DTOs.*;
@@ -170,7 +171,7 @@ public class CoordenadorController {
             List<Coordenador> lista = coordenadorService.listarTodos();
             return ResponseEntity.ok(lista);
 
-        } catch (RegraNegocioRunTime e) {
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

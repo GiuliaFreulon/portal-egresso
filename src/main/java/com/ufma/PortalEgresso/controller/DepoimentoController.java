@@ -1,9 +1,11 @@
-package com.ufma.PortalEgresso.controllers;
+package com.ufma.PortalEgresso.controller;
 
-import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
+import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.DTOs.DepoimentoDTO;
 import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.service.DepoimentoService;
+import com.ufma.PortalEgresso.service.EgressoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +19,15 @@ import java.util.UUID;
 public class DepoimentoController {
     @Autowired
     DepoimentoService depoimentoService;
+    @Autowired
+    private EgressoService egressoService;
 
     // -------------------- endpoints CRUD ---------------------
 
-    @PostMapping("/salvar")
-    public ResponseEntity salvar(@RequestBody DepoimentoDTO request) {
+    @PostMapping("{id}")
+    public ResponseEntity salvar(@PathVariable UUID id, @RequestBody DepoimentoDTO request) {
         Depoimento depoimento = Depoimento.builder()
+                .egresso(egressoService.buscarPorId(id).get())
                 .texto(request.getTexto())
                 .data(request.getData())
                 .build();
@@ -78,7 +83,7 @@ public class DepoimentoController {
             List<Depoimento> lista = depoimentoService.listarTodos();
             return ResponseEntity.ok(lista);
 
-        } catch (RegraNegocioRunTime e) {
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
