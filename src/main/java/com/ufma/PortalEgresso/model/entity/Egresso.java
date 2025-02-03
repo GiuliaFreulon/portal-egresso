@@ -2,7 +2,6 @@ package com.ufma.PortalEgresso.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Data
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Egresso implements Serializable {
+public class Egressos implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

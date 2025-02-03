@@ -1,7 +1,7 @@
 package com.ufma.PortalEgresso.controllers;
 
-import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
-import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.exceptions.BuscaVaziaRunTime;
+import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/egressos")
+@RequestMapping("/api/egresso")
 @Validated
 public class EgressoController {
     @Autowired
@@ -116,8 +116,8 @@ public class EgressoController {
     @GetMapping("/buscarPorId/{id}")
     public ResponseEntity buscarPorId(@PathVariable UUID id) {
         try {
-            Optional<Egresso> egresso = egressoService.buscarPorId(id);
-            return ResponseEntity.ok(egresso.get());
+            Egresso egresso = egressoService.buscarPorId(id).get();
+            return ResponseEntity.ok(egresso);
         
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

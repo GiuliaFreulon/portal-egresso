@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.model.entity.DTOs;
+package com.ufma.PortalEgresso.model.entitys.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

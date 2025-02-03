@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.model.entity.DTOs;
+package com.ufma.PortalEgresso.model.entitys.DTOs;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;

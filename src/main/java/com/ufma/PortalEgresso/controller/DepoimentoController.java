@@ -1,9 +1,9 @@
 package com.ufma.PortalEgresso.controllers;
 
-import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Curso;
-import com.ufma.PortalEgresso.model.entity.DTOs.CursoDTO;
-import com.ufma.PortalEgresso.service.CursoService;
+import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.model.entity.DTOs.DepoimentoDTO;
+import com.ufma.PortalEgresso.model.entity.Depoimento;
+import com.ufma.PortalEgresso.service.DepoimentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +13,21 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/curso")
-public class CursoController {
+@RequestMapping("/api/depoimento")
+public class DepoimentoController {
     @Autowired
-    CursoService cursoService;
+    DepoimentoService depoimentoService;
 
     // -------------------- endpoints CRUD ---------------------
 
     @PostMapping("/salvar")
-    public ResponseEntity salvar(@RequestBody CursoDTO request) {
-        Curso curso = Curso.builder()
-                .nome(request.getNome())
-                .nivel(request.getNivel())
+    public ResponseEntity salvar(@RequestBody DepoimentoDTO request) {
+        Depoimento depoimento = Depoimento.builder()
+                .texto(request.getTexto())
+                .data(request.getData())
                 .build();
         try {
-            Curso salvo = cursoService.salvar(curso);
+            Depoimento salvo = depoimentoService.salvar(depoimento);
             return new ResponseEntity<>(salvo, HttpStatus.CREATED);
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -35,25 +35,25 @@ public class CursoController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable UUID id, @RequestBody CursoDTO request) {
+    public ResponseEntity atualizar(@PathVariable UUID id, @RequestBody DepoimentoDTO request) {
         try {
-            // Recupera o curso existente do banco de dados
-            Curso cursoExistente = cursoService.buscarPorId(id).get();
+            // Recupera o depoimento existente do banco de dados
+            Depoimento depoimentoExistente = depoimentoService.buscarPorId(id).get();
 
-            if (cursoExistente == null) {
-                return ResponseEntity.notFound().build(); // Retorna 404 se o curso não for encontrado
+            if (depoimentoExistente == null) {
+                return ResponseEntity.notFound().build(); // Retorna 404 se o depoimento não for encontrado
             }
 
             // Atualiza os campos passados no DTO
-            if (request.getNome() != null && !request.getNome().trim().isEmpty()) {
-                cursoExistente.setNome(request.getNome());
+            if (request.getTexto() != null && !request.getTexto().trim().isEmpty()) {
+                depoimentoExistente.setTexto(request.getTexto());
             }
-            if (request.getNivel() != null && !request.getNivel().trim().isEmpty()) {
-                cursoExistente.setNivel(request.getNivel());
+            if (request.getData() != null) {
+                depoimentoExistente.setData(request.getData());
             }
 
-            // Atualiza o curso no banco de dados
-            Curso atualizado = cursoService.atualizar(cursoExistente);
+            // Atualiza o depoimento no banco de dados
+            Depoimento atualizado = depoimentoService.atualizar(depoimentoExistente);
 
             return ResponseEntity.ok(atualizado);
         } catch (RegraNegocioRunTime e) {
@@ -64,8 +64,8 @@ public class CursoController {
     @GetMapping("/buscarPorId/{id}")
     public ResponseEntity buscarPorId(@PathVariable UUID id) {
         try {
-            Curso curso = cursoService.buscarPorId(id).get();
-            return ResponseEntity.ok(curso);
+            Depoimento depoimento = depoimentoService.buscarPorId(id).get();
+            return ResponseEntity.ok(depoimento);
 
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -75,7 +75,7 @@ public class CursoController {
     @GetMapping("/listarTodos")
     public ResponseEntity listarTodos() {
         try {
-            List<Curso> lista = cursoService.listarTodos();
+            List<Depoimento> lista = depoimentoService.listarTodos();
             return ResponseEntity.ok(lista);
 
         } catch (RegraNegocioRunTime e) {
@@ -86,7 +86,7 @@ public class CursoController {
     @DeleteMapping("{id}")
     public ResponseEntity deletar(@PathVariable UUID id){
         try {
-            cursoService.deletar(id);
+            depoimentoService.deletar(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());

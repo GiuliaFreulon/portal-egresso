@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.model.entity;
+package com.ufma.PortalEgresso.model.entitys;
 
 import jakarta.persistence.*;
 import lombok.*;

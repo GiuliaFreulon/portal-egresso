@@ -1,6 +1,6 @@
 package com.ufma.PortalEgresso.controllers;
 
-import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.DTOs.CargoDTO;
 import com.ufma.PortalEgresso.service.CargoService;

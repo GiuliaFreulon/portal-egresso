@@ -1,6 +1,6 @@
 package com.ufma.PortalEgresso.controllers;
 
-import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.exceptions.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Coordenador;
 import com.ufma.PortalEgresso.model.entity.DTOs.*;
@@ -35,7 +35,6 @@ public class CoordenadorController {
         }
     }
 
-    // TODO: Homologar Egresso
     @PostMapping("/homologar")
     public ResponseEntity homologarEgresso(@RequestBody EgressoDTO egressoRequest) {
         try {

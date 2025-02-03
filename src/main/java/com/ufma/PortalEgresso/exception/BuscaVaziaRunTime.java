@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.exception;
+package com.ufma.PortalEgresso.exceptions;
 
 public class BuscaVaziaRunTime extends RuntimeException{
     public BuscaVaziaRunTime() {
