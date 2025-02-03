@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.controllers;
+package com.ufma.PortalEgresso.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
