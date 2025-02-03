@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.model.entitys;
+package com.ufma.PortalEgresso.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

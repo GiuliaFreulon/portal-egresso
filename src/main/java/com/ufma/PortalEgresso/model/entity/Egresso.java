@@ -15,7 +15,7 @@ import java.util.UUID;
 @Data
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Egressos implements Serializable {
+public class Egresso implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
