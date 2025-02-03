@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.exceptions;
+package com.ufma.PortalEgresso.exception;
 
 public class RegraNegocioRunTime extends RuntimeException{
     public RegraNegocioRunTime(String mensagem) {

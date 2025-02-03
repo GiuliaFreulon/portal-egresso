@@ -1,4 +1,4 @@
-package com.ufma.PortalEgresso.exceptions;
+package com.ufma.PortalEgresso.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
