@@ -21,6 +21,21 @@ public class EgressoService {
     EgressoRepo repo;
 
     // TODO: Fazer autocadastro
+    @Transactional
+    public Egresso autoCadastrar(String nome, String email, String senha){
+        Egresso egresso = new Egresso();
+
+        egresso.setNome(nome);
+        egresso.setNome(email);
+        egresso.setSenha(senha);
+
+        verificarEgresso(egresso);
+        verificarEmailUnico(egresso.getEmail(), egresso.getId_egresso());
+
+        Egresso egressoSalvo = repo.save(egresso);
+
+        return egressoSalvo;
+    }
     // TODO: Integração com redes sociais
 
     public boolean efetuarLogin(String login, String senha) {

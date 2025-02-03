@@ -63,7 +63,6 @@ public class CoordenadorService {
 
     @Transactional
     public Egresso homologarEgresso(Egresso egresso){
-        // Como homologar egresso?
         try{
             Egresso salvo = egressoRepo.save(egresso);
             egressoRepo.flush();
