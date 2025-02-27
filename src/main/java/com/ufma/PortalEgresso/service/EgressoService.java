@@ -4,13 +4,17 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
+import com.ufma.PortalEgresso.model.entity.Depoimento;
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.model.repo.DepoimentoRepo;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,23 +24,8 @@ public class EgressoService {
     @Autowired
     EgressoRepo repo;
 
-    // TODO: Fazer autocadastro
-    @Transactional
-    public Egresso autoCadastrar(String nome, String email, String senha){
-        Egresso egresso = new Egresso();
-
-        egresso.setNome(nome);
-        egresso.setNome(email);
-        egresso.setSenha(senha);
-
-        verificarEgresso(egresso);
-        verificarEmailUnico(egresso.getEmail(), egresso.getId_egresso());
-
-        Egresso egressoSalvo = repo.save(egresso);
-
-        return egressoSalvo;
-    }
-    // TODO: Integração com redes sociais
+    @Autowired
+    private DepoimentoService depoimentoService;
 
     public boolean efetuarLogin(String login, String senha) {
         Optional<Egresso> egresso = repo.findByEmail(login);
@@ -44,6 +33,18 @@ public class EgressoService {
             throw new RegraNegocioRunTime("Erro de autenticação");
 
         return true;
+    }
+
+    @Transactional
+    public Depoimento enviarDepoimento(Egresso egresso, String texto) {
+        Depoimento depoimento = Depoimento.builder()
+                .egresso(egresso)
+                .texto(texto)
+                .data(LocalDate.now())
+                .status(Status.AGUARDANDO)
+                .build();
+
+        return depoimentoService.salvar(depoimento);
     }
 
     @Transactional

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +27,10 @@ public class CoordenadorService {
     private CursoRepo cursoRepo;
 
     @Autowired
-    private DepoimentoRepo depoimentoRepo;
+    private CursoEgressoRepo cursoEgressoRepo;
 
     @Autowired
-    private CargoRepo cargoRepo;
+    private DepoimentoRepo depoimentoRepo;
 
     public boolean efetuarLogin(String login, String senha) {
         Optional<Coordenador> coordenador = repo.findByLogin(login);
@@ -37,6 +38,12 @@ public class CoordenadorService {
             throw new RegraNegocioRunTime("Erro de autenticação");
 
         return true;
+    }
+
+    @Transactional
+    public Depoimento homologarDepoimento(Depoimento depoimento, Status status) {
+        depoimento.setStatus(status);
+        return depoimentoRepo.save(depoimento);
     }
 
     @Transactional
@@ -62,7 +69,7 @@ public class CoordenadorService {
     }
 
     @Transactional
-    public Egresso homologarEgresso(Egresso egresso){
+    public Egresso cadastrarEgresso(Egresso egresso){
         try{
             Egresso salvo = egressoRepo.save(egresso);
             egressoRepo.flush();
@@ -73,22 +80,29 @@ public class CoordenadorService {
     }
 
     @Transactional
-    public Cargo associarCargoAEgresso(Egresso egresso, Cargo cargo){
+    public Curso associarCursoAEgresso(Egresso egresso, Curso curso, Integer anoInicio, Integer anoFim){
         try{
-            cargo.setEgresso(egresso);
-            Cargo salvo = cargoRepo.save(cargo);
-            cargoRepo.flush();
-            return salvo;
+            CursoEgresso.CursoEgressoBuilder builder = CursoEgresso.builder()
+                    .egresso(egresso)
+                    .curso(curso)
+                    .anoInicio(anoInicio);
+
+            if (anoFim != null) {
+                builder.anoFim(anoFim);
+            }
+
+            CursoEgresso cursoEgresso = builder.build();
+
+            egresso.getCursos().add(cursoEgresso);
+            curso.getEgressos().add(cursoEgresso);
+
+            CursoEgresso salvo = cursoEgressoRepo.save(cursoEgresso);
+            cursoRepo.flush();
+            return salvo.getCurso();
         } catch (DataIntegrityViolationException e){
-            throw new RegraNegocioRunTime("Cargo inválido");
+            throw new RegraNegocioRunTime("Não foi possível associar curso a egresso");
         }
 
-    }
-
-    @Transactional
-    public Depoimento associarDepoimentoAEgresso(Egresso egresso, Depoimento depoimento){
-        depoimento.setEgresso(egresso);
-        return depoimentoRepo.save(depoimento);
     }
 
     @Transactional
@@ -145,9 +159,6 @@ public class CoordenadorService {
     private void verificarCoordenador(Coordenador coordenador) {
         if (coordenador == null)
             throw new RegraNegocioRunTime("Coordenador inválido");
-
-        if ((coordenador.getTipo() == null) || (coordenador.getTipo().trim().isEmpty()))
-            throw new RegraNegocioRunTime("O tipo do coordenador deve estar preenchido");
 
         if ((coordenador.getLogin() == null) || (coordenador.getLogin().trim().isEmpty()))
             throw new RegraNegocioRunTime("O login do coordenador deve estar preenchido");
