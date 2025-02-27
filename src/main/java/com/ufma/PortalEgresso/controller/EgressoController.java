@@ -4,7 +4,9 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
+import com.ufma.PortalEgresso.model.entity.DTOs.DepoimentoDTO;
 import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.service.CargoService;
 import com.ufma.PortalEgresso.service.CursoService;
@@ -56,7 +58,7 @@ public class EgressoController {
                                 .descricao(request.getDescricao())
                                 .foto(request.getFoto())
                                 .linkedin(request.getLinkedin())
-                                .instagram(request.getInstagram())
+                                .github(request.getGithub())
                                 .curriculo(request.getCurriculo())
                                 .build();
         try {
@@ -97,8 +99,8 @@ public class EgressoController {
             if (request.getLinkedin() != null) {
                 egressoExistente.setLinkedin(request.getLinkedin());
             }
-            if (request.getInstagram() != null) {
-                egressoExistente.setInstagram(request.getInstagram());
+            if (request.getGithub() != null) {
+                egressoExistente.setGithub(request.getGithub());
             }
             if (request.getCurriculo() != null) {
                 egressoExistente.setCurriculo(request.getCurriculo());
@@ -129,6 +131,22 @@ public class EgressoController {
         try {
             egressoService.deletar(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (RegraNegocioRunTime e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/enviarDepoimento/{id}")
+    public ResponseEntity enviarDepoimento(@PathVariable UUID id, @RequestBody DepoimentoDTO request) {
+        Egresso egresso = egressoService.buscarPorId(id).get();
+        Depoimento depoimento = Depoimento.builder()
+                .egresso(egresso)
+                .texto(request.getTexto())
+                .data(request.getData())
+                .build();
+        try {
+            Depoimento salvo = egressoService.enviarDepoimento(egresso, depoimento.getTexto());
+            return new ResponseEntity<>(salvo, HttpStatus.CREATED);
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

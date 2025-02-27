@@ -2,12 +2,11 @@ package com.ufma.PortalEgresso.controller;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Cargo;
-import com.ufma.PortalEgresso.model.entity.Coordenador;
+import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.entity.DTOs.*;
-import com.ufma.PortalEgresso.model.entity.Depoimento;
-import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.service.CoordenadorService;
+import com.ufma.PortalEgresso.service.CursoService;
+import com.ufma.PortalEgresso.service.DepoimentoService;
 import com.ufma.PortalEgresso.service.EgressoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,10 @@ public class CoordenadorController {
     CoordenadorService coordenadorService;
     @Autowired
     private EgressoService egressoService;
+    @Autowired
+    private CursoService cursoService;
+    @Autowired
+    private DepoimentoService depoimentoService;
 
     // -------------------- AUTENTICAÇÃO ---------------------
     @PostMapping("/login")
@@ -36,23 +39,18 @@ public class CoordenadorController {
         }
     }
 
-    @PostMapping("/homologar")
-    public ResponseEntity homologarEgresso(@RequestBody EgressoDTO egressoRequest) {
+    @PostMapping("/cadastrarEgresso")
+    public ResponseEntity cadastrarEgresso(@RequestBody EgressoDTO egressoRequest) {
         try {
             Egresso egresso = Egresso.builder()
                 .nome(egressoRequest.getNome())
                 .email(egressoRequest.getEmail())
                 .senha(egressoRequest.getSenha())
-                .descricao(egressoRequest.getDescricao())
-                .foto(egressoRequest.getFoto())
-                .linkedin(egressoRequest.getLinkedin())
-                .instagram(egressoRequest.getInstagram())
-                .curriculo(egressoRequest.getCurriculo())
                 .build();
 
-            Egresso homologado = coordenadorService.homologarEgresso(egresso);
+            Egresso cadastrado = coordenadorService.cadastrarEgresso(egresso);
 
-            return ResponseEntity.ok().body(homologado);
+            return ResponseEntity.ok().body(cadastrado);
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -75,33 +73,30 @@ public class CoordenadorController {
         }
     }
 
-    @PostMapping("/associarCargoAEgresso/{id}")
-    public ResponseEntity associarCargoAEgresso(@PathVariable UUID id, @RequestBody CargoDTO cargoRequest) {
-        try {
-            Egresso egresso = egressoService.buscarPorId(id).get();
-            Cargo cargo = Cargo.builder()
-                    .descricao(cargoRequest.getDescricao())
-                    .local(cargoRequest.getLocal())
-                    .anoInicio(cargoRequest.getAnoInicio())
-                    .anoFim(cargoRequest.getAnoFim()).build();
+    @PostMapping("/associarCursoAEgresso/{idEgresso}/{idCurso}")
+    public ResponseEntity associarCursoAEgresso(
+            @PathVariable UUID idEgresso,
+            @PathVariable UUID idCurso,
+            @RequestBody CursoEgressoDTO cursoEgressoRequest) {
 
-            coordenadorService.associarCargoAEgresso(egresso, cargo);
-            return ResponseEntity.ok().body(true);
+        try {
+            Egresso egresso = egressoService.buscarPorId(idEgresso).get();
+            Curso curso = cursoService.buscarPorId(idCurso).get();
+
+            Curso cursoAtualizado = coordenadorService.associarCursoAEgresso(egresso, curso, cursoEgressoRequest.getAnoInicio(), cursoEgressoRequest.getAnoFim());
+            return ResponseEntity.ok().body(cursoAtualizado);
         } catch (RegraNegocioRunTime e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Não foi possível associar curso a egresso");
         }
     }
 
-    @PostMapping("/associarDepoimentoAEgresso/{id}")
-    public ResponseEntity associarDepoimentoAEgresso(@PathVariable UUID id, @RequestBody DepoimentoDTO depoimentoRequest) {
+    @PostMapping("/homologarDepoimento/{id}")
+    public ResponseEntity homologarDepoimento(@PathVariable UUID id, @RequestBody DepoimentoDTO depoimentoRequest) {
         try {
-            Egresso egresso = egressoService.buscarPorId(id).get();
-            Depoimento depoimento = Depoimento.builder()
-                    .texto(depoimentoRequest.getTexto())
-                    .data(depoimentoRequest.getData()).build();
+            Depoimento depoimento = depoimentoService.buscarPorId(id).get();
+            Depoimento salvo = coordenadorService.homologarDepoimento(depoimento, depoimentoRequest.getStatus());
 
-            coordenadorService.associarDepoimentoAEgresso(egresso, depoimento);
-            return ResponseEntity.ok().body(true);
+            return ResponseEntity.ok().body(salvo);
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -114,7 +109,6 @@ public class CoordenadorController {
         Coordenador coordenador = Coordenador.builder()
                 .login(request.getLogin())
                 .senha(request.getSenha())
-                .tipo(request.getTipo())
                 .build();
         try {
             Coordenador salvo = coordenadorService.salvar(coordenador);
@@ -140,9 +134,6 @@ public class CoordenadorController {
             }
             if (request.getSenha() != null && !request.getSenha().trim().isEmpty()) {
                 coordenadorExistente.setSenha(request.getSenha());
-            }
-            if (request.getTipo() != null && !request.getTipo().trim().isEmpty()) {
-                coordenadorExistente.setTipo(request.getTipo());
             }
 
             // Atualiza o coordenador no banco de dados
