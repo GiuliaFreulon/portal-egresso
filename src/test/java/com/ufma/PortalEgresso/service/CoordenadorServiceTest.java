@@ -4,7 +4,9 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.CoordenadorRepo;
+import com.ufma.PortalEgresso.model.repo.CursoRepo;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
+import com.ufma.PortalEgresso.model.repo.DepoimentoRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,15 +37,24 @@ public class CoordenadorServiceTest {
     @Autowired
     EgressoRepo egressoRepo;
 
+    @Autowired
+    DepoimentoRepo depoimentoRepo;
+
+    @Autowired
+    private DepoimentoService depoimentoService;
+
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private CoordenadorRepo coordenadorRepo;
+    @Autowired
+    private CursoRepo cursoRepo;
 
     @Test
     @Transactional
     public void deveGerarErroAoTentarSalvarSemLogin() {
         Coordenador coordenador = new Coordenador();
         coordenador.setSenha("senha teste");
-        coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(coordenador), "O login do coordenador deve estar preenchido");
         Assertions.assertEquals("O login do coordenador deve estar preenchido", exception.getMessage());
@@ -53,21 +65,9 @@ public class CoordenadorServiceTest {
     public void deveGerarErroAoTentarSalvarSemSenha() {
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("login teste");
-        coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(coordenador), "A senha do coordenador deve estar preenchida");
         Assertions.assertEquals("A senha do coordenador deve estar preenchida", exception.getMessage());
-    }
-
-    @Test
-    @Transactional
-    public void deveGerarErroAoTentarSalvarSemTipo() {
-        Coordenador coordenador = new Coordenador();
-        coordenador.setLogin("login teste");
-        coordenador.setSenha("senha teste");
-
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(coordenador), "O tipo do coordenador deve estar preenchido");
-        Assertions.assertEquals("O tipo do coordenador deve estar preenchido", exception.getMessage());
     }
 
     @Test
@@ -76,7 +76,6 @@ public class CoordenadorServiceTest {
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("coordenador1");
         coordenador.setSenha("senha teste");
-        coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(coordenador), "Já existe um coordenador com esse login. Por favor, utilize um login diferente");
         Assertions.assertEquals("Já existe um coordenador com esse login. Por favor, utilize um login diferente", exception.getMessage());
@@ -90,7 +89,6 @@ public class CoordenadorServiceTest {
 
         coordenador.setLogin(null);
         coordenador.setSenha("senha teste");
-        coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(coordenador), "O login do coordenador deve estar preenchido");
         Assertions.assertEquals("O login do coordenador deve estar preenchido", exception.getMessage());
@@ -104,24 +102,9 @@ public class CoordenadorServiceTest {
 
         coordenador.setSenha(null);
         coordenador.setLogin("login teste");
-        coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(coordenador), "A senha do coordenador deve estar preenchida");
         Assertions.assertEquals("A senha do coordenador deve estar preenchida", exception.getMessage());
-    }
-
-    @Test
-    @Transactional
-    public void deveGerarErroAoTentarAtualizarSemTipo() {
-        Coordenador coordenador = repo.findById(UUID.fromString("7e12d990-6d73-47d1-9e62-8e84201417a4")).orElse(null);
-        assert coordenador != null;
-
-        coordenador.setTipo(null);
-        coordenador.setLogin("login teste");
-        coordenador.setSenha("senha teste");
-
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(coordenador), "O tipo do coordenador deve estar preenchido");
-        Assertions.assertEquals("O tipo do coordenador deve estar preenchido", exception.getMessage());
     }
 
     @Test
@@ -144,7 +127,6 @@ public class CoordenadorServiceTest {
         coordenador.setId_coordenador(UUID.randomUUID());
         coordenador.setLogin("login teste");
         coordenador.setSenha("senha teste");
-        coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(coordenador), "ID não encontrado");
         Assertions.assertEquals("ID não encontrado", exception.getMessage());
@@ -202,7 +184,6 @@ public class CoordenadorServiceTest {
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("loginInvalido");
         coordenador.setSenha("senha teste");
-        coordenador.setTipo("tipo teste");
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class,
                 () -> service.cadastrarCurso(coordenador.getLogin(), "nome teste", "nivel teste"),
@@ -213,51 +194,66 @@ public class CoordenadorServiceTest {
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarHomologarEgressoSemNome() {
+    public void deveGerarErroAoTentarCadastrarEgressoSemNome() {
         Egresso egresso = new Egresso();
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("teste@teste.com");
         egresso.setSenha("senha teste");
 
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.homologarEgresso(egresso), "Egresso inválido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.cadastrarEgresso(egresso), "Egresso inválido");
         Assertions.assertEquals("Egresso inválido", exception.getMessage());
     }
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarHomologarEgressoSemEmail() {
+    public void deveGerarErroAoTentarCadastrarEgressoSemEmail() {
         Egresso egresso = new Egresso();
         egresso.setNome("teste nome");
         egresso.setDescricao("Descricao teste");
         egresso.setSenha("senha teste");
 
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.homologarEgresso(egresso), "O Egresso inválido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.cadastrarEgresso(egresso), "O Egresso inválido");
         Assertions.assertEquals("Egresso inválido", exception.getMessage());
     }
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarHomologarEgressoSemSenha() {
+    public void deveGerarErroAoTentarCadastrarEgressoSemSenha() {
         Egresso egresso = new Egresso();
         egresso.setNome("teste nome");
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("teste@teste.com");
 
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.homologarEgresso(egresso), "Egresso inválido");
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.cadastrarEgresso(egresso), "Egresso inválido");
         Assertions.assertEquals("Egresso inválido", exception.getMessage());
     }
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarAssociarCargoInvalidoAEgresso() {
+    public void deveGerarErroAoTentarAssociarCursoInvalidoAEgresso() {
         Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
-        assert egresso != null;
 
-        Cargo cargo = new Cargo();
-        cargo.setEgresso(egresso);
+        Curso curso = new Curso();
+        curso.setId_curso(UUID.randomUUID());
 
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.associarCargoAEgresso(egresso, cargo), "Cargo inválido");
-        Assertions.assertEquals("Cargo inválido", exception.getMessage());
+        Integer anoInicio = 2025;
+        Integer anoFim = 2028;
+
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.associarCursoAEgresso(egresso, curso, anoInicio, anoFim), "Não foi possível associar curso a egresso");
+        Assertions.assertEquals("Não foi possível associar curso a egresso", exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void deveHomologarDepoimento() {
+        UUID id = UUID.fromString("88dd072f-4025-4462-880c-61b9ee44857c");
+        Depoimento depoimento = depoimentoService.buscarPorId(id).get();
+
+        Status status = Status.APROVADO;
+
+        Depoimento homologado = service.homologarDepoimento(depoimento, status);
+
+        Assertions.assertEquals(status, homologado.getStatus());
     }
 
     @Test
@@ -275,46 +271,27 @@ public class CoordenadorServiceTest {
 
     @Test
     @Transactional
-    public void deveHomologarEgresso() {
+    public void deveCadastrarEgresso() {
         Egresso egresso = new Egresso();
         egresso.setNome("nome teste");
         egresso.setDescricao("Descricao teste");
         egresso.setEmail("salvar@teste.com");
         egresso.setSenha("senha teste");
 
-        Egresso egressoSalvo = service.homologarEgresso(egresso);
+        Egresso egressoSalvo = service.cadastrarEgresso(egresso);
 
         Assertions.assertEquals(egresso, egressoSalvo);
     }
 
     @Test
     @Transactional
-    public void deveAssociarCargoAEgresso() {
+    public void deveAssociarCursoAEgresso() {
         Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
-        assert egresso != null;
+        Curso curso = cursoRepo.findById(UUID.fromString("0157ecab-4fb7-42b4-91ff-be4db8c759ce")).orElse(null);
 
-        Cargo cargo = new Cargo();
-        cargo.setEgresso(egresso);
-        cargo.setLocal("teste local");
-        cargo.setDescricao("teste descrição");
-        cargo.setAnoInicio(2024);
+        Curso cursoSalvo = service.associarCursoAEgresso(egresso, curso, 2022, null);
 
-        Cargo cargoSalvo = service.associarCargoAEgresso(egresso, cargo);
-
-        Assertions.assertEquals(cargo, cargoSalvo);
-    }
-
-    @Test
-    @Transactional
-    public void deveAssociarDepoimentoAEgresso() {
-        Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
-        assert egresso != null;
-
-        Depoimento depoimento = new Depoimento();
-
-        Depoimento depoimentoSalvo = service.associarDepoimentoAEgresso(egresso, depoimento);
-
-        Assertions.assertEquals(depoimento, depoimentoSalvo);
+        Assertions.assertEquals(curso, cursoSalvo);
     }
 
     @Test
@@ -323,7 +300,6 @@ public class CoordenadorServiceTest {
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("login teste");
         coordenador.setSenha("senha teste");
-        coordenador.setTipo("tipo teste");
 
         Coordenador salvo = service.salvar(coordenador);
 
@@ -331,7 +307,6 @@ public class CoordenadorServiceTest {
         Assertions.assertNotNull(salvo);
         Assertions.assertEquals(coordenador.getLogin(), salvo.getLogin());
         Assertions.assertEquals(coordenador.getSenha(), salvo.getSenha());
-        Assertions.assertEquals(coordenador.getTipo(), salvo.getTipo());
 
     }
 
@@ -343,7 +318,6 @@ public class CoordenadorServiceTest {
 
         coordenador.setLogin("login teste");
         coordenador.setSenha("senha teste");
-        coordenador.setTipo("tipo teste");
 
         Coordenador salvo = service.salvar(coordenador);
 
@@ -351,7 +325,6 @@ public class CoordenadorServiceTest {
         Assertions.assertNotNull(salvo);
         Assertions.assertEquals(coordenador.getLogin(), salvo.getLogin());
         Assertions.assertEquals(coordenador.getSenha(), salvo.getSenha());
-        Assertions.assertEquals(coordenador.getTipo(), salvo.getTipo());
     }
 
     @Test

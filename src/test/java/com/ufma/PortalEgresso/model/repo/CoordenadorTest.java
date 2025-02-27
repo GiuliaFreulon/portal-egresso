@@ -27,7 +27,6 @@ public class CoordenadorTest {
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("teste login");
         coordenador.setSenha("teste senha");
-        coordenador.setTipo("teste tipo");
 
         //ação
         Coordenador salvo = repo.save(coordenador); //salva?
@@ -38,7 +37,6 @@ public class CoordenadorTest {
         Assertions.assertEquals(coordenador.getCursos(), salvo.getCursos());
         Assertions.assertEquals(coordenador.getLogin(), salvo.getLogin());
         Assertions.assertEquals(coordenador.getSenha(), salvo.getSenha());
-        Assertions.assertEquals(coordenador.getTipo(), salvo.getTipo());
     }
 
     @Test
@@ -48,7 +46,6 @@ public class CoordenadorTest {
         Coordenador coordenador = new Coordenador();
         coordenador.setLogin("teste login");
         coordenador.setSenha("teste senha");
-        coordenador.setTipo("teste tipo");
 
         //ação
         Coordenador salvo = repo.save(coordenador); //salva

@@ -31,7 +31,7 @@ public class EgressoTest {
         egresso.setDescricao("teste descrição");
         egresso.setFoto("teste foto");
         egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
+        egresso.setGithub("teste Instagram");
         egresso.setCurriculo("teste Curriculo");
 
         //ação
@@ -45,7 +45,7 @@ public class EgressoTest {
         Assertions.assertEquals(egresso.getDescricao(), salvo.getDescricao());
         Assertions.assertEquals(egresso.getFoto(), salvo.getFoto());
         Assertions.assertEquals(egresso.getLinkedin(), salvo.getLinkedin());
-        Assertions.assertEquals(egresso.getInstagram(), salvo.getInstagram());
+        Assertions.assertEquals(egresso.getGithub(), salvo.getGithub());
         Assertions.assertEquals(egresso.getCurriculo(), salvo.getCurriculo());
     }
 
@@ -60,7 +60,7 @@ public class EgressoTest {
         egresso.setDescricao("teste descrição");
         egresso.setFoto("teste foto");
         egresso.setLinkedin("teste Linkedin");
-        egresso.setInstagram("teste Instagram");
+        egresso.setGithub("teste Instagram");
         egresso.setCurriculo("teste Curriculo");
 
         //ação

@@ -1,7 +1,11 @@
 package com.ufma.PortalEgresso.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.ufma.PortalEgresso.model.entity.DTOs.DepoimentoDTO;
 import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.service.EgressoService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -19,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @AutoConfigureMockMvc

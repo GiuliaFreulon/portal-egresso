@@ -1,10 +1,10 @@
 package com.ufma.PortalEgresso.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufma.PortalEgresso.model.entity.DTOs.CargoDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.CoordenadorDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.CursoDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.model.entity.DTOs.*;
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
+import com.ufma.PortalEgresso.model.repo.DepoimentoRepo;
+import com.ufma.PortalEgresso.service.DepoimentoService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -35,6 +35,10 @@ public class CoordenadorControllerTest {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private DepoimentoRepo depoimentoRepo;
+    @Autowired
+    private DepoimentoService depoimentoService;
 
     @Test
     @Transactional
@@ -66,7 +70,6 @@ public class CoordenadorControllerTest {
         // Cenário
         CoordenadorDTO coordenadorDTO = CoordenadorDTO.builder()
                 .senha("teste senha")
-                .tipo("teste tipo")
                 .build();
 
         // Converte DTO para json
@@ -91,7 +94,6 @@ public class CoordenadorControllerTest {
         CoordenadorDTO coordenadorDTO = CoordenadorDTO.builder()
                 .login("coordenador1")
                 .senha("senha1")
-                .tipo("COORD")
                 .build();
 
         // Converte DTO para json
@@ -144,7 +146,6 @@ public class CoordenadorControllerTest {
         CoordenadorDTO coordenadorDTO = CoordenadorDTO.builder()
                 .login("coordenador1")
                 .senha("senha1")
-                .tipo("COORD")
                 .build();
 
         // Converte DTO para json
@@ -171,7 +172,6 @@ public class CoordenadorControllerTest {
         CoordenadorDTO coordenadorDTO = CoordenadorDTO.builder()
                 .login("lonqualquer")
                 .senha("senha qualquer")
-                .tipo("COORD")
                 .build();
 
 
@@ -276,7 +276,7 @@ public class CoordenadorControllerTest {
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarHomologarEgressoSemCampoObrigatorio() throws Exception{
+    public void deveGerarErroAoTentarCadastrarEgressoSemCampoObrigatorio() throws Exception{
         // Cenário
         EgressoDTO egressoDTO = EgressoDTO.builder()
                 .senha("teste senha")
@@ -287,7 +287,7 @@ public class CoordenadorControllerTest {
 
         // Ação
         // constrói a requisição POST
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/homologar"))
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/cadastrarEgresso"))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -299,25 +299,51 @@ public class CoordenadorControllerTest {
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarAssociarCargoInvalidoAEgresso() throws Exception{
+    public void deveGerarErroAoTentarAssociarCursoInvalidoAEgresso() throws Exception{
         // Cenário
         UUID id = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
-        CargoDTO cargoDTO = CargoDTO.builder()
+        CursoDTO cursoDTO = CursoDTO.builder()
+                .nome("nome")
+                .nivel("nivel")
                 .build();
 
         // converte DTO para json
-        String json = new ObjectMapper().writeValueAsString(cargoDTO);
+        String json = new ObjectMapper().writeValueAsString(cursoDTO);
 
         // Ação
         // constrói a requisição POST
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/associarCargoAEgresso/" + id))
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/associarCursoAEgresso/" + id + "/" + UUID.randomUUID()))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
         // Verificação
         mvc.perform(request).andExpect(MockMvcResultMatchers.status().isBadRequest()) // Espera 400 Bad Request
-                .andExpect(MockMvcResultMatchers.content().string("Cargo inválido"));
+                .andExpect(MockMvcResultMatchers.content().string("Não foi possível associar curso a egresso"));
+    }
+
+    @Test
+    @Transactional
+    public void deveHomologarDepoimento() throws Exception{
+        // Cenário
+        UUID id = UUID.fromString("88dd072f-4025-4462-880c-61b9ee44857c");
+        DepoimentoDTO depoimentoDTO = DepoimentoDTO.builder()
+                .texto("texto teste")
+                .status(Status.AGUARDANDO)
+                .build();
+
+        // converte DTO para json
+        String json = new ObjectMapper().writeValueAsString(depoimentoDTO);
+
+        // Ação
+        // Constrói a requisição POST
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/homologarDepoimento/" + id))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        //Verificação
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isOk()); // espera 200 OK
     }
 
     @Test
@@ -346,7 +372,7 @@ public class CoordenadorControllerTest {
 
     @Test
     @Transactional
-    public void deveHomologarEgresso() throws Exception{
+    public void deveCadastrarEgresso() throws Exception{
         // Cenário
         EgressoDTO egressoDTO = EgressoDTO.builder()
                 .nome("egresso teste")
@@ -359,7 +385,7 @@ public class CoordenadorControllerTest {
 
         // Ação
         // Constrói a requisição POST
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/homologar"))
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/cadastrarEgresso"))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -370,21 +396,21 @@ public class CoordenadorControllerTest {
 
     @Test
     @Transactional
-    public void deveAssociarCargoAEgresso() throws Exception{
-        // Cenário
-        UUID id = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
-        CargoDTO cargoDTO = CargoDTO.builder()
-                .descricao("descricao teste")
-                .local("local teste")
-                .anoInicio(2001)
+    public void deveAssociarCursoAEgresso() throws Exception{
+
+        UUID idEgresso = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
+        UUID idCurso = UUID.fromString("0157ecab-4fb7-42b4-91ff-be4db8c759ce");
+        CursoEgressoDTO cursoEgressoDTO = CursoEgressoDTO.builder()
+                .anoInicio(2020)
+                .anoFim(2024)
                 .build();
 
         // Converte DTO para json
-        String json = new ObjectMapper().writeValueAsString(cargoDTO);
+        String json = new ObjectMapper().writeValueAsString(cursoEgressoDTO);
 
         // Ação
         // Constrói a requisição POST
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/associarCargoAEgresso/" + id))
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/associarCursoAEgresso/" + idEgresso + "/" + idCurso))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -400,7 +426,6 @@ public class CoordenadorControllerTest {
         CoordenadorDTO coordenadorDTO = CoordenadorDTO.builder()
                 .login("login teste")
                 .senha("senha teste")
-                .tipo("COORD")
                 .build();
 
         // Converte DTO para json
@@ -426,7 +451,6 @@ public class CoordenadorControllerTest {
         CoordenadorDTO coordenadorDTO = CoordenadorDTO.builder()
                 .login("login atualizado")
                 .senha("senha atualizada")
-                .tipo("COORD")
                 .build();
 
         // Converte o DTO para JSON
@@ -443,8 +467,7 @@ public class CoordenadorControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()) // Espera 200 OK
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id_coordenador").value(id.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.login").value("login atualizado"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.senha").value("senha atualizada"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.tipo").value("COORD"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.senha").value("senha atualizada"));
     }
 
     @Test
@@ -461,8 +484,7 @@ public class CoordenadorControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()) // Espera 200 OK
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id_coordenador").value(id.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.login").value("coordenador1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.senha").value("senha1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.tipo").value("COORD"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.senha").value("senha1"));
     }
 
     @Test

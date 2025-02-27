@@ -4,9 +4,11 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Cargo;
 import com.ufma.PortalEgresso.model.entity.Curso;
+import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.CargoRepo;
 import com.ufma.PortalEgresso.model.repo.CursoRepo;
+import com.ufma.PortalEgresso.model.repo.DepoimentoRepo;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -180,6 +182,22 @@ public class EgressoServiceTest {
 
     @Test
     @Transactional
+    public void deveVerificarEnviarDepoimento(){
+        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        String texto = "texto teste";
+
+        Depoimento enviado = service.enviarDepoimento(egresso, texto);
+
+        //Verificação
+        Assertions.assertNotNull(enviado);
+        Assertions.assertEquals(egresso, enviado.getEgresso());
+        Assertions.assertEquals(texto, enviado.getTexto());
+    }
+
+    @Test
+    @Transactional
     public void deveVerificarSalvarOEgresso() {
         Egresso egresso = new Egresso();
         egresso.setNome("nome teste");
@@ -197,7 +215,7 @@ public class EgressoServiceTest {
         Assertions.assertEquals(egresso.getDescricao(), salvo.getDescricao());
         Assertions.assertEquals(egresso.getFoto(), salvo.getFoto());
         Assertions.assertEquals(egresso.getLinkedin(), salvo.getLinkedin());
-        Assertions.assertEquals(egresso.getInstagram(), salvo.getInstagram());
+        Assertions.assertEquals(egresso.getGithub(), salvo.getGithub());
         Assertions.assertEquals(egresso.getCurriculo(), salvo.getCurriculo());
     }
 
@@ -223,7 +241,7 @@ public class EgressoServiceTest {
         Assertions.assertEquals(egresso.getDescricao(), atualizado.getDescricao());
         Assertions.assertEquals(egresso.getFoto(), atualizado.getFoto());
         Assertions.assertEquals(egresso.getLinkedin(), atualizado.getLinkedin());
-        Assertions.assertEquals(egresso.getInstagram(), atualizado.getInstagram());
+        Assertions.assertEquals(egresso.getGithub(), atualizado.getGithub());
         Assertions.assertEquals(egresso.getCurriculo(), atualizado.getCurriculo());
     }
 

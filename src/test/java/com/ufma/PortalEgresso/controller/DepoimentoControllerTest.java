@@ -169,6 +169,7 @@ public class DepoimentoControllerTest {
         // cenário
         UUID id = UUID.fromString("88dd072f-4025-4462-880c-61b9ee44857c");
 
+
         DepoimentoDTO depoimentoDTO = DepoimentoDTO.builder()
                 .texto("novo texto")
                 .data(LocalDate.of(2020, 9, 11))
@@ -188,7 +189,8 @@ public class DepoimentoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()) // Espera 200 OK
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id_depoimento").value(id.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.texto").value("novo texto"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("2020-09-11"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("2020-09-11"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("AGUARDANDO"));
     }
 
     @Test
@@ -205,7 +207,8 @@ public class DepoimentoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()) // Espera 200 OK
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id_depoimento").value(id.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.texto").value("Depoimento do egresso 1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("2024-12-12"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("2024-12-12"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("AGUARDANDO"));
     }
 
     @Test
