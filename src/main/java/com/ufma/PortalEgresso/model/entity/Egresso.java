@@ -44,7 +44,7 @@ public class Egresso implements Serializable {
     private String linkedin;
 
     @Column
-    private String instagram;
+    private String github;
 
     @Column
     private String curriculo;

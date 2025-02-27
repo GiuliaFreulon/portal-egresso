@@ -18,6 +18,6 @@ public class EgressoDTO {
     private String descricao;
     private String foto;
     private String linkedin;
-    private String instagram;
+    private String github;
     private String curriculo;
 }

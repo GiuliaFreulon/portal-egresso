@@ -1,5 +1,6 @@
 package com.ufma.PortalEgresso.model.entity;
 
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,5 +36,9 @@ public class Depoimento implements Serializable {
     @Column
     @EqualsAndHashCode.Include
     private LocalDate data;
+
+    @Column(nullable = false)
+    @EqualsAndHashCode.Include
+    private Status status = Status.AGUARDANDO;
 
 }

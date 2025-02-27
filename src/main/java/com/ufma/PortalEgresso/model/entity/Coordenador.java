@@ -31,10 +31,6 @@ public class Coordenador implements Serializable {
     @EqualsAndHashCode.Include
     private String senha;
 
-    @Column(nullable = false)
-    @EqualsAndHashCode.Include
-    private String tipo;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "coordenador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude

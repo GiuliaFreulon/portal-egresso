@@ -10,5 +10,4 @@ import lombok.Data;
 public class CoordenadorDTO {
     private String login;
     private String senha;
-    private String tipo;
 }
