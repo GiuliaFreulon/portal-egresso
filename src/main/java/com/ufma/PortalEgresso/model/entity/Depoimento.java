@@ -38,6 +38,7 @@ public class Depoimento implements Serializable {
     private LocalDate data;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @EqualsAndHashCode.Include
     private Status status = Status.AGUARDANDO;
 
