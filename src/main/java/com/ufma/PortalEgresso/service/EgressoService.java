@@ -7,7 +7,6 @@ import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import com.ufma.PortalEgresso.model.entity.Egresso;
-import com.ufma.PortalEgresso.model.repo.DepoimentoRepo;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -87,6 +86,16 @@ public class EgressoService {
 
     public List<Egresso> buscarPorCargo(Cargo cargo) {
         List<Egresso> lista = repo.findByCargoId(cargo.getId_cargo());
+
+        if (lista.isEmpty()){
+            throw new BuscaVaziaRunTime();
+        }
+
+        return lista;
+    }
+
+    public List<Egresso> buscarPorNome(String nome) {
+        List<Egresso> lista = repo.findByNome(nome);
 
         if (lista.isEmpty()){
             throw new BuscaVaziaRunTime();

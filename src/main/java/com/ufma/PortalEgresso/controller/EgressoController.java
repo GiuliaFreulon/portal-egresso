@@ -180,6 +180,17 @@ public class EgressoController {
         }
     }
 
+    @GetMapping("/buscarPorNome/{nomeEgresso}")
+    public ResponseEntity buscarPorNome(@PathVariable String nomeEgresso) {
+        try {
+            List<Egresso> lista = egressoService.buscarPorNome(nomeEgresso);
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/listarTodos")
     public ResponseEntity listarTodos() {
         try {

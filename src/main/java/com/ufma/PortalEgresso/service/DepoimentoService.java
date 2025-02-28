@@ -2,6 +2,7 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import com.ufma.PortalEgresso.model.entity.Egresso;
@@ -41,6 +42,16 @@ public class DepoimentoService {
         verificarId(id);
 
         return repo.findById(id);
+    }
+
+    public List<Depoimento> buscarPorNomeCurso(String nome) {
+        List<Depoimento> lista = repo.findByNomeDoCurso(nome);
+
+        if (lista.isEmpty()){
+            throw new BuscaVaziaRunTime();
+        }
+
+        return lista;
     }
 
     public List<Depoimento> buscarPorAno(Integer ano) {

@@ -8,7 +8,6 @@ import com.ufma.PortalEgresso.model.entity.Depoimento;
 import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.CargoRepo;
 import com.ufma.PortalEgresso.model.repo.CursoRepo;
-import com.ufma.PortalEgresso.model.repo.DepoimentoRepo;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -126,6 +125,15 @@ public class EgressoServiceTest {
     public void deveGerarErroAoBuscarPorIdVazio() {
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.buscarPorId(null), "ID inválido");
         Assertions.assertEquals("ID inválido", exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void deveGerarErroAoBuscarPorNomeInexistente() {
+        String nome = "nome inexistente";
+
+        Exception exception = Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.buscarPorNome(nome), "Nenhum resultado para a busca");
+        Assertions.assertEquals("Nenhum resultado para a busca", exception.getMessage());
     }
 
     @Test
@@ -266,6 +274,20 @@ public class EgressoServiceTest {
         List<Egresso> egressosEsperados = entityManager
                 .createQuery("SELECT e FROM Egresso e JOIN CursoEgresso ce ON e = ce.egresso WHERE ce.curso.id_curso = :id", Egresso.class)
                 .setParameter("id", UUID.fromString("0157ecab-4fb7-42b4-91ff-be4db8c759ce"))
+                .getResultList();
+
+        Assertions.assertEquals(egressos, egressosEsperados);
+    }
+
+    @Test
+    @Transactional
+    public void deveBuscarPorNome() {
+        String nome = "egresso 1";
+
+        List<Egresso> egressos = service.buscarPorNome(nome);
+        List<Egresso> egressosEsperados = entityManager
+                .createQuery("SELECT c FROM Egresso c WHERE LOWER(c.nome) LIKE LOWER(CONCAT('%', :nomeEgresso, '%'))", Egresso.class)
+                .setParameter("nomeEgresso", nome)
                 .getResultList();
 
         Assertions.assertEquals(egressos, egressosEsperados);

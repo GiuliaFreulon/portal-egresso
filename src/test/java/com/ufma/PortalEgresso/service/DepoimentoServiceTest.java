@@ -170,6 +170,22 @@ public class DepoimentoServiceTest {
 
     @Test
     @Transactional
+    public void deveBuscarDepoimentoPorNomeDoCurso() {
+        String nome = "Curso 1";
+
+        List<Depoimento> cursos = service.buscarPorNomeCurso(nome);
+        List<Depoimento> cursosEsperados = entityManager
+                .createQuery("SELECT d FROM Depoimento d JOIN Egresso e ON d.egresso = e " +
+                        "JOIN CursoEgresso ce ON e = ce.egresso " +
+                        "WHERE LOWER(ce.curso.nome) LIKE LOWER(CONCAT('%', :cursoNome, '%'))", Depoimento.class)
+                .setParameter("cursoNome", nome)
+                .getResultList();
+
+        Assertions.assertEquals(cursos, cursosEsperados);
+    }
+
+    @Test
+    @Transactional
     public void deveBuscarPorAnoExistente() {
 
         LocalDate dataInicio = LocalDate.of(2024, 1, 1);

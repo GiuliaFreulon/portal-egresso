@@ -213,6 +213,22 @@ public class DepoimentoControllerTest {
 
     @Test
     @Transactional
+    public void deveBuscarDepoimentoPorNomeDoCurso() throws Exception {
+        // Cenário
+        String nome = "curso 1";
+
+        // Ação
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(API.concat("/buscarPorNomeDoCurso/" + nome))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // Verificação
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @Transactional
     public void deveDeletarDepoimento() throws Exception {
         // Cenário
         UUID id = UUID.fromString("88dd072f-4025-4462-880c-61b9ee44857c");

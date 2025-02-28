@@ -227,6 +227,25 @@ public class EgressoControllerTest {
 
     @Test
     @Transactional
+    public void deveGerarErroAoBuscarPorNomeInexistente() throws Exception {
+        // Cenário
+        String nome = "nome inexistente";
+
+
+        // Ação
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(API.concat("/buscarPorNome/" + nome))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // Verificação
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isNotFound()) // Verifica status 404 Not Found
+                .andExpect(MockMvcResultMatchers.content().string("Nenhum resultado para a busca"));
+
+    }
+
+    @Test
+    @Transactional
     public void deveGerarErroAoBuscarEgressosPorCargoInexistente() throws Exception {
         // Cenário
         UUID id = UUID.randomUUID();
@@ -385,6 +404,23 @@ public class EgressoControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Egresso 1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("egresso1@email.com"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.senha").value("senha1"));
+    }
+
+    @Test
+    @Transactional
+    public void deveBuscarEgressoPorNome() throws Exception {
+        // Cenário
+        String nome = "Egresso 1";
+
+
+        // Ação
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(API.concat("/buscarPorNome/" + nome))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // Verificação
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

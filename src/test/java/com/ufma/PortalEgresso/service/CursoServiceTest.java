@@ -4,11 +4,11 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Coordenador;
 import com.ufma.PortalEgresso.model.entity.Curso;
+import jakarta.persistence.Query;
 import com.ufma.PortalEgresso.model.repo.CoordenadorRepo;
 import com.ufma.PortalEgresso.model.repo.CursoRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -155,6 +155,15 @@ public class CursoServiceTest {
 
     @Test
     @Transactional
+    public void deveGerarErroAoBuscarPorNomeInexistente() {
+        String nome = "nome inexistente";
+
+        Exception exception = Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.buscarPorNome(nome), "Nenhum resultado para a busca");
+        Assertions.assertEquals("Nenhum resultado para a busca", exception.getMessage());
+    }
+
+    @Test
+    @Transactional
     public void deveGerarErroAoNaoEncontrarNenhumCurso(){
         Query deleteCursoEgresso = entityManager.createQuery("Delete from CursoEgresso ");
         Query deleteCurso = entityManager.createQuery("Delete from Curso");
@@ -204,6 +213,23 @@ public class CursoServiceTest {
         Assertions.assertEquals(curso.getNivel(), atualizado.getNivel());
         Assertions.assertEquals(curso.getCoordenador(), atualizado.getCoordenador());
     }
+
+
+    @Test
+    @Transactional
+    public void deveBuscarPorNome() {
+        String nome = "curso 1";
+
+        List<Curso> cursos = service.buscarPorNome(nome);
+        List<Curso> cursosEsperados = entityManager
+                .createQuery("SELECT c FROM Curso c WHERE LOWER(c.nome) LIKE LOWER(CONCAT('%', :nomeCurso, '%'))", Curso.class)
+                .setParameter("nomeCurso", nome)
+                .getResultList();
+
+        Assertions.assertEquals(cursos, cursosEsperados);
+    }
+
+
 
     @Test
     @Transactional

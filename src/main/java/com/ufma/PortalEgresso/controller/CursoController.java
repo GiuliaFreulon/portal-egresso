@@ -4,6 +4,7 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.DTOs.CursoDTO;
+import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.service.CoordenadorService;
 import com.ufma.PortalEgresso.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,17 @@ public class CursoController {
             return ResponseEntity.ok(curso);
 
         } catch (RegraNegocioRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/buscarPorNome/{nomeCurso}")
+    public ResponseEntity buscarPorNome(@PathVariable String nomeCurso) {
+        try {
+            List<Curso> lista = cursoService.buscarPorNome(nomeCurso);
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

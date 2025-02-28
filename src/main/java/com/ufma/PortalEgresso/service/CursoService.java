@@ -3,6 +3,7 @@ package com.ufma.PortalEgresso.service;
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Curso;
+import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.model.repo.CursoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,16 @@ public class CursoService {
         verificarId(id);
 
         return repo.findById(id);
+    }
+
+    public List<Curso> buscarPorNome(String nome) {
+        List<Curso> lista = repo.findByNome(nome);
+
+        if (lista.isEmpty()){
+            throw new BuscaVaziaRunTime();
+        }
+
+        return lista;
     }
 
     public List<Curso> listarTodos() {
