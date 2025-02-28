@@ -16,7 +16,10 @@ public interface EgressoRepo extends JpaRepository<Egresso, UUID> {
     @Query("SELECT e FROM Egresso e JOIN CursoEgresso ce ON e.id_egresso = ce.egresso.id_egresso WHERE ce.curso.id_curso = :idCurso")
     List<Egresso> findByCursoId(UUID idCurso);
 
-    boolean existsByEmail(String email);
+    @Query("SELECT e FROM Egresso e WHERE LOWER(e.nome) LIKE LOWER(CONCAT('%', :nomeEgresso, '%'))")
+    List<Egresso> findByNome(String nomeEgresso);
 
     Optional<Egresso> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }
