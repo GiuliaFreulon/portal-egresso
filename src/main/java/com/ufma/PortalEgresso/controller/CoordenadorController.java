@@ -7,6 +7,7 @@ import com.ufma.PortalEgresso.model.entity.DTOs.*;
 import com.ufma.PortalEgresso.service.CoordenadorService;
 import com.ufma.PortalEgresso.service.CursoService;
 import com.ufma.PortalEgresso.service.DepoimentoService;
+import com.ufma.PortalEgresso.service.OportunidadeService;
 import com.ufma.PortalEgresso.service.EgressoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,8 @@ public class CoordenadorController {
     private CursoService cursoService;
     @Autowired
     private DepoimentoService depoimentoService;
+    @Autowired
+    private OportunidadeService oportunidadeService;
 
     // -------------------- AUTENTICAÇÃO ---------------------
     @PostMapping("/login")
@@ -95,6 +98,18 @@ public class CoordenadorController {
         try {
             Depoimento depoimento = depoimentoService.buscarPorId(id).get();
             Depoimento salvo = coordenadorService.homologarDepoimento(depoimento, depoimentoRequest.getStatus());
+
+            return ResponseEntity.ok().body(salvo);
+        } catch (RegraNegocioRunTime e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/homologarOportunidade/{id}")
+    public ResponseEntity homologarOportunidade(@PathVariable UUID id, @RequestBody OportunidadeDTO oportunidadeRequest) {
+        try {
+            Oportunidade oportunidade = oportunidadeService.buscarPorId(id).get();
+            Oportunidade salvo = coordenadorService.homologarOportunidade(oportunidade, oportunidadeRequest.getStatus());
 
             return ResponseEntity.ok().body(salvo);
         } catch (RegraNegocioRunTime e) {

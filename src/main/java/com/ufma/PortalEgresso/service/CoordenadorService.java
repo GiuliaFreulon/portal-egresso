@@ -32,6 +32,9 @@ public class CoordenadorService {
     @Autowired
     private DepoimentoRepo depoimentoRepo;
 
+    @Autowired
+    private OportunidadeRepo oportunidadeRepo;
+
     public boolean efetuarLogin(String login, String senha) {
         Optional<Coordenador> coordenador = repo.findByLogin(login);
         if ((!coordenador.isPresent()) || (!coordenador.get().getSenha().equals(senha)))
@@ -44,6 +47,12 @@ public class CoordenadorService {
     public Depoimento homologarDepoimento(Depoimento depoimento, Status status) {
         depoimento.setStatus(status);
         return depoimentoRepo.save(depoimento);
+    }
+
+    @Transactional
+    public Oportunidade homologarOportunidade(Oportunidade oportunidade, Status status) {
+        oportunidade.setStatus(status);
+        return oportunidadeRepo.save(oportunidade);
     }
 
     @Transactional

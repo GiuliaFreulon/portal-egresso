@@ -88,6 +88,28 @@ public class DepoimentoController {
         }
     }
 
+    @GetMapping("/buscarPorAno/{ano}")
+    public ResponseEntity buscarPorAno(@PathVariable Integer ano) {
+        try {
+            List<Depoimento> lista = depoimentoService.buscarPorAno(ano);
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/buscarRecentes")
+    public ResponseEntity buscarRecentes() {
+        try {
+            List<Depoimento> lista = depoimentoService.buscarRecentes();
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/listarTodos")
     public ResponseEntity listarTodos() {
         try {

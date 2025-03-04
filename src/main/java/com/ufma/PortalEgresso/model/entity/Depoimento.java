@@ -35,7 +35,7 @@ public class Depoimento implements Serializable {
 
     @Column
     @EqualsAndHashCode.Include
-    private LocalDate data;
+    private LocalDate data = LocalDate.now();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

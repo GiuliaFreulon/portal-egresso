@@ -108,7 +108,7 @@ public class DepoimentoService {
         if (depoimento == null)
             throw new RegraNegocioRunTime("Depoimento inválido");
 
-        if ((depoimento.getEgresso() == null))
+        if (depoimento.getEgresso() == null)
             throw new RegraNegocioRunTime("O depoimento deve estar associado a um egresso");
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -36,4 +37,7 @@ public class Mensagem implements Serializable {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Discussao discussao;
+
+    @Column(nullable = false, updatable = true)
+    private LocalDateTime dataEnvio = LocalDateTime.now();
 }

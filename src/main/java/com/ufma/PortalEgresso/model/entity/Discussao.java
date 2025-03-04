@@ -24,6 +24,12 @@ public class Discussao implements Serializable {
     @EqualsAndHashCode.Include
     private UUID id_discussao;
 
+    @ManyToOne
+    @JoinColumn(name = "id_egresso")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Egresso egresso;
+
     @Column(nullable = false)
     @EqualsAndHashCode.Include
     private String titulo;

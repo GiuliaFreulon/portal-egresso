@@ -2,14 +2,12 @@ package com.ufma.PortalEgresso.controller;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Cargo;
-import com.ufma.PortalEgresso.model.entity.Curso;
-import com.ufma.PortalEgresso.model.entity.DTOs.DepoimentoDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
-import com.ufma.PortalEgresso.model.entity.Depoimento;
-import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.model.entity.*;
+import com.ufma.PortalEgresso.model.entity.DTOs.*;
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import com.ufma.PortalEgresso.service.CargoService;
 import com.ufma.PortalEgresso.service.CursoService;
+import com.ufma.PortalEgresso.service.DiscussaoService;
 import com.ufma.PortalEgresso.service.EgressoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +32,8 @@ public class EgressoController {
 
     @Autowired
     CursoService cursoService;
+    @Autowired
+    private DiscussaoService discussaoService;
 
     // -------------------- AUTENTICAÇÃO ---------------------
     
@@ -145,7 +145,60 @@ public class EgressoController {
                 .data(request.getData())
                 .build();
         try {
-            Depoimento salvo = egressoService.enviarDepoimento(egresso, depoimento.getTexto());
+            Depoimento salvo = egressoService.enviarDepoimento(depoimento);
+            return new ResponseEntity<>(salvo, HttpStatus.CREATED);
+        } catch (RegraNegocioRunTime e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/enviarOportunidade/{id}")
+    public ResponseEntity enviarOportunidade(@PathVariable UUID id, @RequestBody OportunidadeDTO request) {
+        Egresso egresso = egressoService.buscarPorId(id).get();
+        Oportunidade oportunidade = Oportunidade.builder()
+                .egresso(egresso)
+                .titulo(request.getTitulo())
+                .descricao(request.getDescricao())
+                .status(Status.AGUARDANDO)
+                .build();
+        try {
+            Oportunidade salvo = egressoService.enviarOportunidade(oportunidade);
+
+            return new ResponseEntity<>(salvo, HttpStatus.CREATED);
+        } catch (RegraNegocioRunTime e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/criarDiscussao/{id}")
+    public ResponseEntity criarDiscussao(@PathVariable UUID id, @RequestBody DiscussaoDTO request) {
+        Egresso egresso = egressoService.buscarPorId(id).get();
+        Discussao discussao = Discussao.builder()
+                .egresso(egresso)
+                .titulo(request.getTitulo())
+                .build();
+        try {
+            Discussao salvo = egressoService.criarDiscussao(discussao);
+
+            return new ResponseEntity<>(salvo, HttpStatus.CREATED);
+        } catch (RegraNegocioRunTime e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/enviarMensagem/{idDiscussao}/{idEgresso}")
+    public ResponseEntity enviarMensagem(@PathVariable UUID idDiscussao, @PathVariable UUID idEgresso, @RequestBody MensagemDTO request) {
+        Egresso egresso = egressoService.buscarPorId(idEgresso).get();
+        Discussao discussao = discussaoService.buscarPorId(idDiscussao).get();
+        Mensagem mensagem = Mensagem.builder()
+                .egresso(egresso)
+                .texto(request.getTexto())
+                .discussao(discussao)
+                .build();
+
+        try {
+            Mensagem salvo = egressoService.enviarMensagem(mensagem);
+
             return new ResponseEntity<>(salvo, HttpStatus.CREATED);
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());

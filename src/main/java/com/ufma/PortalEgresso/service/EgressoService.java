@@ -2,18 +2,13 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Cargo;
-import com.ufma.PortalEgresso.model.entity.Curso;
-import com.ufma.PortalEgresso.model.entity.Depoimento;
-import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
-import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +21,15 @@ public class EgressoService {
     @Autowired
     private DepoimentoService depoimentoService;
 
+    @Autowired
+    private OportunidadeService oportunidadeService;
+
+    @Autowired
+    private DiscussaoService discussaoService;
+
+    @Autowired
+    private MensagemService mensagemService;
+
     public boolean efetuarLogin(String login, String senha) {
         Optional<Egresso> egresso = repo.findByEmail(login);
         if ((!egresso.isPresent()) || (!egresso.get().getSenha().equals(senha)))
@@ -35,15 +39,25 @@ public class EgressoService {
     }
 
     @Transactional
-    public Depoimento enviarDepoimento(Egresso egresso, String texto) {
-        Depoimento depoimento = Depoimento.builder()
-                .egresso(egresso)
-                .texto(texto)
-                .data(LocalDate.now())
-                .status(Status.AGUARDANDO)
-                .build();
-
+    public Depoimento enviarDepoimento(Depoimento depoimento) {
         return depoimentoService.salvar(depoimento);
+    }
+
+    @Transactional
+    public Oportunidade enviarOportunidade(Oportunidade oportunidade) {
+        return oportunidadeService.salvar(oportunidade);
+    }
+
+    @Transactional
+    public Discussao criarDiscussao(Discussao discussao) {
+        return discussaoService.salvar(discussao);
+    }
+
+    @Transactional
+    public Mensagem enviarMensagem(Mensagem mensagem) {
+
+
+        return mensagemService.salvar(mensagem);
     }
 
     @Transactional
@@ -129,7 +143,6 @@ public class EgressoService {
             throw new RegraNegocioRunTime("ID não encontrado");
         }
     }
-
 
     private void verificarEgresso(Egresso egresso) {
         if (egresso == null)
