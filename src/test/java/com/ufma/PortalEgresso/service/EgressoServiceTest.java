@@ -194,14 +194,16 @@ public class EgressoServiceTest {
         Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
         assert egresso != null;
 
-        String texto = "texto teste";
-
-        Depoimento enviado = service.enviarDepoimento(egresso, texto);
+        Depoimento depoimento = Depoimento.builder()
+                .egresso(egresso)
+                .texto("texto teste")
+                .build();
+        Depoimento enviado = service.enviarDepoimento(depoimento);
 
         //Verificação
         Assertions.assertNotNull(enviado);
-        Assertions.assertEquals(egresso, enviado.getEgresso());
-        Assertions.assertEquals(texto, enviado.getTexto());
+        Assertions.assertEquals(depoimento.getEgresso(), enviado.getEgresso());
+        Assertions.assertEquals(depoimento.getTexto(), enviado.getTexto());
     }
 
     @Test
