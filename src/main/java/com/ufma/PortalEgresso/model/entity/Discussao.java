@@ -22,9 +22,9 @@ public class Discussao implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
-    private UUID id_grupo;
+    private UUID id_discussao;
 
-    @Column
+    @Column(nullable = false)
     @EqualsAndHashCode.Include
     private String titulo;
 

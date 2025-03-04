@@ -22,7 +22,7 @@ public class Oportunidade implements Serializable {
     @EqualsAndHashCode.Include
     private UUID id_oportunidade;
 
-    @Column
+    @Column(nullable = false)
     @EqualsAndHashCode.Include
     private String titulo;
 
@@ -32,7 +32,7 @@ public class Oportunidade implements Serializable {
     @EqualsAndHashCode.Exclude
     private Egresso egresso;
 
-    @Column
+    @Column(nullable = false)
     @EqualsAndHashCode.Include
     private String descricao;
 

@@ -4,7 +4,6 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.Curso;
 import com.ufma.PortalEgresso.model.entity.DTOs.CursoDTO;
-import com.ufma.PortalEgresso.model.entity.Egresso;
 import com.ufma.PortalEgresso.service.CoordenadorService;
 import com.ufma.PortalEgresso.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;

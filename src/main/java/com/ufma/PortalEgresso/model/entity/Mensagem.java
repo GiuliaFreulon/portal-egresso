@@ -27,7 +27,7 @@ public class Mensagem implements Serializable {
     @EqualsAndHashCode.Exclude
     private Egresso egresso;
 
-    @Column
+    @Column(nullable = false)
     @EqualsAndHashCode.Include
     private String texto;
 
