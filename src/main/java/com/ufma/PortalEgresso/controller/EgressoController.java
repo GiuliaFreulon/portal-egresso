@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +33,12 @@ public class EgressoController {
 
     @Autowired
     CursoService cursoService;
+
     @Autowired
-    private DiscussaoService discussaoService;
+    DiscussaoService discussaoService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // -------------------- AUTENTICAÇÃO ---------------------
     
@@ -54,7 +59,7 @@ public class EgressoController {
         Egresso egresso = Egresso.builder()
                                 .nome(request.getNome())
                                 .email(request.getEmail())
-                                .senha(request.getSenha())
+                                .senha(passwordEncoder.encode(request.getSenha()))
                                 .descricao(request.getDescricao())
                                 .foto(request.getFoto())
                                 .linkedin(request.getLinkedin())

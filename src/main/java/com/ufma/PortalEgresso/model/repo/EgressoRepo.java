@@ -22,4 +22,5 @@ public interface EgressoRepo extends JpaRepository<Egresso, UUID> {
     Optional<Egresso> findByEmail(String email);
 
     boolean existsByEmail(String email);
+
 }

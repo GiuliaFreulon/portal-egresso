@@ -7,15 +7,20 @@ import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class EgressoService {
+public class EgressoService implements UserDetailsService {
     @Autowired
     EgressoRepo repo;
 
@@ -179,6 +184,19 @@ public class EgressoService {
         } catch (DataIntegrityViolationException ex) {
             throw new RegraNegocioRunTime("O e-mail já está cadastrado. Por favor, utilize um e-mail diferente");
         }
+    }
+
+    //UserDetailsService
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Egresso> egresso = repo.findByEmail(email);
+        if (!egresso.isPresent()) {
+            throw new UsernameNotFoundException(email);
+        }
+
+        Egresso recuperado = egresso.get();
+        return new User(recuperado.getEmail(), recuperado.getSenha(), Collections.emptyList());
     }
 
 }
