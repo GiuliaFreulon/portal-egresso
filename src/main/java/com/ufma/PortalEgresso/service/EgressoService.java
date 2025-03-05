@@ -4,6 +4,7 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class EgressoService {
     @Autowired
     private MensagemService mensagemService;
 
+    @Autowired
+    private EntityManager entityManager;
+
     public boolean efetuarLogin(String login, String senha) {
         Optional<Egresso> egresso = repo.findByEmail(login);
         if ((!egresso.isPresent()) || (!egresso.get().getSenha().equals(senha)))
@@ -55,8 +59,6 @@ public class EgressoService {
 
     @Transactional
     public Mensagem enviarMensagem(Mensagem mensagem) {
-
-
         return mensagemService.salvar(mensagem);
     }
 
@@ -132,6 +134,11 @@ public class EgressoService {
     @Transactional
     public void deletar(UUID id){
         verificarId(id);
+
+        String mensagem = "UPDATE Mensagem m SET m.egresso = NULL WHERE m.egresso.id = :egressoId";
+        entityManager.createQuery(mensagem)
+                .setParameter("egressoId", id)
+                .executeUpdate();
 
         repo.deleteById(id);
     }

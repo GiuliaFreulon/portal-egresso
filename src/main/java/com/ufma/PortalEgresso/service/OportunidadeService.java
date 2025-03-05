@@ -2,6 +2,7 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import com.ufma.PortalEgresso.model.entity.Oportunidade;
 import com.ufma.PortalEgresso.model.repo.OportunidadeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class OportunidadeService {
     @Transactional
     public Oportunidade salvar(Oportunidade oportunidade) {
         verificarOportunidade(oportunidade);
+
+        if (oportunidade.getStatus() == null) {
+            oportunidade.setStatus(Status.AGUARDANDO);
+        }
+
         Oportunidade salvo = repo.save(oportunidade);
 
         return salvo;
@@ -68,6 +74,9 @@ public class OportunidadeService {
     private void verificarOportunidade(Oportunidade oportunidade) {
         if (oportunidade == null)
             throw new RegraNegocioRunTime("Discussão inválida");
+
+        if (oportunidade.getEgresso() == null)
+            throw new RegraNegocioRunTime("A oportunidade deve estar associada a um egresso");
 
         if ((oportunidade.getTitulo() == null) || (oportunidade.getTitulo().trim().isEmpty()))
             throw new RegraNegocioRunTime("A oportunidade deve possuir um título");

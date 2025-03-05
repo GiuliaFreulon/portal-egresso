@@ -72,7 +72,7 @@ public class DiscussaoService {
             throw new RegraNegocioRunTime("A discussão deve possuir um título");
 
         if (discussao.getEgresso() == null)
-            throw new RegraNegocioRunTime("A discussao deve estar associada a um egresso");
+            throw new RegraNegocioRunTime("A discussão deve estar associada a um egresso");
     }
 
 }

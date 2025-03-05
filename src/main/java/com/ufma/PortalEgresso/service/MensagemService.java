@@ -1,11 +1,14 @@
 package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
+import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import com.ufma.PortalEgresso.model.entity.Mensagem;
 import com.ufma.PortalEgresso.model.repo.MensagemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.List;
 
@@ -17,6 +20,11 @@ public class MensagemService {
     @Transactional
     public Mensagem salvar(Mensagem mensagem) {
         verificarMensagem(mensagem);
+
+        if (mensagem.getDataEnvio() == null) {
+            mensagem.setDataEnvio(LocalDateTime.now());
+        }
+
         Mensagem salvo = repo.save(mensagem);
 
         return salvo;

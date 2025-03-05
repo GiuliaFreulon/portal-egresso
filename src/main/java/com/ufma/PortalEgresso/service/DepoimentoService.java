@@ -25,6 +25,15 @@ public class DepoimentoService {
     @Transactional
     public Depoimento salvar(Depoimento depoimento) {
         verificarDepoimento(depoimento);
+
+        if (depoimento.getData() == null) {
+            depoimento.setData(LocalDate.now());
+        }
+
+        if (depoimento.getStatus() == null) {
+            depoimento.setStatus(Status.AGUARDANDO);
+        }
+
         Depoimento salvo = repo.save(depoimento);
 
         return salvo;
