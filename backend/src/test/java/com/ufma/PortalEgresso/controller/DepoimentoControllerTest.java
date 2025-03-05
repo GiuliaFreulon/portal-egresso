@@ -189,7 +189,9 @@ public class DepoimentoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()) // Espera 200 OK
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id_depoimento").value(id.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.texto").value("novo texto"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("2020-09-11"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").value(2020))  // Verificando o ano
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1]").value(9))    // Verificando o mês
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[2]").value(11))   // Verificando o dia
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("AGUARDANDO"));
     }
 
@@ -207,7 +209,9 @@ public class DepoimentoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()) // Espera 200 OK
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id_depoimento").value(id.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.texto").value("Depoimento do egresso 1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("2024-12-12"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").value(2024))  // Verificando o ano
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1]").value(12))    // Verificando o mês
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[2]").value(12))   // Verificando o dia
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("AGUARDANDO"));
     }
 
