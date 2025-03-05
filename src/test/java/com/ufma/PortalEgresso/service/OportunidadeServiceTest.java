@@ -42,6 +42,11 @@ public class OportunidadeServiceTest {
     public void deveGerarErroAoTentarSalvarSemEgresso() {
         Oportunidade oportunidade = new Oportunidade();
 
+        Oportunidade oportunidade1 = Oportunidade.builder()
+                .descricao("descrição teste")
+                .titulo("titulo teste")
+                .build();
+
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(oportunidade), "A oportunidade deve estar associada a um egresso");
         Assertions.assertEquals("A oportunidade deve estar associada a um egresso", exception.getMessage());
     }
@@ -49,13 +54,13 @@ public class OportunidadeServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemEgresso() {
-        Oportunidade oportunidade = repo.findById(UUID.fromString("f97ab281-a671-4e57-978a-078696b28e49")).orElse(null);
+        Oportunidade oportunidade = repo.findById(UUID.fromString("d631d7e2-731e-43fc-81fa-c3d62f05c10b")).orElse(null);
         assert oportunidade != null;
 
         oportunidade.setEgresso(null);
 
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(oportunidade), "A discussao deve estar associada a um egresso");
-        Assertions.assertEquals("A discussao deve estar associada a um egresso", exception.getMessage());
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(oportunidade), "A oportunidade deve estar associada a um egresso");
+        Assertions.assertEquals("A oportunidade deve estar associada a um egresso", exception.getMessage());
     }
 
     @Test
@@ -64,10 +69,12 @@ public class OportunidadeServiceTest {
         Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
         assert egresso != null;
 
-        Oportunidade oportunidade = new Oportunidade();
-        oportunidade.setId_oportunidade(UUID.randomUUID());
-        oportunidade.setEgresso(egresso);
-
+        Oportunidade oportunidade = Oportunidade.builder()
+                .id_oportunidade(UUID.randomUUID())
+                .egresso(egresso)
+                .titulo("titulo teste")
+                .descricao("teste descricao")
+                .build();
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.atualizar(oportunidade), "ID não encontrado");
         Assertions.assertEquals("ID não encontrado", exception.getMessage());
     }
@@ -123,7 +130,7 @@ public class OportunidadeServiceTest {
     @Test
     @Transactional
     public void deveVerificarAtualizarOportunidade() {
-        Oportunidade oportunidade = repo.findById(UUID.fromString("f97ab281-a671-4e57-978a-078696b28e49")).orElse(null);
+        Oportunidade oportunidade = repo.findById(UUID.fromString("d631d7e2-731e-43fc-81fa-c3d62f05c10b")).orElse(null);
         assert oportunidade != null;
 
         oportunidade.setTitulo("titulo teste atualização");
@@ -140,7 +147,7 @@ public class OportunidadeServiceTest {
     @Test
     @Transactional
     public void deveBuscarPorIdExistente() {
-        Oportunidade oportunidade = repo.findById(UUID.fromString("f97ab281-a671-4e57-978a-078696b28e49")).orElse(null);
+        Oportunidade oportunidade = repo.findById(UUID.fromString("d631d7e2-731e-43fc-81fa-c3d62f05c10b")).orElse(null);
         assert oportunidade != null;
 
         Oportunidade encontrado = service.buscarPorId(oportunidade.getId_oportunidade()).orElse(null);
@@ -163,7 +170,7 @@ public class OportunidadeServiceTest {
     @Test
     @Transactional
     public void deveDeletarOportunidade() {
-        Oportunidade oportunidade = repo.findById(UUID.fromString("f97ab281-a671-4e57-978a-078696b28e49")).orElse(null);
+        Oportunidade oportunidade = repo.findById(UUID.fromString("d631d7e2-731e-43fc-81fa-c3d62f05c10b")).orElse(null);
         assert oportunidade != null;
 
         service.deletar(oportunidade.getId_oportunidade());

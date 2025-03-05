@@ -2,12 +2,10 @@ package com.ufma.PortalEgresso.service;
 
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
-import com.ufma.PortalEgresso.model.entity.Cargo;
-import com.ufma.PortalEgresso.model.entity.Curso;
-import com.ufma.PortalEgresso.model.entity.Depoimento;
-import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.CargoRepo;
 import com.ufma.PortalEgresso.model.repo.CursoRepo;
+import com.ufma.PortalEgresso.model.repo.DiscussaoRepo;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -21,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +39,9 @@ public class EgressoServiceTest {
 
     @Autowired
     private CargoRepo cargoRepo;
+
+    @Autowired
+    private DiscussaoRepo discussaoRepo;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -165,15 +167,25 @@ public class EgressoServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoNaoEncontrarNenhumEgresso(){
+        Query deleteCurso = entityManager.createQuery("Delete from Curso");
+        Query deleteCoordenador = entityManager.createQuery("Delete from Coordenador");
         Query deleteCargo = entityManager.createQuery("Delete from Cargo");
         Query deleteDepoimento = entityManager.createQuery("Delete from Depoimento");
         Query deleteCursoEgresso = entityManager.createQuery("Delete from CursoEgresso");
         Query deleteEgresso = entityManager.createQuery("Delete from Egresso");
+        Query deleteMensagem = entityManager.createQuery("Delete from Mensagem");
+        Query deleteOportunidade = entityManager.createQuery("Delete from Oportunidade");
+        Query deleteDiscussao = entityManager.createQuery("Delete from Discussao");
 
         deleteCargo.executeUpdate();
         deleteDepoimento.executeUpdate();
+        deleteMensagem.executeUpdate();
+        deleteOportunidade.executeUpdate();
+        deleteDiscussao.executeUpdate();
         deleteCursoEgresso.executeUpdate();
         deleteEgresso.executeUpdate();
+        deleteCurso.executeUpdate();
+        deleteCoordenador.executeUpdate();
 
         Exception exception = Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.listarTodos() , "Nenhum resultado para a busca");
         Assertions.assertEquals("Nenhum resultado para a busca", exception.getMessage());
@@ -204,6 +216,70 @@ public class EgressoServiceTest {
         Assertions.assertNotNull(enviado);
         Assertions.assertEquals(depoimento.getEgresso(), enviado.getEgresso());
         Assertions.assertEquals(depoimento.getTexto(), enviado.getTexto());
+    }
+
+    @Test
+    @Transactional
+    public void deveVerificarEnviarOportunidade(){
+        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        Oportunidade oportunidade = Oportunidade.builder()
+                .egresso(egresso)
+                .descricao("descrição teste")
+                .titulo("titulo teste")
+                .build();
+
+        Oportunidade enviado = service.enviarOportunidade(oportunidade);
+
+        //Verificação
+        Assertions.assertNotNull(enviado);
+        Assertions.assertEquals(oportunidade.getEgresso(), enviado.getEgresso());
+        Assertions.assertEquals(oportunidade.getDescricao(), enviado.getDescricao());
+        Assertions.assertEquals(oportunidade.getTitulo(), enviado.getTitulo());
+    }
+
+    @Test
+    @Transactional
+    public void deveVerificarCriarDiscussao(){
+        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        Discussao discussao = Discussao.builder()
+                .egresso(egresso)
+                .titulo("titulo teste")
+                .build();
+
+        Discussao enviado = service.criarDiscussao(discussao);
+
+        //Verificação
+        Assertions.assertNotNull(enviado);
+        Assertions.assertEquals(discussao.getEgresso(), enviado.getEgresso());
+        Assertions.assertEquals(discussao.getTitulo(), enviado.getTitulo());
+    }
+
+    @Test
+    @Transactional
+    public void deveVerificarEnviarMensagem(){
+        Egresso egresso = repo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        Discussao discussao = discussaoRepo.findById(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")).get();
+        assert egresso != null;
+
+        Mensagem mensagem = Mensagem.builder()
+                .egresso(egresso)
+                .discussao(discussao)
+                .texto("texto teste")
+                .dataEnvio(LocalDateTime.now())
+                .build();
+
+        Mensagem enviado = service.enviarMensagem(mensagem);
+
+        //Verificação
+        Assertions.assertNotNull(enviado);
+        Assertions.assertEquals(mensagem.getEgresso(), enviado.getEgresso());
+        Assertions.assertEquals(mensagem.getDiscussao(), enviado.getDiscussao());
+        Assertions.assertEquals(mensagem.getTexto(), enviado.getTexto());
+        Assertions.assertEquals(mensagem.getDataEnvio(), enviado.getDataEnvio());
     }
 
     @Test

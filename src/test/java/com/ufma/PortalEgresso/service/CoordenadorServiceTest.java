@@ -157,9 +157,15 @@ public class CoordenadorServiceTest {
         Query deleteEgresso = entityManager.createQuery("Delete from Egresso");
         Query deleteCurso = entityManager.createQuery("Delete from Curso");
         Query deleteCoordenador = entityManager.createQuery("Delete from Coordenador");
+        Query deleteMensagem = entityManager.createQuery("Delete from Mensagem");
+        Query deleteOportunidade = entityManager.createQuery("Delete from Oportunidade");
+        Query deleteDiscussao = entityManager.createQuery("Delete from Discussao");
 
         deleteCargo.executeUpdate();
         deleteDepoimento.executeUpdate();
+        deleteMensagem.executeUpdate();
+        deleteOportunidade.executeUpdate();
+        deleteDiscussao.executeUpdate();
         deleteCursoEgresso.executeUpdate();
         deleteEgresso.executeUpdate();
         deleteCurso.executeUpdate();

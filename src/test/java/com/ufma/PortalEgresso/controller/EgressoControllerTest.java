@@ -2,9 +2,11 @@ package com.ufma.PortalEgresso.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.ufma.PortalEgresso.model.entity.DTOs.DepoimentoDTO;
-import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.model.entity.DTOs.*;
+import com.ufma.PortalEgresso.model.entity.Discussao;
 import com.ufma.PortalEgresso.model.entity.Egresso;
+import com.ufma.PortalEgresso.model.entity.Mensagem;
+import com.ufma.PortalEgresso.model.entity.Oportunidade;
 import com.ufma.PortalEgresso.service.EgressoService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -267,15 +269,25 @@ public class EgressoControllerTest {
     @Transactional
     public void deveGerarErroAoNaoEncontrarNenhumEgresso() throws Exception {
         // Cenário
+        Query deleteCurso = entityManager.createQuery("Delete from Curso");
+        Query deleteCoordenador = entityManager.createQuery("Delete from Coordenador");
         Query deleteCargo = entityManager.createQuery("Delete from Cargo");
         Query deleteDepoimento = entityManager.createQuery("Delete from Depoimento");
         Query deleteCursoEgresso = entityManager.createQuery("Delete from CursoEgresso");
         Query deleteEgresso = entityManager.createQuery("Delete from Egresso");
+        Query deleteMensagem = entityManager.createQuery("Delete from Mensagem");
+        Query deleteOportunidade = entityManager.createQuery("Delete from Oportunidade");
+        Query deleteDiscussao = entityManager.createQuery("Delete from Discussao");
 
         deleteCargo.executeUpdate();
         deleteDepoimento.executeUpdate();
+        deleteMensagem.executeUpdate();
+        deleteOportunidade.executeUpdate();
+        deleteDiscussao.executeUpdate();
         deleteCursoEgresso.executeUpdate();
         deleteEgresso.executeUpdate();
+        deleteCurso.executeUpdate();
+        deleteCoordenador.executeUpdate();
 
         // Ação
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(API.concat("/listarTodos"))
@@ -328,6 +340,88 @@ public class EgressoControllerTest {
                 .content(json);
         //ação e verificação
         mvc.perform(request).andExpect(MockMvcResultMatchers.status().isCreated()); // espera 201 CREATED
+    }
+
+    @Test
+    @Transactional
+    public void deveEnviarDepoimento() throws Exception {
+        UUID id = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
+
+        DepoimentoDTO depoimentoDTO = DepoimentoDTO.builder()
+                .texto("teste texto")
+                .build();
+
+        String json = new ObjectMapper().writeValueAsString(depoimentoDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/enviarDepoimento/" + id))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        //ação e verificação
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    public void deveEnviarOportunidade() throws Exception {
+        UUID id = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
+
+        OportunidadeDTO oportunidadeDTO = OportunidadeDTO.builder()
+                .titulo("titulo teste")
+                .descricao("descrição teste")
+                .build();
+
+        String json = new ObjectMapper().writeValueAsString(oportunidadeDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/enviarOportunidade/" + id))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        //ação e verificação
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    public void deveCriarDiscussao() throws Exception {
+        UUID id = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
+
+        DiscussaoDTO discussaoDTO = DiscussaoDTO.builder()
+                .titulo("titulo teste")
+                .build();
+
+        String json = new ObjectMapper().writeValueAsString(discussaoDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/criarDiscussao/" + id))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        //ação e verificação
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    public void deveEnviarMensagem() throws Exception {
+        UUID idDiscussao = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
+        UUID idEgresso = UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531");
+
+        MensagemDTO mensagemDTO = MensagemDTO.builder()
+                .texto("texto teste")
+                .build();
+
+        String json = new ObjectMapper().writeValueAsString(mensagemDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(API.concat("/enviarMensagem/" + idDiscussao +"/" + idEgresso))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        //ação e verificação
+        mvc.perform(request).andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test

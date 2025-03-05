@@ -40,7 +40,12 @@ public class DiscussaoServiceTest {
     @Test
     @Transactional
     public void deveGerarErroAoTentarSalvarSemEgresso() {
-        Discussao discussao = new Discussao();
+        Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
+        assert egresso != null;
+
+        Discussao discussao = Discussao.builder()
+                .titulo("titulo teste")
+                .build();
 
         Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(discussao), "A discussão deve estar associada a um egresso");
         Assertions.assertEquals("A discussão deve estar associada a um egresso", exception.getMessage());
@@ -54,8 +59,8 @@ public class DiscussaoServiceTest {
 
         discussao.setEgresso(null);
 
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(discussao), "A discussao deve estar associada a um egresso");
-        Assertions.assertEquals("A discussao deve estar associada a um egresso", exception.getMessage());
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(discussao), "A discussão deve estar associada a um egresso");
+        Assertions.assertEquals("A discussão deve estar associada a um egresso", exception.getMessage());
     }
 
     @Test
@@ -64,7 +69,9 @@ public class DiscussaoServiceTest {
         Egresso egresso = egressoRepo.findById(UUID.fromString("e2ff521f-168e-4337-a9e8-2109ccee0531")).orElse(null);
         assert egresso != null;
 
-        Discussao discussao = new Discussao();
+        Discussao discussao = Discussao.builder()
+                .titulo("titulo teste")
+                .build();
         discussao.setId_discussao(UUID.randomUUID());
         discussao.setEgresso(egresso);
 
@@ -92,7 +99,9 @@ public class DiscussaoServiceTest {
     @Transactional
     public void deveGerarErroAoNaoEncontrarNenhumaDiscussao(){
         Query deleteDiscussao = entityManager.createQuery("Delete from Discussao");
+        Query deleteMensagem = entityManager.createQuery("Delete from Mensagem");
 
+        deleteMensagem.executeUpdate();
         deleteDiscussao.executeUpdate();
 
         Exception exception = Assertions.assertThrows(BuscaVaziaRunTime.class, () -> service.listarTodos() , "Nenhum resultado para a busca");

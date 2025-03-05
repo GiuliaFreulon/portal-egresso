@@ -46,8 +46,8 @@ public class MensagemServiceTest {
         Mensagem mensagem = new Mensagem();
         mensagem.setTexto("texto teste");
 
-        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(mensagem), "A mensagem deve estar associado a um egresso");
-        Assertions.assertEquals("A mensagem deve estar associado a um egresso", exception.getMessage());
+        Exception exception = Assertions.assertThrows(RegraNegocioRunTime.class, () -> service.salvar(mensagem), "A mensagem deve estar associada a um egresso");
+        Assertions.assertEquals("A mensagem deve estar associada a um egresso", exception.getMessage());
     }
 
     @Test
@@ -89,7 +89,8 @@ public class MensagemServiceTest {
 
         List<Mensagem> mensagens = service.listarMensagensOrdenadas(idDiscussao);
         List<Mensagem> mensagensEsperadas = entityManager
-                .createQuery("SELECT m FROM Mensagem m WHERE m.discussao.id_discussao = :idDiscussao ORDER BY m.dataEnvio ASC", Mensagem.class)
+                .createQuery("SELECT m FROM Mensagem m WHERE m.discussao.id_discussao = :id ORDER BY m.dataEnvio ASC", Mensagem.class)
+                .setParameter("id", idDiscussao)
                 .getResultList();
 
         Assertions.assertEquals(mensagens, mensagensEsperadas);
@@ -98,7 +99,7 @@ public class MensagemServiceTest {
     @Test
     @Transactional
     public void deveDeletarMensagem() {
-        Mensagem mensagem = repo.findById(UUID.fromString("07e83479-07bd-4ac4-aa7b-68dd888228ca")).orElse(null);
+        Mensagem mensagem = repo.findById(UUID.fromString("e3be8f9e-748a-4a30-b429-b1a852f3d464")).orElse(null);
         assert mensagem != null;
 
         service.deletar(mensagem.getId_mensagem());
