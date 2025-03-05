@@ -142,7 +142,6 @@ public class EgressoController {
         Depoimento depoimento = Depoimento.builder()
                 .egresso(egresso)
                 .texto(request.getTexto())
-                .data(request.getData())
                 .build();
         try {
             Depoimento salvo = egressoService.enviarDepoimento(depoimento);
@@ -159,7 +158,6 @@ public class EgressoController {
                 .egresso(egresso)
                 .titulo(request.getTitulo())
                 .descricao(request.getDescricao())
-                .status(Status.AGUARDANDO)
                 .build();
         try {
             Oportunidade salvo = egressoService.enviarOportunidade(oportunidade);

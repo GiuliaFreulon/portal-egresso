@@ -29,7 +29,7 @@ public class MensagemController {
     // -------------------- endpoints CRUD ---------------------
 
     @PostMapping("{idDiscussao}/{idEgresso}")
-    public ResponseEntity salvar(@PathVariable UUID idEgresso, @PathVariable UUID idDiscussao, @RequestBody MensagemDTO request) {
+    public ResponseEntity salvar(@PathVariable UUID idDiscussao, @PathVariable UUID idEgresso, @RequestBody MensagemDTO request) {
         Mensagem mensagem = Mensagem.builder()
                 .egresso(egressoService.buscarPorId(idEgresso).get())
                 .discussao(discussaoService.buscarPorId(idDiscussao).get())
