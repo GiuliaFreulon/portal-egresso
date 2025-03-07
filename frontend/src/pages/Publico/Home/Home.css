@@ -1,0 +1,136 @@
+.Egressos {
+    text-align: center;
+}
+
+.egressos__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem 0 0.2rem 0;
+}
+
+/* Cada item de egresso */
+.egressos__list a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    width: 180px;
+    font-size: 1.2rem;
+}
+
+/* Imagem de perfil do egresso */
+.egresso__link {
+    width: 9rem;
+    height: 9rem;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-bottom: 0.5rem;
+    object-fit: cover;
+}
+
+.Depoimentos {
+    text-align: center;
+}
+
+.depoimentos__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+/* Card de cada depoimento */
+.depoimento__container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.7rem;
+    background-color: #691F31; /* Tom avermelhado para destacar depoimentos */
+    color: #fff;
+    padding: 1rem;
+    padding-bottom:3rem;
+    border-radius: 0.5rem;
+    width: 100%; /* Largura fixa ou ajuste conforme necessidade */
+    max-height: 11rem;
+    text-align: justify;
+}
+
+/* Foto do egresso no depoimento */
+.egresso__foto {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: #ccc;
+    flex-shrink: 0;
+}
+
+/* Container do texto do depoimento */
+.depoimento__text__container {
+    flex: 1;
+}
+
+/* Texto do depoimento */
+.depoimento__text {
+    display: -webkit-box;
+    margin-bottom: 1rem;
+    padding-right: 1rem;
+    line-height: 1.4;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6; /* Número de linhas */
+}
+
+.Relatórios {
+    text-align: center;
+}
+
+.Relatórios > div {
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+.Oportunidades {
+    text-align: center;
+}
+
+.oportunidades__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+/* Card de cada oportunidade */
+.oportunidade__container {
+    background-color: transparent;
+    border: 1px solid #989898;
+    border-radius: 0.5rem;
+    width: 100%;
+    padding: 1rem 2rem 2rem 2rem;
+    text-align: justify;
+}
+
+/* Título da oportunidade */
+.oportunidade__title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333333;
+    text-align: center;
+}
+
+/* Texto da oportunidade */
+.oportunidade__text {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* Número máximo de linhas antes de cortar */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+

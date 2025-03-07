@@ -1,14 +1,24 @@
 import React from 'react';
+import './Header.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
-const Header = () => {
+const Header = ({cor}) => {
     return (
-        <header className="header">
-            <img src={"../../assets/images/headerLogo.png"} alt="ícone da logo" className="header__icon" />
+        <header className="header" style={{ backgroundColor: cor }}>
             <nav className="header__menu">
-                <a href="#" className="header__menu__link">Sobre Mim</a>
-                <a href="#skills" className="header__menu__link">Habilidades</a>
-                <a href="#projects" className="header__menu__link">Projetos</a>
-                <a href="#" className="header__menu__link">Contato</a>
+                <div className="logo">
+                    <a href="#" className="header__logo">
+                        <h1 className="header__icon"><FontAwesomeIcon icon={faGraduationCap} /> Portal Egresso </h1>
+                    </a>
+                </div>
+                <div className="header__links">
+                    <a href="#" className="header__link">Egressos</a>
+                    <a href="#" className="header__link">Depoimentos</a>
+                    <a href="#" className="header__link">Relatórios</a>
+                    <a href="#" className="header__link">Oportunidades</a>
+                </div>
+                <button className="header__login" onClick={() => window.location.href = "/login"}>Fazer login</button>
             </nav>
         </header>
     );
