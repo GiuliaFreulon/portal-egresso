@@ -11,6 +11,8 @@ import PublicRelatorios from "./pages/Publico/Relatorios/Relatorios.jsx";
 import PublicOportunidades from "./pages/Publico/Oportunidades/Oportunidades.jsx";
 
 // Coordenador pages
+import CoordenadorLogin from "./pages/Coordenador/Login/Login.jsx";
+import CoordenadorEdicao from "./pages/Coordenador/Edicao/Edicao.jsx";
 
 
 // Egresso pages
@@ -21,9 +23,10 @@ function App() {
   return (
       <div className="App">
           <Header
-          cor="#691F31"
+          cor="#22415A"
           />
-          <PublicOportunidades />
+          <CoordenadorEdicao />
+
       </div>
   )
 }
