@@ -1,0 +1,62 @@
+/* Contêiner principal da navegação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* Botões de página */
+.pagination button {
+    background-color: #bdbdbd;
+    border: 1px solid #ccc;
+    padding: 0.5rem 0.7rem;
+    border-radius: 40%;
+    margin: 0 0.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Botões de página ao passar o mouse */
+.pagination button:hover {
+    background-color: #591a27;
+}
+
+/* Botão ativo (página atual) */
+.pagination .active {
+    background-color: #691F31;
+    color: white;
+    border: none;
+}
+
+/* Botões de "..." (pontos de intervalo) */
+.pagination .dots {
+    color: #333333;
+    background-color: transparent;
+    border: none;
+    pointer-events: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: default;
+}
+
+/* Botões de navegação (anterior / próximo) */
+.pagination .prev, .pagination .next {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination .prev:hover, .pagination .next:hover {
+    background-color: #ddd;
+}
+
+.pagination .prev:disabled, .pagination .next:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}

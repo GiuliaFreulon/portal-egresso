@@ -1,0 +1,65 @@
+.depoimento-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+.depoimento-card-egresso-info {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 2rem 2rem 1rem;
+    border-radius: 0.5rem;
+    width: 80%;
+    text-align: justify;
+    background-color: #7C3144;
+    color: #FFFFFF;
+    font-weight: lighter;
+}
+
+.depoimento-card-foto {
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 50%;
+    background-color: #ccc;
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
+.depoimento-card-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.depoimento-card-nome {
+    color: #E0B64E;
+    font-weight: bolder;
+}
+
+.depoimento-card-nome-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #bdbdbd;
+}
+
+.depoimento-card-descricao {
+    display: inline-block;
+    padding: 0 1rem 1rem 0;
+    line-height: 1.4;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Número de linhas */
+}
+
+.depoimento-card-separator {
+    position: relative;
+}
+
+.depoimento-card-separator div{
+    top:12px;
+}
