@@ -104,3 +104,42 @@ input {
   padding: 0 1rem 0 1rem;
   font-size: 16px;
 }
+
+.dashboard-frame {
+  display: flex;
+  flex-direction: row;
+  width: 75%;
+  margin-top: 0;
+  border: 3px solid #66666635;
+  border-radius: 15px;
+  padding: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: left;
+  text-align: center;
+}
+
+.dashboard-button-container {
+  width: 48.5%;
+}
+
+.dashboard-button {
+  display: flex;
+  flex-direction: column;
+  max-height: 7rem;
+  height: 7rem;
+  gap: 0.5rem;
+  width: 100%;
+  background-color: #FDF8F5;
+  color: #333333;
+  border: 3px solid #66666635;
+  border-radius: 15px;
+  transition: 200ms ease-in-out;
+  justify-content: center;
+}
+
+.dashboard-button:hover {
+  background-color: #66666635;
+  transform: scale(103%);
+}

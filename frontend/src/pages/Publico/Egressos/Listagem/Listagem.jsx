@@ -14,7 +14,7 @@ const Listagem = () => {
 
                 <div className="search-container">
                     <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
-                    <input type="text" placeholder="Pesquisar..." className="search-input" />
+                    <input type="text" placeholder="Pesquisar" className="search-input" />
                     <button className="filter-btn"><FontAwesomeIcon icon={faFilter} /></button>
                 </div>
 

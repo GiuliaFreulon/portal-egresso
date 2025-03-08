@@ -13,6 +13,8 @@ import PublicOportunidades from "./pages/Publico/Oportunidades/Oportunidades.jsx
 // Coordenador pages
 import CoordenadorLogin from "./pages/Coordenador/Login/Login.jsx";
 import CoordenadorEdicao from "./pages/Coordenador/Edicao/Edicao.jsx";
+import CoordenadorDashboard from "./pages/Coordenador/Dashboard/Dashboard.jsx";
+import CoordenadorEgressoGerenciamento from "./pages/Coordenador/Egresso/Gerenciamento/Gerenciamento.jsx";
 
 
 // Egresso pages
@@ -25,7 +27,7 @@ function App() {
           <Header
           cor="#22415A"
           />
-          <CoordenadorEdicao />
+          <CoordenadorEgressoGerenciamento />
 
       </div>
   )
