@@ -12,6 +12,8 @@ import com.ufma.PortalEgresso.service.EgressoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,10 +47,12 @@ public class CoordenadorController {
     @PostMapping("/cadastrarEgresso")
     public ResponseEntity cadastrarEgresso(@RequestBody EgressoDTO egressoRequest) {
         try {
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String senhaCodificada = passwordEncoder.encode(egressoRequest.getSenha());
             Egresso egresso = Egresso.builder()
                 .nome(egressoRequest.getNome())
                 .email(egressoRequest.getEmail())
-                .senha(egressoRequest.getSenha())
+                .senha(senhaCodificada)
                 .build();
 
             Egresso cadastrado = coordenadorService.cadastrarEgresso(egresso);
@@ -121,9 +125,11 @@ public class CoordenadorController {
 
     @PostMapping("/salvar")
     public ResponseEntity salvar(@RequestBody CoordenadorDTO request) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String senhaCodificada = passwordEncoder.encode(request.getSenha());
         Coordenador coordenador = Coordenador.builder()
                 .login(request.getLogin())
-                .senha(request.getSenha())
+                .senha(senhaCodificada)
                 .build();
         try {
             Coordenador salvo = coordenadorService.salvar(coordenador);

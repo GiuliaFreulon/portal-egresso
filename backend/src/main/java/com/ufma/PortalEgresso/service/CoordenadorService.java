@@ -6,10 +6,16 @@ import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -190,6 +196,22 @@ public class CoordenadorService {
         } catch (DataIntegrityViolationException ex) {
             throw new RegraNegocioRunTime("Já existe um coordenador com esse login. Por favor, utilize um login diferente");
         }
+    }
+
+    //UserDetailsService
+
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Optional<Coordenador> coordenador = repo.findByLogin(login);
+        if (!coordenador.isPresent()) {
+            throw new UsernameNotFoundException(login);
+        }
+
+        Coordenador recuperado = coordenador.get();
+
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_COORDENADOR"));
+
+        return new User(recuperado.getLogin(), recuperado.getSenha(), authorities);
     }
 
 }

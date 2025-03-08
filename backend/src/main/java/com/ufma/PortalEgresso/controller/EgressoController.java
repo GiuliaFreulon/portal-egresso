@@ -42,15 +42,15 @@ public class EgressoController {
 
     // -------------------- AUTENTICAÇÃO ---------------------
     
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody EgressoDTO request) {
-        try {
-            egressoService.efetuarLogin(request.getEmail(), request.getSenha());
-            return ResponseEntity.ok().body(true);
-        } catch (RegraNegocioRunTime e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity login(@RequestBody EgressoDTO request) {
+//        try {
+//            egressoService.efetuarLogin(request.getEmail(), request.getSenha());
+//            return ResponseEntity.ok().body(true);
+//        } catch (RegraNegocioRunTime e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     // -------------------- endpoints CRUD ---------------------
 

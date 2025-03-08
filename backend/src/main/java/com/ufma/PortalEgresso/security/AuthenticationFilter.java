@@ -1,25 +1,28 @@
 package com.ufma.PortalEgresso.security;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
+import com.ufma.PortalEgresso.model.entity.DTOs.UsuarioCadastradoDTO;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager); // Chama o construtor da classe pai
         setFilterProcessesUrl("/login"); // Define o endpoint de login
@@ -31,22 +34,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletResponse response
     ) throws AuthenticationException {
         try {
-            EgressoDTO egressoDTO = new ObjectMapper().readValue(request.getInputStream(), EgressoDTO.class);
+            UsuarioCadastradoDTO requestDTO = new ObjectMapper().readValue(request.getInputStream(), UsuarioCadastradoDTO.class);
+            String login = requestDTO.getEmail() != null ? requestDTO.getEmail() : requestDTO.getLogin();
             return this.getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            egressoDTO.getEmail(),
-                            egressoDTO.getSenha(),
+                            login,
+                            requestDTO.getSenha(),
                             new ArrayList<>()
                     )
             );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (DatabindException e) {
-            throw new RuntimeException(e);
-        } catch (StreamReadException e) {
-            throw new RuntimeException(e);
-        } catch (java.io.IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | java.io.IOException e) {
+            throw new AuthenticationServiceException("Erro ao ler credenciais", e);
         }
     }
 
@@ -56,11 +54,18 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletResponse response,
             FilterChain chain,
             Authentication authResult
-    ) {
+    ) throws IOException {
+
+        // Obtém as roles do usuário
+        List<String> roles = authResult.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
+                .claim("roles", roles) // Adiciona as roles ao token
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.KEY)
+                .signWith(SecurityConstants.KEY)
                 .compact();
 
         response.addHeader(SecurityConstants.HEADER_NAME, "Bearer " + token);

@@ -7,6 +7,7 @@ import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,13 +15,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
-public class EgressoService implements UserDetailsService {
+public class EgressoService {
     @Autowired
     EgressoRepo repo;
 
@@ -188,7 +186,6 @@ public class EgressoService implements UserDetailsService {
 
     //UserDetailsService
 
-    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Egresso> egresso = repo.findByEmail(email);
         if (!egresso.isPresent()) {
@@ -196,7 +193,11 @@ public class EgressoService implements UserDetailsService {
         }
 
         Egresso recuperado = egresso.get();
-        return new User(recuperado.getEmail(), recuperado.getSenha(), Collections.emptyList());
+
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_EGRESSO"));
+
+        return new User(recuperado.getEmail(), recuperado.getSenha(), authorities);
     }
 
 }

@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CoordenadorDTO {
+public class UsuarioCadastradoDTO {
+    private String email;
     private String login;
     private String senha;
 }
