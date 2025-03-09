@@ -16,8 +16,11 @@ import CoordenadorEdicao from "./pages/Coordenador/Edicao/Edicao.jsx";
 import CoordenadorDashboard from "./pages/Coordenador/Dashboard/Dashboard.jsx";
 import CoordenadorEgressoGerenciamento from "./pages/Coordenador/Egresso/Gerenciamento/Gerenciamento.jsx";
 import CoordenadorEgressoCadastro from "./pages/Coordenador/Egresso/Cadastro/Cadastro.jsx";
-import AtualizarEgressoCadastro from "./pages/Coordenador/Egresso/Atualizacao/Atualizacao.jsx";
+import CoordenadorEgressoAtualizacao from "./pages/Coordenador/Egresso/Atualizacao/Atualizacao.jsx";
 import CoordenadorCursoGerenciamento from "./pages/Coordenador/Curso/Gerenciamento/Gerenciamento.jsx";
+import CoordenadorCursoCadastro from "./pages/Coordenador/Curso/Cadastro/Cadastro.jsx";
+import CoordenadorCursoAtualizacao from "./pages/Coordenador/Curso/Atualizacao/Atualizacao.jsx";
+import CoordenadorDiscussaoGerenciamento from "./pages/Coordenador/Discussoes/Discussoes.jsx";
 
 
 
@@ -31,7 +34,16 @@ function App() {
           <Header
           cor="#22415A"
           />
+          <CoordenadorLogin />
+          <CoordenadorEdicao />
+          <CoordenadorDashboard />
+          <CoordenadorEgressoGerenciamento />
+          <CoordenadorEgressoCadastro />
+          <CoordenadorEgressoAtualizacao />
           <CoordenadorCursoGerenciamento />
+          <CoordenadorCursoCadastro />
+          <CoordenadorCursoAtualizacao />
+          <CoordenadorDiscussaoGerenciamento />
 
       </div>
   )

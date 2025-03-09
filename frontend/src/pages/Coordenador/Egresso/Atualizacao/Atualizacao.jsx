@@ -131,7 +131,7 @@ const Atualizacao = () => {
                                 className="formulario-button"
                                 type="button"
                                 onClick={() => handleSubmit('coordenador')}>
-                                Cadastrar
+                                Confirmar
                             </button>
                         </div>
                     </form>

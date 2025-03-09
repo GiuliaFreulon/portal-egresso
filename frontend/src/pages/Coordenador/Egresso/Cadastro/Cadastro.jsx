@@ -92,6 +92,7 @@ const Cadastro = () => {
                                 id="curso"
                                 value={curso}
                                 onChange={(e) => setCurso(e.target.value)}
+                                required
                                 className="drop-down-input"
                             >
                                 <option value="">Selecione um curso</option>
@@ -121,7 +122,6 @@ const Cadastro = () => {
                                     id="anoFim"
                                     value={anoFim}
                                     onChange={(e) => setAnoFim(e.target.value)}
-                                    required
                                 />
                             </div>
                         </div>
