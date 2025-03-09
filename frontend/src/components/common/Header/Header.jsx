@@ -3,7 +3,14 @@ import './Header.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
-const Header = ({cor}) => {
+const Header = ({usuario}) => {
+
+    let cor = '#691F31';
+
+    if (usuario === 'COORDENADOR') {
+        cor = '#22415A';
+    }
+
     return (
         <header className="header" style={{ backgroundColor: cor }}>
             <nav className="header__menu">

@@ -21,29 +21,34 @@ import CoordenadorCursoGerenciamento from "./pages/Coordenador/Curso/Gerenciamen
 import CoordenadorCursoCadastro from "./pages/Coordenador/Curso/Cadastro/Cadastro.jsx";
 import CoordenadorCursoAtualizacao from "./pages/Coordenador/Curso/Atualizacao/Atualizacao.jsx";
 import CoordenadorDiscussaoGerenciamento from "./pages/Coordenador/Discussoes/Discussoes.jsx";
-
-
+import CoordenadorDepoimentoHomologacao from "./pages/Coordenador/Depoimentos/Depoimentos.jsx";
+import CoordenadorOportunidadeHomologacao from "./pages/Coordenador/Oportunidades/Oportunidades.jsx";
 
 // Egresso pages
-
+import EgressoLogin from "./pages/Egresso/Login/Login.jsx";
+import EgressoDashboard from "./pages/Egresso/Dashboard/Dashboard.jsx";
+import EgressoDiscussaoGerenciamento from "./pages/Egresso/Discussoes/Gerenciamento/Gerenciamento.jsx";
 
 function App() {
 
   return (
       <div className="App">
-          <Header
-          cor="#22415A"
-          />
+          <Header usuario='EGRESSO' />
           <CoordenadorLogin />
-          <CoordenadorEdicao />
-          <CoordenadorDashboard />
-          <CoordenadorEgressoGerenciamento />
-          <CoordenadorEgressoCadastro />
-          <CoordenadorEgressoAtualizacao />
-          <CoordenadorCursoGerenciamento />
-          <CoordenadorCursoCadastro />
-          <CoordenadorCursoAtualizacao />
-          <CoordenadorDiscussaoGerenciamento />
+          {/*<CoordenadorEdicao />*/}
+          {/*<CoordenadorDashboard />*/}
+          {/*<CoordenadorEgressoGerenciamento />*/}
+          {/*<CoordenadorEgressoCadastro />*/}
+          {/*<CoordenadorEgressoAtualizacao />*/}
+          {/*<CoordenadorCursoGerenciamento />*/}
+          {/*<CoordenadorCursoCadastro />*/}
+          {/*<CoordenadorCursoAtualizacao />*/}
+          {/*<CoordenadorDiscussaoGerenciamento />*/}
+          {/*<CoordenadorDepoimentoHomologacao />*/}
+          {/*<CoordenadorOportunidadeHomologacao />*/}
+          {/*<EgressoLogin />*/}
+          {/*<EgressoDashboard />*/}
+          {/*<EgressoDiscussaoGerenciamento />*/}
 
       </div>
   )

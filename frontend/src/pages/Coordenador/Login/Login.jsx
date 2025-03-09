@@ -33,7 +33,7 @@ const Login = () => {
             <section className="coordenador-login">
                 <div className="coordenador-login-frame">
                     <h1 className="coordenador-login-titulo">Fazer Login - Coordenador</h1>
-                    <form onSubmit={handleSubmit} className="coordenador-login-form">
+                    <form onSubmit={(e) => {e.preventDefault(); handleSubmit('coordenador')}} className="coordenador-login-form">
                         <div className="coordenador-login-container">
                             <label htmlFor="login" className="coordenador-login-label">Login</label>
                             <input
@@ -60,8 +60,8 @@ const Login = () => {
                         <div>
                             <button
                                 className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('coordenador')}>
+                                type="submit"
+                                onSubmit={() => handleSubmit('coordenador')}>
                                 Entrar
                             </button>
                         </div>
