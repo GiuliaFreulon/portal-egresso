@@ -15,6 +15,10 @@ import CoordenadorLogin from "./pages/Coordenador/Login/Login.jsx";
 import CoordenadorEdicao from "./pages/Coordenador/Edicao/Edicao.jsx";
 import CoordenadorDashboard from "./pages/Coordenador/Dashboard/Dashboard.jsx";
 import CoordenadorEgressoGerenciamento from "./pages/Coordenador/Egresso/Gerenciamento/Gerenciamento.jsx";
+import CoordenadorEgressoCadastro from "./pages/Coordenador/Egresso/Cadastro/Cadastro.jsx";
+import AtualizarEgressoCadastro from "./pages/Coordenador/Egresso/Atualizacao/Atualizacao.jsx";
+import CoordenadorCursoGerenciamento from "./pages/Coordenador/Curso/Gerenciamento/Gerenciamento.jsx";
+
 
 
 // Egresso pages
@@ -27,7 +31,7 @@ function App() {
           <Header
           cor="#22415A"
           />
-          <CoordenadorEgressoGerenciamento />
+          <CoordenadorCursoGerenciamento />
 
       </div>
   )

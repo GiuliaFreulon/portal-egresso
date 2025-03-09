@@ -1,0 +1,40 @@
+.gerenciamento-curso-card-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.gerenciamento-curso-card-texto {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    flex: 1;
+    padding-left: 1rem;
+    text-align: left;
+}
+
+
+.refresh-btn, .delete-btn {
+    background: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 1rem;
+    transition: none;
+    border-left: 2px solid #ccc;
+    height: 100%;
+}
+
+.refresh-btn:hover, .delete-btn:hover {
+    background-color: #66666635;
+    transform: scale(103%);
+}
+
+.refresh-btn {
+    color: black;
+}
+
+.delete-btn {
+    color: red;
+}
