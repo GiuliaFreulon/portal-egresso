@@ -1,0 +1,45 @@
+.egresso-gerenciar-depoimento-card-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.egresso-gerenciar-depoimento-card-nome {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    flex: 1;
+    padding-left: 1rem;
+    text-align: left;
+}
+
+.deny-btn, .expand-btn {
+    background: none;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 1rem;
+    transition: none;
+    border-left: 2px solid #ccc;
+    height: 100%;
+}
+
+.deny-btn:hover, .expand-btn:hover {
+    background-color: #66666635;
+    transform: scale(105%);
+}
+
+.expand-btn {
+    color: black;
+    border-right: 2px solid #ccc;
+}
+
+.status-text {
+    width: 17%;
+}
+
+.deny-btn {
+    color: red;
+}

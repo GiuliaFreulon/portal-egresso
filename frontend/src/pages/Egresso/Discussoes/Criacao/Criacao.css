@@ -1,0 +1,41 @@
+.egresso-criacao-discussao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    margin: 0 12% 0 12%;
+}
+
+.egresso-criacao-discussao-frame {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #66666635;
+    border-radius: 15px;
+    text-align: left;
+    padding: 2rem;
+    gap: 0.7rem;
+    align-items: center;
+}
+
+.egresso-criacao-discussao-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.egresso-criacao-discussao-form > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 2rem 0 0 0;
+}
+
+.egresso-criacao-discussao-label {
+    display: block;
+    color: #666;
+    align-self: flex-start;
+    margin-left: 4rem;
+}

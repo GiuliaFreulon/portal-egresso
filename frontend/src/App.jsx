@@ -28,13 +28,19 @@ import CoordenadorOportunidadeHomologacao from "./pages/Coordenador/Oportunidade
 import EgressoLogin from "./pages/Egresso/Login/Login.jsx";
 import EgressoDashboard from "./pages/Egresso/Dashboard/Dashboard.jsx";
 import EgressoDiscussaoGerenciamento from "./pages/Egresso/Discussoes/Gerenciamento/Gerenciamento.jsx";
+import EgressoDiscussaoCriacao from "./pages/Egresso/Discussoes/Criacao/Criacao.jsx";
+import EgressoDepoimentoGerenciamento from "./pages/Egresso/Depoimentos/Gerenciamento/Gerenciamento.jsx";
+import EgressoDepoimentoEnvio from "./pages/Egresso/Depoimentos/Envio/Envio.jsx";
+import EgressoOportunidadeGerenciamento from "./pages/Egresso/Oportunidades/Gerenciamento/Gerenciamento.jsx";
+
+
 
 function App() {
 
   return (
       <div className="App">
           <Header usuario='EGRESSO' />
-          <CoordenadorLogin />
+          {/*<CoordenadorLogin />*/}
           {/*<CoordenadorEdicao />*/}
           {/*<CoordenadorDashboard />*/}
           {/*<CoordenadorEgressoGerenciamento />*/}
@@ -49,6 +55,10 @@ function App() {
           {/*<EgressoLogin />*/}
           {/*<EgressoDashboard />*/}
           {/*<EgressoDiscussaoGerenciamento />*/}
+          {/*<EgressoDiscussaoCriacao />*/}
+          {/*<EgressoDepoimentoGerenciamento />*/}
+          {/*<EgressoDepoimentoEnvio />*/}
+          <EgressoOportunidadeGerenciamento />
 
       </div>
   )
