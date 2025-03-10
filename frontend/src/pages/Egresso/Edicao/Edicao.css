@@ -1,0 +1,55 @@
+.egresso-edicao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    margin: 0 12% 0 12%;
+}
+
+.egresso-edicao-frame {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #66666635;
+    border-radius: 15px;
+    text-align: left;
+    padding: 2rem;
+    gap: 0.7rem;
+    align-items: center;
+}
+
+.egresso-edicao-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.egresso-edicao-form > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 2rem 0 0 0;
+}
+
+.egresso-edicao-label {
+    display: block;
+    color: #666;
+    align-self: flex-start;
+    margin-left: 4rem;
+}
+
+.texto-input {
+    resize: vertical;
+    min-height: 10rem;
+    max-height: 25rem;
+}
+
+.egresso-edicao-arquivo-input * {
+    opacity: 0;
+}
+
+input#file-upload-button {
+    opacity: 0;
+}

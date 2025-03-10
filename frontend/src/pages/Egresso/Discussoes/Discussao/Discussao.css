@@ -1,0 +1,74 @@
+.egresso-discussao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    margin: 0 12% 0 12%;
+}
+
+.egresso-discussao-frame {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #66666635;
+    border-radius: 15px;
+    text-align: left;
+    padding: 2rem;
+    gap: 0.7rem;
+    align-items: center;
+}
+
+.egresso-discussao-mensagens {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.egresso-discussao-mensagem-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.egresso-discussao-mensagem-form > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 2rem 0 0 0;
+}
+
+.egresso-discussao-envio-mensagem {
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: flex-end !important;
+    width: 100%;
+}
+
+.egresso-discussao-envio-mensagem-texto {
+    height: 2.5rem;
+    min-height: 2.5rem;
+    max-height: 10rem;
+    padding-top: 0.5rem;
+    resize: none;
+    overflow-y: auto;
+    width: 100%;
+    margin-left: 0;
+}
+
+.egresso-discussao-envio-mensagem-btn {
+    border: 1px solid #c6c4c4;
+    background-color: transparent;
+    color: black;
+    border-radius: 0.5rem;
+    height: 2.5rem;
+    transition: ease-in-out 0.1s !important;
+    margin: 0.5rem 0
+}
+
+.egresso-discussao-envio-mensagem-btn:hover {
+    background-color: #66666635;
+    transform: scale(103%);
+}

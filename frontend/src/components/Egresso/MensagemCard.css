@@ -1,0 +1,63 @@
+.mensagem-card {
+    display: flex;
+    align-items: flex-start;
+    padding-right: 4rem;
+    width: 100%;
+}
+.mensagem-card-info {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    text-align: justify;
+    background-color: #7C3144;
+    color: #FFFFFF;
+    font-weight: lighter;
+}
+
+.mensagem-card-foto {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: #ccc;
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
+.mensagem-card-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.mensagem-card-nome-data {
+    display: flex;
+    justify-content: space-between !important;
+    color: #bdbdbd;
+    width: 100%;
+    gap: 3rem;
+}
+
+.mensagem-card-nome {
+    color: #E0B64E;
+    font-weight: bolder;
+}
+
+.mensagem-card-nome-data >span {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.mensagem-card-texto {
+    display: inline-block;
+    padding: 0 1rem 1rem 0;
+    line-height: 1.4;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Número de linhas */
+}

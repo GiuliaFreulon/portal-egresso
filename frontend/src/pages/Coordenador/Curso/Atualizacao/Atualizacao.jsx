@@ -57,7 +57,7 @@ const Atualizacao = () => {
                             <label htmlFor="nivel" className="coordenador-atualizacao-curso-label">Nível*</label>
 
                             <select
-                                id="curso"
+                                id="nivel"
                                 value={nivel}
                                 onChange={(e) => setNivel(e.target.value)}
                                 required

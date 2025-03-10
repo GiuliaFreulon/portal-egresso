@@ -29,11 +29,13 @@ import EgressoLogin from "./pages/Egresso/Login/Login.jsx";
 import EgressoDashboard from "./pages/Egresso/Dashboard/Dashboard.jsx";
 import EgressoDiscussaoGerenciamento from "./pages/Egresso/Discussoes/Gerenciamento/Gerenciamento.jsx";
 import EgressoDiscussaoCriacao from "./pages/Egresso/Discussoes/Criacao/Criacao.jsx";
+import EgressoDiscussaoListagem from "./pages/Egresso/Discussoes/Listagem/Listagem.jsx";
 import EgressoDepoimentoGerenciamento from "./pages/Egresso/Depoimentos/Gerenciamento/Gerenciamento.jsx";
 import EgressoDepoimentoEnvio from "./pages/Egresso/Depoimentos/Envio/Envio.jsx";
 import EgressoOportunidadeGerenciamento from "./pages/Egresso/Oportunidades/Gerenciamento/Gerenciamento.jsx";
 import EgressoOportunidadeEnvio from "./pages/Egresso/Oportunidades/Envio/Envio.jsx";
-import EgressoDiscussaoListagem from "./pages/Egresso/Discussoes/Listagem/Listagem.jsx";
+import EgressoEdicao from "./pages/Egresso/Edicao/Edicao.jsx";
+import EgressoDiscussao from "./pages/Egresso/Discussoes/Discussao/Discussao.jsx";
 
 
 
@@ -70,10 +72,14 @@ function App() {
           {/*<EgressoDashboard />*/}
           {/*<EgressoDiscussaoGerenciamento />*/}
           {/*<EgressoDiscussaoCriacao />*/}
+          {/*<EgressoDiscussaoListagem />*/}
           {/*<EgressoDepoimentoGerenciamento />*/}
           {/*<EgressoDepoimentoEnvio />*/}
           {/*<EgressoOportunidadeGerenciamento />*/}
-          <EgressoDiscussaoListagem />
+          {/*<EgressoOportunidadeEnvio />*/}
+          {/*<EgressoEdicao />*/}
+          <EgressoDiscussao />
+
       </div>
   )
 }
