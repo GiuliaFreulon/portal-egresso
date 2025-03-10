@@ -18,9 +18,9 @@ const Gerenciamento = () => {
                         </a>
                     </div>
 
-                    <GerenciarDepoimentoCard nome={'Título do Depoimento'} status={'Enviado'}/>
-                    <GerenciarDepoimentoCard nome={'Título do Depoimento'} status={'Rejeitado'}/>
-                    <GerenciarDepoimentoCard nome={'Título do Depoimento'} status={'Aprovado'}/>
+                    <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Enviado'}/>
+                    <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Rejeitado'}/>
+                    <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Aprovado'}/>
 
                 </div>
             </section>

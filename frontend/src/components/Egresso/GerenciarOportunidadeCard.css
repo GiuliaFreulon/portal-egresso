@@ -1,4 +1,4 @@
-.egresso-gerenciar-depoimento-card-container {
+.egresso-gerenciar-oportunidade-card-container {
     display: flex;
     align-items: center;
     border: 2px solid #ccc;
@@ -6,7 +6,7 @@
     width: 100%;
 }
 
-.egresso-gerenciar-depoimento-card-texto {
+.egresso-gerenciar-oportunidade-card-titulo {
     border: none;
     outline: none;
     font-size: 16px;
