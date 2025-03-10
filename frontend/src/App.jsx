@@ -32,6 +32,8 @@ import EgressoDiscussaoCriacao from "./pages/Egresso/Discussoes/Criacao/Criacao.
 import EgressoDepoimentoGerenciamento from "./pages/Egresso/Depoimentos/Gerenciamento/Gerenciamento.jsx";
 import EgressoDepoimentoEnvio from "./pages/Egresso/Depoimentos/Envio/Envio.jsx";
 import EgressoOportunidadeGerenciamento from "./pages/Egresso/Oportunidades/Gerenciamento/Gerenciamento.jsx";
+import EgressoOportunidadeEnvio from "./pages/Egresso/Oportunidades/Envio/Envio.jsx";
+import EgressoDiscussaoListagem from "./pages/Egresso/Discussoes/Listagem/Listagem.jsx";
 
 
 
@@ -40,6 +42,16 @@ function App() {
   return (
       <div className="App">
           <Header usuario='EGRESSO' />
+
+          {/*<PublicHome />*/}
+          {/*<PublicListagem />*/}
+          {/*<PublicPagination />*/}
+          {/*<PublicPerfil />*/}
+          {/*<PublicDepoimentos />*/}
+          {/*<PublicRelatorios />*/}
+          {/*<PublicOportunidades />*/}
+
+
           {/*<CoordenadorLogin />*/}
           {/*<CoordenadorEdicao />*/}
           {/*<CoordenadorDashboard />*/}
@@ -52,14 +64,16 @@ function App() {
           {/*<CoordenadorDiscussaoGerenciamento />*/}
           {/*<CoordenadorDepoimentoHomologacao />*/}
           {/*<CoordenadorOportunidadeHomologacao />*/}
+
+
           {/*<EgressoLogin />*/}
           {/*<EgressoDashboard />*/}
           {/*<EgressoDiscussaoGerenciamento />*/}
           {/*<EgressoDiscussaoCriacao />*/}
           {/*<EgressoDepoimentoGerenciamento />*/}
           {/*<EgressoDepoimentoEnvio />*/}
-          <EgressoOportunidadeGerenciamento />
-
+          {/*<EgressoOportunidadeGerenciamento />*/}
+          <EgressoDiscussaoListagem />
       </div>
   )
 }

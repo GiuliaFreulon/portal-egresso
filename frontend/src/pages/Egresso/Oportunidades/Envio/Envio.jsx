@@ -3,7 +3,8 @@ import './Envio.css'
 
 const Envio = () => {
 
-    const [texto, setTexto] = useState('');
+    const [titulo, setTitulo] = useState('');
+    const [descricao, setDescricao] = useState('');
 
     const handleSubmit = () => {
         // Previne o comportamento padrão do formulário
@@ -11,7 +12,7 @@ const Envio = () => {
 
         // Cria o objeto com os dados
         const formData = {
-            texto,
+            descricao,
         };
 
         // Simula o envio do JSON (substitua por fetch/axios)
@@ -27,18 +28,30 @@ const Envio = () => {
 
     return (
         <div className="main__container">
-            <section className="egresso-depoimento-envio">
-                <h1 className="line-text">Enviar Depoimento</h1>
-                <div className="egresso-depoimento-envio-frame">
-                    <form onSubmit={handleSubmit} className="egresso-depoimento-envio-form">
+            <section className="egresso-oportunidade-envio">
+                <h1 className="line-text">Enviar Oportunidade</h1>
+                <div className="egresso-oportunidade-envio-frame">
+                    <form onSubmit={handleSubmit} className="egresso-oportunidade-envio-form">
 
                         <div className="">
-                            <label htmlFor="texto" className="egresso-depoimento-envio-label">Depoimento*</label>
+                            <label htmlFor="titulo" className="egresso-criacao-discussao-label">Título*</label>
+                            <input
+                                type="text"
+                                id="titulo"
+                                name="titulo"
+                                value={titulo}
+                                onChange={(e) => setTitulo(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className="">
+                            <label htmlFor="descricao" className="egresso-oportunidade-envio-label">Descrição*</label>
                             <textarea
-                                id="texto"
-                                name="texto"
-                                value={texto}
-                                onChange={(e) => setTexto(e.target.value)}
+                                id="descricao"
+                                name="descricao"
+                                value={descricao}
+                                onChange={(e) => setDescricao(e.target.value)}
                                 required
                                 className="texto-input"
                             />
