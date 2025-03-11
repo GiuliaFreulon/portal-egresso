@@ -1,6 +1,7 @@
 import React from 'react';
 import './Home.css';
 import BarChart from "../../../components/common/charts/BarChart.jsx";
+import Header from "../../../components/common/Header/Header.jsx";
 
 const Home = () => {
     return (

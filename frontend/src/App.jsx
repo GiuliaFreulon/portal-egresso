@@ -37,50 +37,55 @@ import EgressoOportunidadeEnvio from "./pages/Egresso/Oportunidades/Envio/Envio.
 import EgressoEdicao from "./pages/Egresso/Edicao/Edicao.jsx";
 import EgressoDiscussao from "./pages/Egresso/Discussoes/Discussao/Discussao.jsx";
 
-
+import {BrowserRouter as Router} from 'react-router-dom';
+import AppRoutes from "./routes/Routes.jsx";
 
 function App() {
 
   return (
-      <div className="App">
-          <Header usuario='EGRESSO' />
+      <Router>
+          <AppRoutes />
+      </Router>
 
-          {/*<PublicHome />*/}
-          {/*<PublicListagem />*/}
-          {/*<PublicPagination />*/}
-          {/*<PublicPerfil />*/}
-          {/*<PublicDepoimentos />*/}
-          {/*<PublicRelatorios />*/}
-          {/*<PublicOportunidades />*/}
-
-
-          {/*<CoordenadorLogin />*/}
-          {/*<CoordenadorEdicao />*/}
-          {/*<CoordenadorDashboard />*/}
-          {/*<CoordenadorEgressoGerenciamento />*/}
-          {/*<CoordenadorEgressoCadastro />*/}
-          {/*<CoordenadorEgressoAtualizacao />*/}
-          {/*<CoordenadorCursoGerenciamento />*/}
-          {/*<CoordenadorCursoCadastro />*/}
-          {/*<CoordenadorCursoAtualizacao />*/}
-          {/*<CoordenadorDiscussaoGerenciamento />*/}
-          {/*<CoordenadorDepoimentoHomologacao />*/}
-          {/*<CoordenadorOportunidadeHomologacao />*/}
-
-
-          {/*<EgressoLogin />*/}
-          {/*<EgressoDashboard />*/}
-          {/*<EgressoDiscussaoGerenciamento />*/}
-          {/*<EgressoDiscussaoCriacao />*/}
-          {/*<EgressoDiscussaoListagem />*/}
-          {/*<EgressoDepoimentoGerenciamento />*/}
-          {/*<EgressoDepoimentoEnvio />*/}
-          {/*<EgressoOportunidadeGerenciamento />*/}
-          {/*<EgressoOportunidadeEnvio />*/}
-          {/*<EgressoEdicao />*/}
-          <EgressoDiscussao />
-
-      </div>
+      // <div className="App">
+      //     <Header usuario='EGRESSO' />
+      //
+      //     {/*<PublicHome />*/}
+      //     {/*<PublicListagem />*/}
+      //     {/*<PublicPagination />*/}
+      //     {/*<PublicPerfil />*/}
+      //     {/*<PublicDepoimentos />*/}
+      //     {/*<PublicRelatorios />*/}
+      //     {/*<PublicOportunidades />*/}
+      //
+      //
+      //     {/*<CoordenadorLogin />*/}
+      //     {/*<CoordenadorEdicao />*/}
+      //     {/*<CoordenadorDashboard />*/}
+      //     {/*<CoordenadorEgressoGerenciamento />*/}
+      //     {/*<CoordenadorEgressoCadastro />*/}
+      //     {/*<CoordenadorEgressoAtualizacao />*/}
+      //     {/*<CoordenadorCursoGerenciamento />*/}
+      //     {/*<CoordenadorCursoCadastro />*/}
+      //     {/*<CoordenadorCursoAtualizacao />*/}
+      //     {/*<CoordenadorDiscussaoGerenciamento />*/}
+      //     {/*<CoordenadorDepoimentoHomologacao />*/}
+      //     {/*<CoordenadorOportunidadeHomologacao />*/}
+      //
+      //
+      //     {/*<EgressoLogin />*/}
+      //     {/*<EgressoDashboard />*/}
+      //     {/*<EgressoDiscussaoGerenciamento />*/}
+      //     {/*<EgressoDiscussaoCriacao />*/}
+      //     {/*<EgressoDiscussaoListagem />*/}
+      //     {/*<EgressoDepoimentoGerenciamento />*/}
+      //     {/*<EgressoDepoimentoEnvio />*/}
+      //     {/*<EgressoOportunidadeGerenciamento />*/}
+      //     {/*<EgressoOportunidadeEnvio />*/}
+      //     {/*<EgressoEdicao />*/}
+      //     {/*<EgressoDiscussao />*/}
+      //
+      // </div>
   )
 }
 
