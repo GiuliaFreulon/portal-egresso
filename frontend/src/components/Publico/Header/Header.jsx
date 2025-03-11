@@ -2,10 +2,11 @@ import React from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext.jsx"; // Importa o contexto
 
 const Header = ({usuario}) => {
+    const navigate = useNavigate()
 
     // const { user, logout } = useAuth(); // Pega o usuário logado
 
@@ -29,7 +30,7 @@ const Header = ({usuario}) => {
                     <Link to="/relatorios" className="header__link">Relatórios</Link>
                     <Link to="/oportunidades" className="header__link">Oportunidades</Link>
                 </div>
-                <button className="header__login" onClick={() => window.location.href = "/egresso_login"}>Fazer login</button>
+                <button className="header__login" onClick={() => navigate("/egresso/login")}>Fazer login</button>
             </nav>
         </header>
     );

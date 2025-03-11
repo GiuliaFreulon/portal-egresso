@@ -1,7 +1,8 @@
-// src/contexts/AuthContext.jsx
+
 import {createContext, useContext, useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'; // Instale com: npm install jwt-decode
+import {jwtDecode} from 'jwt-decode';
+import { login as loginAPI} from '../services/authService.jsx'
 
 const AuthContext = createContext();
 
@@ -21,9 +22,6 @@ export const AuthProvider = ({ children }) => {
 
             if (token && !isTokenExpired(token)) {
                 const decoded = jwtDecode(token);
-                decoded.name = undefined;
-                decoded.email = undefined;
-                decoded.role = undefined;
                 setUser({
                     id: decoded.sub,
                     role: decoded.role,
@@ -49,21 +47,16 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            // Simular chamada à API
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(credentials)
-            });
 
-            if (!response.ok) throw new Error('Login falhou');
-
-            const { token, user } = await response.json();
+            const response = await loginAPI(credentials);
+            const { token, user } = response;
 
             localStorage.setItem('token', token);
-            setUser(user);
-            navigate('/dashboard');
-
+            const decoded = jwtDecode(token);
+            setUser({
+                email: decoded.sub,
+                role: decoded.role
+            });
         } catch (error) {
             console.error('Erro no login:', error);
             throw error;

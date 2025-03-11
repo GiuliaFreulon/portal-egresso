@@ -2,8 +2,10 @@ import React from 'react';
 import './Home.css';
 import BarChart from "../../../components/common/charts/BarChart.jsx";
 import Header from "../../../components/Publico/Header/Header.jsx";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
+    const navigate = useNavigate()
     return (
         <div className="main__container">
             <section className="Egressos">
@@ -42,7 +44,7 @@ const Home = () => {
                         Nome do Egresso
                     </a>
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "/egressos"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => navigate("/egressos")}>Ver mais</button>
             </section>
 
             <section className="Depoimentos">
@@ -67,7 +69,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "/depoimentos"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => navigate("/depoimentos")}>Ver mais</button>
             </section>
 
             <section className="Relatórios">
@@ -75,7 +77,7 @@ const Home = () => {
                 <div>
                     <BarChart />
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "/relatorios"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => navigate("/relatorios")}>Ver mais</button>
             </section>
 
             <section className="Oportunidades">
@@ -94,7 +96,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "/oportunidades"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => navigate("/oportunidades")}>Ver mais</button>
             </section>
         </div>
     );

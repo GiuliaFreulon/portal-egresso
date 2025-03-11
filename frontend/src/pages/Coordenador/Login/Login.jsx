@@ -1,17 +1,22 @@
 import React, {useState} from 'react';
 import './Login.css'
-import {Link} from "react-router-dom";
-import {login} from "../../../services/authService.jsx";
+import {Link, useNavigate} from "react-router-dom";
+import {login as loginAPI} from "../../../services/authService.jsx";
+import {jwtDecode} from "jwt-decode";
 
 const Login = () => {
+    const navigate = useNavigate()
 
-    const [loginCoordenador, setLoginCoordenador] = useState('');
+    const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        // Previne o comportamento padrão do formulário
+        event.preventDefault();
+
         // Cria o objeto com os dados
         const formData = {
-            "login": loginCoordenador,
+            login,
             senha,
         };
 
@@ -19,8 +24,16 @@ const Login = () => {
         console.log('Dados enviados:', JSON.stringify(formData, null, 2));
 
         try {
-            const {token} = await login(formData);
+            const response = await loginAPI(formData);
+            const token = response.token;
+            const decoded = jwtDecode(token);
             localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify({
+                login: decoded.sub,
+                role: decoded.role
+            }));
+            console.log(response);
+            navigate("/coordenador/dashboard");
         }catch(error) {
             console.log('Falha no login', error);
         }
@@ -53,8 +66,8 @@ const Login = () => {
                                 type="text"
                                 id="login"
                                 name="login"
-                                value={loginCoordenador}
-                                onChange={(e) => setLoginCoordenador(e.target.value)}
+                                value={login}
+                                onChange={(e) => setLogin(e.target.value)}
                                 required
                             />
                         </div>
@@ -74,14 +87,14 @@ const Login = () => {
                             <button
                                 className="formulario-button"
                                 type="submit"
-                                onSubmit={() => handleSubmit('coordenador')}>
+                                onClick={handleSubmit}>
                                 Entrar
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <Link to="/egresso_login" className="coordenador-login-entrar-egresso">Entrar como Egresso</Link>
+                <Link to="/egresso/login" className="coordenador-login-entrar-egresso">Entrar como Egresso</Link>
 
             </section>
         </div>

@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
 import './Login.css'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {login} from "../../../services/authService.jsx";
+import {jwtDecode} from "jwt-decode";
 
 const Login = () => {
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
         // Previne o comportamento padrão do formulário
         event.preventDefault();
 
@@ -22,13 +24,33 @@ const Login = () => {
         console.log('Dados enviados:', JSON.stringify(formData, null, 2));
 
         try {
-            const {token} = await login(formData);
+            const response = await login(formData);
+            const token = response.token;
+            const decoded = jwtDecode(token);
             localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify({
+                email: decoded.sub,
+                role: decoded.role
+            }));
+            console.log(response);
+            navigate("/egresso/dashboard");
         }catch(error) {
             console.log('Falha no login', error);
         }
 
-        // window.location.href = "/egresso_dashboard";
+        // useEffect(() => {
+        //     const fetchProfile = async () => {
+        //         try {
+        //             const profile = await getProfile();
+        //             setEmail(profile[0]);
+        //             setSenha(profile[1]);
+        //         } catch (error) {
+        //             console.error('Erro ao buscar perfil:', error);
+        //         }
+        //     };
+        //
+        //     fetchProfile();
+        // }, []);
     };
 
     return (
@@ -62,15 +84,15 @@ const Login = () => {
                         <div>
                             <button
                                 className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('egresso')}>
+                                type="submit"
+                                onClick={handleSubmit}>
                                 Entrar
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <Link to="/coordenador_login" className="egresso-login-entrar-coordenador">Entrar como Coordenador</Link>
+                <Link to="/coordenador/login" className="egresso-login-entrar-coordenador">Entrar como Coordenador</Link>
 
             </section>
         </div>
