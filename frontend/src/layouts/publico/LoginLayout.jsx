@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import Header from "../../components/common/Header/Header.jsx";
+import LoginHeader from "../../components/Publico/Header/LoginHeader.jsx";
 
-const LoginLayout = () => {
+const LoginLayout = ({usuario}) => {
     return (
         <div>
             {/* Cabeçalho Fixo */}
-            <Header/>
+            <LoginHeader usuario={usuario} />
             {/* Conteúdo Dinâmico das Páginas */}
             <main>
                 <Outlet /> {/* Aqui as páginas filhas serão renderizadas */}

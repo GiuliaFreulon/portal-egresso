@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import './Login.css'
+import {Link} from "react-router-dom";
+import {login} from "../../../services/authService.jsx";
 
 const Login = () => {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
-    const handleSubmit = (userType) => {
+    const handleSubmit = async () => {
         // Previne o comportamento padrão do formulário
         event.preventDefault();
 
@@ -14,19 +16,19 @@ const Login = () => {
         const formData = {
             email,
             senha,
-            userType // 'coordenador' ou 'egresso'
         };
 
-        // Simula o envio do JSON (substitua por fetch/axios)
+        // teste
         console.log('Dados enviados:', JSON.stringify(formData, null, 2));
 
-        // Aqui você faria a chamada à API:
-        // fetch('/api/login', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(formData)
-        // })
-        window.location.href = "/egresso_dashboard";
+        try {
+            const {token} = await login(formData);
+            localStorage.setItem('token', token);
+        }catch(error) {
+            console.log('Falha no login', error);
+        }
+
+        // window.location.href = "/egresso_dashboard";
     };
 
     return (
@@ -68,7 +70,7 @@ const Login = () => {
                     </form>
                 </div>
 
-                <a href="#" className="egresso-login-entrar-egresso">Entrar como Coordenador</a>
+                <Link to="/coordenador_login" className="egresso-login-entrar-coordenador">Entrar como Coordenador</Link>
 
             </section>
         </div>

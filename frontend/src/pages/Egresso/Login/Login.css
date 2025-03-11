@@ -44,13 +44,13 @@
     margin-left: 4rem;
 }
 
-.egresso-login-entrar-egresso {
+.egresso-login-entrar-coordenador {
     background-color: #00000000;
     color: #333333 !important;
     margin-top: 1rem;
 }
 
-.egresso-login-entrar-egresso:hover {
+.egresso-login-entrar-coordenador:hover {
     background-color: transparent;
     filter: brightness(60%);
 }

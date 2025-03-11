@@ -1,7 +1,7 @@
 // src/contexts/AuthContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react';
-import {Navigate, useLocation, useNavigate} from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'; // Instale com: npm install jwt-decode
+import {createContext, useContext, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode'; // Instale com: npm install jwt-decode
 
 const AuthContext = createContext();
 
@@ -98,22 +98,4 @@ export const useAuth = () => {
         throw new Error('useAuth deve ser usado dentro de um AuthProvider');
     }
     return context;
-};
-
-// Componente para proteger rotas
-export const PrivateRoute = ({ children, roles }) => {
-    const { user, isAuthenticated, loading } = useAuth();
-    const location = useLocation();
-
-    if (loading) return <div>Carregando...</div>;
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-
-    if (roles && !roles.includes(user?.role)) {
-        return <Navigate to="/unauthorized" replace />;
-    }
-
-    return children;
 };

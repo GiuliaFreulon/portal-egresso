@@ -1,32 +1,45 @@
 import React, {useState} from 'react';
 import './Login.css'
+import {Link} from "react-router-dom";
+import {login} from "../../../services/authService.jsx";
 
 const Login = () => {
 
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
+    const [loginCoordenador, setLoginCoordenador] = useState('');
+    const [senha, setSenha] = useState('');
 
-    const handleSubmit = (userType) => {
-        // Previne o comportamento padrão do formulário
-        event.preventDefault();
-
+    const handleSubmit = async () => {
         // Cria o objeto com os dados
         const formData = {
-            login,
-            password,
-            userType // 'coordenador' ou 'egresso'
+            "login": loginCoordenador,
+            senha,
         };
 
-        // Simula o envio do JSON (substitua por fetch/axios)
+        // teste
         console.log('Dados enviados:', JSON.stringify(formData, null, 2));
 
-        // Aqui você faria a chamada à API:
-        // fetch('/api/login', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(formData)
-        // })
+        try {
+            const {token} = await login(formData);
+            localStorage.setItem('token', token);
+        }catch(error) {
+            console.log('Falha no login', error);
+        }
+
     };
+
+    // useEffect(() => {
+    //     const fetchProfile = async () => {
+    //         try {
+    //             const profile = await getProfile();
+    //             setLoginCoordenador(profile[0]);
+    //             setSenha(profile[1]);
+    //         } catch (error) {
+    //             console.error('Erro ao buscar perfil:', error);
+    //         }
+    //     };
+    //
+    //     fetchProfile();
+    // }, []);
 
     return (
         <div className="main__container">
@@ -40,8 +53,8 @@ const Login = () => {
                                 type="text"
                                 id="login"
                                 name="login"
-                                value={login}
-                                onChange={(e) => setLogin(e.target.value)}
+                                value={loginCoordenador}
+                                onChange={(e) => setLoginCoordenador(e.target.value)}
                                 required
                             />
                         </div>
@@ -51,8 +64,8 @@ const Login = () => {
                             <input
                                 type="password"
                                 id="senha"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
                                 required
                             />
                         </div>
@@ -68,7 +81,7 @@ const Login = () => {
                     </form>
                 </div>
 
-                <a href="#" className="coordenador-login-entrar-egresso">Entrar como Egresso</a>
+                <Link to="/egresso_login" className="coordenador-login-entrar-egresso">Entrar como Egresso</Link>
 
             </section>
         </div>

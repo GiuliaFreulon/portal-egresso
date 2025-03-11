@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.css';
 import BarChart from "../../../components/common/charts/BarChart.jsx";
-import Header from "../../../components/common/Header/Header.jsx";
+import Header from "../../../components/Publico/Header/Header.jsx";
 
 const Home = () => {
     return (
@@ -42,7 +42,7 @@ const Home = () => {
                         Nome do Egresso
                     </a>
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "/login"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => window.location.href = "/egressos"}>Ver mais</button>
             </section>
 
             <section className="Depoimentos">
@@ -67,7 +67,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "/login"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => window.location.href = "/depoimentos"}>Ver mais</button>
             </section>
 
             <section className="Relatórios">
@@ -75,7 +75,7 @@ const Home = () => {
                 <div>
                     <BarChart />
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "/login"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => window.location.href = "/relatorios"}>Ver mais</button>
             </section>
 
             <section className="Oportunidades">
@@ -94,7 +94,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <button className="botaoVerMais" onClick={() => window.location.href = "#"}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => window.location.href = "/oportunidades"}>Ver mais</button>
             </section>
         </div>
     );

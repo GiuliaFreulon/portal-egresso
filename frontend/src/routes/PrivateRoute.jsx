@@ -1,20 +1,21 @@
-// import { useContext } from 'react';
-// import { Navigate, useLocation } from 'react-router-dom';
-// import { AuthContext } from '../contexts/AuthContext';
-//
-// const PrivateRoute = ({ allowedRoles, children }) => {
-//     const { user } = useContext(AuthContext);
-//     const location = useLocation();
-//
-//     if (!user) {
-//         return <Navigate to="/login" state={{ from: location }} replace />;
-//     }
-//
-//     if (!allowedRoles.includes(user.role)) {
-//         return <Navigate to="/nao-autorizado" replace />;
-//     }
-//
-//     return children;
-// };
-//
-// export default PrivateRoute;
+import { useAuth } from '../contexts/AuthContext'; // Use the hook
+import { Navigate, useLocation } from 'react-router-dom';
+
+const PrivateRoute = ({ allowedRoles, children }) => {
+    const { user, isAuthenticated, loading } = useAuth(); // Get auth state
+    const location = useLocation();
+
+    if (loading) return <div>Loading...</div>;
+
+    if (!isAuthenticated) {
+        return <Navigate to="/egresso_login" state={{ from: location }} replace />;
+    }
+
+    if (!allowedRoles.includes(user?.role)) {
+        return <Navigate to="/egresso_login" replace />;
+    }
+
+    return children;
+};
+
+export default PrivateRoute;
