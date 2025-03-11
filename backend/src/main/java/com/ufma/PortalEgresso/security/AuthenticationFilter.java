@@ -1,7 +1,6 @@
 package com.ufma.PortalEgresso.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufma.PortalEgresso.model.entity.DTOs.EgressoDTO;
 import com.ufma.PortalEgresso.model.entity.DTOs.UsuarioCadastradoDTO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.IOException;
@@ -18,8 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -54,20 +51,33 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletResponse response,
             FilterChain chain,
             Authentication authResult
-    ) throws IOException {
+    ) throws IOException, java.io.IOException {
 
         // Obtém as roles do usuário
-        List<String> roles = authResult.getAuthorities().stream()
+        String role= authResult.getAuthorities().stream()
+                .findFirst()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .orElse("ROLE_USER");
 
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
-                .claim("roles", roles) // Adiciona as roles ao token
+                .claim("role", role)
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .signWith(SecurityConstants.KEY)
                 .compact();
 
         response.addHeader(SecurityConstants.HEADER_NAME, "Bearer " + token);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        String jsonResponse = String.format(
+                "{\"token\": \"%s\", \"user\": {\"email\": \"%s\", \"role\": \"%s\"}}",
+                token,
+                authResult.getName(),
+                role
+        );
+
+        response.getWriter().write(jsonResponse);
+
     }
 }
