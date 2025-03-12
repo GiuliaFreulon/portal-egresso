@@ -7,11 +7,6 @@ export const login = async (credentials) => {
         // Verifique a estrutura da resposta
         console.log('Resposta do login:', response);
 
-        // Armazene o token e dados do usuário
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-
-
         return response.data;
     } catch (error) {
 

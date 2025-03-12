@@ -1,0 +1,86 @@
+.egresso-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 1rem 2rem;
+    box-shadow: #00000059 0 1px 5px 3px ;
+    vertical-align:middle;
+    background-color: #691F31;
+}
+
+.egresso-header__logo {
+    text-decoration: none;
+}
+
+.egresso-header__icon {
+    width: 7em;
+    justify-content: left;
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.egresso-header__menu {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1em 0 0.1em;
+    text-align: center;
+    align-items: center;
+}
+
+.egresso-header__links {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    padding: 0 5em 0 1em;
+    text-align: center;
+    align-items: center;
+}
+
+.egresso-header__link {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: medium;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    transition: 0.5s;
+}
+
+.egresso-header__login {
+    background-color: #FFFFFF;
+    color: #333333;
+}
+
+.egresso-header__login:hover {
+    background-color: #bfbfbf;
+}
+
+.egresso-header__link:hover {
+    filter: brightness(70%);
+}
+
+.egresso-header__menu--buttons {
+    display: flex;
+    gap: 1.2rem;
+}
+
+.egresso-header-icon {
+    color: white;
+    background-color: transparent;
+    transition: none !important;
+    padding: 0;
+}
+
+.egresso-header-icon > * {
+    height: 1.7rem;
+    width: 1.7rem;
+}
+
+.egresso-header-icon {
+    transition: none !important;
+    background-color: transparent !important;
+}

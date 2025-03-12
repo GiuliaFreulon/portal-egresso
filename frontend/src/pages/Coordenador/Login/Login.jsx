@@ -48,7 +48,8 @@ const Login = () => {
                 role: decoded.role
             }));
             console.log(response);
-            navigate("/coordenador/dashboard");
+            setTimeout(() => {}, 100);
+            window.location.replace("/coordenador/dashboard");
         }catch(error) {
             console.log('Falha no login', error);
         }

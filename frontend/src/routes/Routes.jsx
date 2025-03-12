@@ -39,6 +39,8 @@ import CoordenadorDiscussaoGerenciamento from "../pages/Coordenador/Discussoes/D
 import CoordenadorDepoimentoHomologacao from "../pages/Coordenador/Depoimentos/Depoimentos.jsx";
 import CoordenadorOportunidadeHomologacao from "../pages/Coordenador/Oportunidades/Oportunidades.jsx";
 import LoginLayout from "../layouts/publico/LoginLayout.jsx";
+import CoordenadorLayout from "../layouts/coordenador/CoordenadorLayout.jsx";
+import EgressoLayout from "../layouts/egresso/EgressoLayout.jsx";
 
 
 const AppRoutes = () => {
@@ -67,31 +69,45 @@ const AppRoutes = () => {
 
             {/*Rotas do Egresso*/}
             <Route element={<PrivateRoute allowedRoles={"ROLE_EGRESSO"}/>}>
-                <Route path="/egresso/dashboard" element={<EgressoDashboard />} />
-                <Route path="/egresso/discussao/gerenciamento" element={<EgressoDiscussaoGerenciamento />} />
-                <Route path="/egresso/discussao/criacao" element={<EgressoDiscussaoCriacao />} />
-                <Route path="/egresso/discussao/listagem" element={<EgressoDiscussaoListagem />} />
-                <Route path="/egresso/depoimento/gerenciamento" element={<EgressoDepoimentoGerenciamento />} />
-                <Route path="/egresso/depoimento/envio" element={<EgressoDepoimentoEnvio />} />
-                <Route path="/egresso/oportunidade/gerenciamento" element={<EgressoOportunidadeGerenciamento />} />
-                <Route path="/egresso/oportunidade/envio" element={<EgressoOportunidadeEnvio />} />
-                <Route path="/egresso/edicao" element={<EgressoEdicao />} />
-                <Route path="/egresso/discussao" element={<EgressoDiscussao />} />
+                <Route element={<EgressoLayout />} >
+                    <Route path="/egresso/dashboard" element={<EgressoDashboard />} />
+                    <Route path="/egresso/discussao/gerenciamento" element={<EgressoDiscussaoGerenciamento />} />
+                    <Route path="/egresso/discussao/criacao" element={<EgressoDiscussaoCriacao />} />
+                    <Route path="/egresso/discussao/listagem" element={<EgressoDiscussaoListagem />} />
+                    <Route path="/egresso/depoimento/gerenciamento" element={<EgressoDepoimentoGerenciamento />} />
+                    <Route path="/egresso/depoimento/envio" element={<EgressoDepoimentoEnvio />} />
+                    <Route path="/egresso/oportunidade/gerenciamento" element={<EgressoOportunidadeGerenciamento />} />
+                    <Route path="/egresso/oportunidade/envio" element={<EgressoOportunidadeEnvio />} />
+                    <Route path="/egresso/edicao" element={<EgressoEdicao />} />
+                    <Route path="/egresso/discussao" element={<EgressoDiscussao />} />
+                    {/*Rotas Públicas para Egresso*/}
+                    <Route path="/egresso/depoimentos" element={<PublicDepoimentos />} />
+                    <Route path="/egresso/egressos" element={<PublicListagemEgressos />} />
+                    <Route path="/egresso/oportunidades" element={<PublicOportunidades />} />
+                    <Route path="/egresso/relatorios" element={<PublicRelatorios />} />
+                </Route>
             </Route>
 
             {/*Rotas do Coordenador*/}
             <Route element={<PrivateRoute allowedRoles={"ROLE_COORDENADOR"}/>}>
-                <Route path="/coordenador/edicao" element={<CoordenadorEdicao />} />
-                <Route path="/coordenador/dashboard" element={<CoordenadorDashboard />} />
-                <Route path="/coordenador/egresso/gerenciamento" element={<CoordenadorEgressoGerenciamento />} />
-                <Route path="/coordenador/egresso/cadastro" element={<CoordenadorEgressoCadastro />} />
-                <Route path="/coordenador/egresso/atualizacao" element={<CoordenadorEgressoAtualizacao />} />
-                <Route path="/coordenador/curso/gerenciamento" element={<CoordenadorCursoGerenciamento />} />
-                <Route path="/coordenador/curso/cadastro" element={<CoordenadorCursoCadastro />} />
-                <Route path="/coordenador/curso/atualizacao" element={<CoordenadorCursoAtualizacao />} />
-                <Route path="/coordenador/discussao/gerenciament" element={<CoordenadorDiscussaoGerenciamento />} />
-                <Route path="/coordenador/depoimento/homologacao" element={<CoordenadorDepoimentoHomologacao />} />
-                <Route path="/coordenador/oportunidade/homologacao" element={<CoordenadorOportunidadeHomologacao />} />
+                <Route element={<CoordenadorLayout />}>
+                    <Route path="/coordenador/edicao" element={<CoordenadorEdicao />} />
+                    <Route path="/coordenador/dashboard" element={<CoordenadorDashboard />} />
+                    <Route path="/coordenador/egresso/gerenciamento" element={<CoordenadorEgressoGerenciamento />} />
+                    <Route path="/coordenador/egresso/cadastro" element={<CoordenadorEgressoCadastro />} />
+                    <Route path="/coordenador/egresso/atualizacao" element={<CoordenadorEgressoAtualizacao />} />
+                    <Route path="/coordenador/curso/gerenciamento" element={<CoordenadorCursoGerenciamento />} />
+                    <Route path="/coordenador/curso/cadastro" element={<CoordenadorCursoCadastro />} />
+                    <Route path="/coordenador/curso/atualizacao" element={<CoordenadorCursoAtualizacao />} />
+                    <Route path="/coordenador/discussao/gerenciament" element={<CoordenadorDiscussaoGerenciamento />} />
+                    <Route path="/coordenador/depoimento/homologacao" element={<CoordenadorDepoimentoHomologacao />} />
+                    <Route path="/coordenador/oportunidade/homologacao" element={<CoordenadorOportunidadeHomologacao />} />
+                    {/*Rotas Públicas para Coordenador*/}
+                    <Route path="/coordenador/depoimentos" element={<PublicDepoimentos />} />
+                    <Route path="/coordenador/egressos" element={<PublicListagemEgressos />} />
+                    <Route path="/coordenador/oportunidades" element={<PublicOportunidades />} />
+                    <Route path="/coordenador/relatorios" element={<PublicRelatorios />} />
+                </Route>
             </Route>
 
         </Routes>
