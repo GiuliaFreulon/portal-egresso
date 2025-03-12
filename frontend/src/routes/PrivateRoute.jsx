@@ -12,7 +12,7 @@ const PrivateRoute = ({ allowedRoles }) => {
     }
 
     if (!allowedRoles.includes(user.role)) {
-        return <Navigate to="/egresso/login" replace />;
+        return <Navigate to="/acesso-negado" replace />;
     }
 
     return <Outlet />;

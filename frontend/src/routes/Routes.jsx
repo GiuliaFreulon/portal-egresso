@@ -12,6 +12,7 @@ import PublicOportunidades from "../pages/Publico/Oportunidades/Oportunidades.js
 import PublicRelatorios from "../pages/Publico/Relatorios/Relatorios.jsx";
 import EgressoLogin from "../pages/Egresso/Login/Login.jsx";
 import CoordenadorLogin from "../pages/Coordenador/Login/Login.jsx";
+import AcessoNegado from "../pages/Publico/AcessoNegado/AcessoNegado.jsx";
 
 //egresso imports
 import EgressoDashboard from "../pages/Egresso/Dashboard/Dashboard.jsx";
@@ -53,6 +54,7 @@ const AppRoutes = () => {
                     <Route path="/egressos/perfil/:id" element={<PublicPerfilEgresso />} />
                     <Route path="/oportunidades" element={<PublicOportunidades />} />
                     <Route path="/relatorios" element={<PublicRelatorios />} />
+                    <Route path="/acesso-negado" element={<AcessoNegado />} />
                 </Route>
 
                 {/*Rotas de login*/}
