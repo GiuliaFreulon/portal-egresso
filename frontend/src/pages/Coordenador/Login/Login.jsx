@@ -1,14 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Login.css'
 import {Link, useNavigate} from "react-router-dom";
 import {login as loginAPI} from "../../../services/authService.jsx";
 import {jwtDecode} from "jwt-decode";
+import {useAuth} from "../../../contexts/AuthContext.jsx";
 
 const Login = () => {
+    const { isAuthenticated, user } = useAuth();
     const navigate = useNavigate()
-
     const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
+
+    // verificar autenticação ao carregar a página
+    useEffect(() => {
+        // Verifica se o usuário já está autenticado
+        if (isAuthenticated) {
+            // Redireciona com base no papel do usuário
+            if (user.role === "ROLE_EGRESSO") {
+                navigate("/egresso/dashboard")
+            } else if (user.role === "ROLE_COORDENADOR") {
+                navigate("/coordenador/dashboard")
+            }
+        }
+    }, [isAuthenticated, user, navigate])
 
     const handleSubmit = async (event) => {
         // Previne o comportamento padrão do formulário
@@ -29,7 +43,8 @@ const Login = () => {
             const decoded = jwtDecode(token);
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify({
-                login: decoded.sub,
+                id: decoded.sub,
+                name: decoded.email,
                 role: decoded.role
             }));
             console.log(response);
@@ -39,20 +54,6 @@ const Login = () => {
         }
 
     };
-
-    // useEffect(() => {
-    //     const fetchProfile = async () => {
-    //         try {
-    //             const profile = await getProfile();
-    //             setLoginCoordenador(profile[0]);
-    //             setSenha(profile[1]);
-    //         } catch (error) {
-    //             console.error('Erro ao buscar perfil:', error);
-    //         }
-    //     };
-    //
-    //     fetchProfile();
-    // }, []);
 
     return (
         <div className="main__container">

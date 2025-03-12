@@ -24,9 +24,8 @@ export const AuthProvider = ({ children }) => {
                 const decoded = jwtDecode(token);
                 setUser({
                     id: decoded.sub,
+                    name: decoded.name,
                     role: decoded.role,
-                    email: decoded.email,
-                    name: decoded.name
                 });
             }
         } catch (error) {
@@ -49,13 +48,14 @@ export const AuthProvider = ({ children }) => {
         try {
 
             const response = await loginAPI(credentials);
-            const { token, user } = response;
+            const { token } = response;
 
             localStorage.setItem('token', token);
             const decoded = jwtDecode(token);
             setUser({
-                email: decoded.sub,
-                role: decoded.role
+                id: decoded.sub,
+                role: decoded.role,
+                name: decoded.email
             });
         } catch (error) {
             console.error('Erro no login:', error);

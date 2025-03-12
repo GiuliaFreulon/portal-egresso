@@ -32,6 +32,6 @@ export const login = async (credentials) => {
 };
 
 export const getProfile = async () => {
-    const response = await api.get('/auth/profile');
+    const response = await api.get('/api/egresso/buscarPorId/', localStorage.getItem(user.id));
     return response.data;
 };
