@@ -3,6 +3,7 @@ package com.ufma.PortalEgresso.service;
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
+import com.ufma.PortalEgresso.model.entity.DTOs.UsuarioCadastradoDTO;
 import com.ufma.PortalEgresso.model.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -211,7 +212,7 @@ public class CoordenadorService {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_COORDENADOR"));
 
-        return new User(recuperado.getLogin(), recuperado.getSenha(), authorities);
+        return new UsuarioCadastradoDTO(recuperado.getId_coordenador(), recuperado.getLogin(), recuperado.getSenha(), authorities);
     }
 
 }

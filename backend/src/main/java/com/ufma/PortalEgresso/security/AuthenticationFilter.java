@@ -2,6 +2,7 @@ package com.ufma.PortalEgresso.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufma.PortalEgresso.model.entity.DTOs.UsuarioCadastradoDTO;
+import com.ufma.PortalEgresso.service.UsuarioCadastradoUserDetailsService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
@@ -54,6 +55,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     ) throws IOException, java.io.IOException {
 
         // Obtém as roles do usuário
+        UsuarioCadastradoDTO usuario = (UsuarioCadastradoDTO) authResult.getPrincipal();
         String role= authResult.getAuthorities().stream()
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
@@ -67,14 +69,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .compact();
 
         response.addHeader(SecurityConstants.HEADER_NAME, "Bearer " + token);
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         String jsonResponse = String.format(
-                "{\"token\": \"%s\", \"user\": {\"email\": \"%s\", \"role\": \"%s\"}}",
+                "{\"token\": \"%s\", \"user\": {\"email\": \"%s\", \"role\": \"%s\", \"id\": \"%s\"}}",
                 token,
                 authResult.getName(),
-                role
+                role,
+                usuario.getId()
         );
 
         response.getWriter().write(jsonResponse);

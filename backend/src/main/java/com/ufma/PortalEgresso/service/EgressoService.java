@@ -3,6 +3,7 @@ package com.ufma.PortalEgresso.service;
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
+import com.ufma.PortalEgresso.model.entity.DTOs.UsuarioCadastradoDTO;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,7 +198,7 @@ public class EgressoService {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_EGRESSO"));
 
-        return new User(recuperado.getEmail(), recuperado.getSenha(), authorities);
+        return new UsuarioCadastradoDTO(recuperado.getId_egresso(), recuperado.getEmail(), recuperado.getSenha(), authorities);
     }
 
 }
