@@ -2,7 +2,6 @@ package com.ufma.PortalEgresso.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufma.PortalEgresso.model.entity.DTOs.UsuarioCadastradoDTO;
-import com.ufma.PortalEgresso.service.UsuarioCadastradoUserDetailsService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
@@ -56,13 +55,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         // Obtém as roles do usuário
         UsuarioCadastradoDTO usuario = (UsuarioCadastradoDTO) authResult.getPrincipal();
-        String role= authResult.getAuthorities().stream()
+        String id = usuario.getId().toString();
+        String email = usuario.getEmail();
+        String role = usuario.getAuthorities().stream()
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
                 .orElse("ROLE_USER");
 
         String token = Jwts.builder()
-                .setSubject(authResult.getName())
+                .setSubject(id)
+                .claim("email", email)
                 .claim("role", role)
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .signWith(SecurityConstants.KEY)
@@ -72,11 +74,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         String jsonResponse = String.format(
-                "{\"token\": \"%s\", \"user\": {\"email\": \"%s\", \"role\": \"%s\", \"id\": \"%s\"}}",
+                "{\"token\": \"%s\", \"user\": {\"email\": \"%s\", \"role\": \"%s\"}}",
                 token,
                 authResult.getName(),
-                role,
-                usuario.getId()
+                role
         );
 
         response.getWriter().write(jsonResponse);
