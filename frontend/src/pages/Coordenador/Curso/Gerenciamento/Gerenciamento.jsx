@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarCursoCard from "../../../../components/Coordenador/GerenciarCursoCard.jsx";
+import {Link, useNavigate} from "react-router-dom";
 
 const Gerenciamento = () => {
     return (
@@ -17,10 +18,10 @@ const Gerenciamento = () => {
                             <input type="text" placeholder="Pesquisar" className="search-input" />
                         </div>
 
-                        <a href="#" className="gerenciamento-curso-header-cadastrar">
+                        <Link to="/coordenador/curso/cadastro" className="gerenciamento-curso-header-cadastrar">
                             <FontAwesomeIcon icon={faSquarePlus} className="add-icon" />
                             <p>Cadastrar Curso</p>
-                        </a>
+                        </Link>
                     </div>
 
                     <GerenciarCursoCard

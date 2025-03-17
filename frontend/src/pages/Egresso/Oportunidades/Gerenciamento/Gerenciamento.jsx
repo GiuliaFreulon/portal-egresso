@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarOportunidadeCard from "../../../../components/Egresso/GerenciarOportunidadeCard.jsx";
+import {Link} from "react-router-dom";
 
 const Gerenciamento = () => {
     return (
@@ -12,10 +13,10 @@ const Gerenciamento = () => {
 
                 <div className="egresso-gerenciamento-oportunidade-container">
                     <div className="egresso-gerenciamento-oportunidade-header">
-                        <a href="#" className="egresso-gerenciamento-oportunidade-header-cadastrar">
+                        <Link to="/egresso/oportunidade/envio" className="egresso-gerenciamento-oportunidade-header-cadastrar">
                             <FontAwesomeIcon icon={faSquarePlus} className="add-icon" />
                             <p>Nova Oportunidade</p>
-                        </a>
+                        </Link>
                     </div>
 
                     <GerenciarOportunidadeCard titulo={'Título da Oportunidade'} status={'Enviado'}/>

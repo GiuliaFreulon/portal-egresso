@@ -1,11 +1,24 @@
 import React from 'react';
 import './Home.css';
 import BarChart from "../../../components/common/charts/BarChart.jsx";
-import Header from "../../../components/Publico/Header/Header.jsx";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../../../contexts/AuthContext.jsx";
 
 const Home = () => {
+
     const navigate = useNavigate()
+
+    const { user } = useAuth();
+
+    let role = "";
+    if (user) {
+        if (user.role === "ROLE_COORDENADOR") {
+            role = "/coordenador";
+        } else if (user.role === "ROLE_EGRESSO") {
+            role = "/egresso";
+        }
+    }
+
     return (
         <div className="main__container">
             <section className="Egressos">
@@ -44,7 +57,10 @@ const Home = () => {
                         Nome do Egresso
                     </a>
                 </div>
-                <button className="botaoVerMais" onClick={() => navigate("/egressos")}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => {
+                    navigate(`${role}/egressos`);
+                    window.scrollTo(0, 0);
+                }}>Ver mais</button>
             </section>
 
             <section className="Depoimentos">
@@ -69,7 +85,10 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <button className="botaoVerMais" onClick={() => navigate("/depoimentos")}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => {
+                    navigate(`${role}/depoimentos`);
+                    window.scrollTo(0, 0);
+                }}>Ver mais</button>
             </section>
 
             <section className="Relatórios">
@@ -77,7 +96,10 @@ const Home = () => {
                 <div>
                     <BarChart />
                 </div>
-                <button className="botaoVerMais" onClick={() => navigate("/relatorios")}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => {
+                    navigate(`${role}/relatorios`);
+                    window.scrollTo(0, 0);
+                }}>Ver mais</button>
             </section>
 
             <section className="Oportunidades">
@@ -96,7 +118,10 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <button className="botaoVerMais" onClick={() => navigate("/oportunidades")}>Ver mais</button>
+                <button className="botaoVerMais" onClick={() => {
+                    navigate(`${role}/oportunidades`);
+                    window.scrollTo(0, 0);
+                }}>Ver mais</button>
             </section>
         </div>
     );

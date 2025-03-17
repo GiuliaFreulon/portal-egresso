@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarEgressoCard from "../../../../components/Coordenador/GerenciarEgressoCard.jsx";
+import {Link} from "react-router-dom";
 
 const Gerenciamento = () => {
     return (
@@ -17,10 +18,10 @@ const Gerenciamento = () => {
                             <input type="text" placeholder="Pesquisar" className="search-input" />
                         </div>
 
-                        <a href="#" className="gerenciamento-egresso-header-cadastrar">
+                        <Link to="/coordenador/egresso/cadastro" className="gerenciamento-egresso-header-cadastrar">
                             <FontAwesomeIcon icon={faSquarePlus} className="add-icon" />
                             <p>Cadastrar Egresso</p>
-                        </a>
+                        </Link>
                     </div>
 
                     <GerenciarEgressoCard nome={'Welderson Bruce Le Araujo de Sousa'}/>

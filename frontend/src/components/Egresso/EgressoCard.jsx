@@ -1,9 +1,27 @@
 import React from 'react';
 import './EgressoCard.css'
 import {redirect, useNavigate} from "react-router-dom";
+import {useAuth} from "../../contexts/AuthContext.jsx";
 
 const EgressoCard = ({ foto, nome, curso, descricao }) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { user } = useAuth();
+
+    const handleNavigation = () => {
+        window.scrollTo(0, 0);
+
+        if (!user) {
+            navigate(`/egressos/perfil/:id`);
+        }
+
+        if (user.role === "ROLE_COORDENADOR") {
+            navigate(`/coordenador/egressos/perfil/:id`);
+        } else if (user.role === "ROLE_EGRESSO") {
+            navigate(`/egresso/egressos/perfil/:id`);
+        } else {
+            navigate(`/egressos/perfil/:id`);
+        }
+    };
 
     return (
         <div className="egresso-card">
@@ -16,7 +34,7 @@ const EgressoCard = ({ foto, nome, curso, descricao }) => {
                 </div>
             </div>
             <div>
-                <button className="botaoVerMais" onClick={() => navigate("/egressos/perfil/id:")}>Ver mais
+                <button className="botaoVerMais" onClick={handleNavigation}>Ver mais
                 </button>
                 <div className="separator-line"></div>
             </div>

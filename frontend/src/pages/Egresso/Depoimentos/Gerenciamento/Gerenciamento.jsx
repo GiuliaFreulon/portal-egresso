@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarDepoimentoCard from "../../../../components/Egresso/GerenciarDepoimentoCard.jsx";
+import {Link} from "react-router-dom";
 
 const Gerenciamento = () => {
     return (
@@ -12,10 +13,10 @@ const Gerenciamento = () => {
 
                 <div className="egresso-gerenciamento-depoimento-container">
                     <div className="egresso-gerenciamento-depoimento-header">
-                        <a href="#" className="egresso-gerenciamento-depoimento-header-cadastrar">
+                        <Link to="/egresso/depoimento/envio" className="egresso-gerenciamento-depoimento-header-cadastrar">
                             <FontAwesomeIcon icon={faSquarePlus} className="add-icon" />
                             <p>Novo Depoimento</p>
-                        </a>
+                        </Link>
                     </div>
 
                     <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Enviado'}/>

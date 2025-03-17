@@ -67,8 +67,10 @@ const AppRoutes = () => {
                 <Route path="/egresso/login" element={<EgressoLogin />} />
             </Route>
 
+
+            todo descomentar PrivateRoute
             {/*Rotas do Egresso*/}
-            <Route element={<PrivateRoute allowedRoles={"ROLE_EGRESSO"}/>}>
+            {/*<Route element={<PrivateRoute allowedRoles={"ROLE_EGRESSO"}/>}>*/}
                 <Route element={<EgressoLayout />} >
                     <Route path="/egresso/dashboard" element={<EgressoDashboard />} />
                     <Route path="/egresso/discussao/gerenciamento" element={<EgressoDiscussaoGerenciamento />} />
@@ -81,15 +83,17 @@ const AppRoutes = () => {
                     <Route path="/egresso/edicao" element={<EgressoEdicao />} />
                     <Route path="/egresso/discussao" element={<EgressoDiscussao />} />
                     {/*Rotas Públicas para Egresso*/}
+                    <Route path="/egresso/home" element={<PublicHome />} />
                     <Route path="/egresso/depoimentos" element={<PublicDepoimentos />} />
                     <Route path="/egresso/egressos" element={<PublicListagemEgressos />} />
+                    <Route path="/egresso/egressos/perfil/:id" element={<PublicPerfilEgresso />} />
                     <Route path="/egresso/oportunidades" element={<PublicOportunidades />} />
                     <Route path="/egresso/relatorios" element={<PublicRelatorios />} />
                 </Route>
-            </Route>
+            {/*</Route>*/}
 
             {/*Rotas do Coordenador*/}
-            <Route element={<PrivateRoute allowedRoles={"ROLE_COORDENADOR"}/>}>
+            {/*<Route element={<PrivateRoute allowedRoles={"ROLE_COORDENADOR"}/>}>*/}
                 <Route element={<CoordenadorLayout />}>
                     <Route path="/coordenador/edicao" element={<CoordenadorEdicao />} />
                     <Route path="/coordenador/dashboard" element={<CoordenadorDashboard />} />
@@ -99,16 +103,18 @@ const AppRoutes = () => {
                     <Route path="/coordenador/curso/gerenciamento" element={<CoordenadorCursoGerenciamento />} />
                     <Route path="/coordenador/curso/cadastro" element={<CoordenadorCursoCadastro />} />
                     <Route path="/coordenador/curso/atualizacao" element={<CoordenadorCursoAtualizacao />} />
-                    <Route path="/coordenador/discussao/gerenciament" element={<CoordenadorDiscussaoGerenciamento />} />
+                    <Route path="/coordenador/discussao/gerenciamento" element={<CoordenadorDiscussaoGerenciamento />} />
                     <Route path="/coordenador/depoimento/homologacao" element={<CoordenadorDepoimentoHomologacao />} />
                     <Route path="/coordenador/oportunidade/homologacao" element={<CoordenadorOportunidadeHomologacao />} />
                     {/*Rotas Públicas para Coordenador*/}
+                    <Route path="/coordenador/home" element={<PublicHome />} />
                     <Route path="/coordenador/depoimentos" element={<PublicDepoimentos />} />
                     <Route path="/coordenador/egressos" element={<PublicListagemEgressos />} />
+                    <Route path="/coordenador/egressos/perfil/:id" element={<PublicPerfilEgresso />} />
                     <Route path="/coordenador/oportunidades" element={<PublicOportunidades />} />
                     <Route path="/coordenador/relatorios" element={<PublicRelatorios />} />
                 </Route>
-            </Route>
+            {/*</Route>*/}
 
         </Routes>
         </AuthProvider>

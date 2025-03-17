@@ -17,7 +17,7 @@ const Header = () => {
         <header className="egresso-header">
             <nav className="egresso-header__menu">
                 <div className="logo">
-                    <Link to="/" className="egresso-header__logo">
+                    <Link to="/egresso/home" className="egresso-header__logo">
                         <h1 className="egresso-header__icon"><FontAwesomeIcon icon={faGraduationCap} /> Portal Egresso </h1>
                     </Link>
                 </div>

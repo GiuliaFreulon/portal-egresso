@@ -17,7 +17,7 @@ const Header = () => {
         <header className="coordenador-header">
             <nav className="coordenador-header__menu">
                 <div className="logo">
-                    <Link to="/" className="coordenador-header__logo">
+                    <Link to="/coordenador/home" className="coordenador-header__logo">
                         <h1 className="coordenador-header__icon"><FontAwesomeIcon icon={faGraduationCap} /> Portal Egresso </h1>
                     </Link>
                 </div>
