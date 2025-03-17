@@ -76,7 +76,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String jsonResponse = String.format(
                 "{\"token\": \"%s\", \"user\": {\"email\": \"%s\", \"role\": \"%s\"}}",
                 token,
-                authResult.getName(),
+                email,
                 role
         );
 
