@@ -3,16 +3,27 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarChart = () => {
-    const data = {
-        labels: ['January', 'February', 'March', 'April', 'May'],
+const BarChart = ({ data }) => {
+    // Extrai labels (nomes dos cursos) e datasets (empregados/não empregados)
+    const labels = Object.keys(data);
+    const empregados = labels.map(curso => data[curso]["Empregados"]);
+    const naoEmpregados = labels.map(curso => data[curso]["Não Empregados"]);
+
+    // Configuração do gráfico
+    const chartData = {
+        labels: labels,
         datasets: [
             {
-                label: 'Monthly Sales',
-                data: [65, 59, 80, 81, 56],
+                label: 'Empregados',
+                data: empregados,
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
+                stack: 'Stack 1',
+            },
+            {
+                label: 'Não Empregados',
+                data: naoEmpregados,
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                stack: 'Stack 1',
             }
         ]
     };
@@ -21,16 +32,26 @@ const BarChart = () => {
         responsive: true,
         plugins: {
             legend: {
-                position: 'top'
+                position: 'top',
             },
             title: {
-                display: true,
-                text: 'Sales Chart'
+                display: false,
+                text: 'Situação de Emprego por Curso',
+                position: 'bottom',
+            }
+        },
+        scales: {
+            x: {
+                stacked: true,
+            },
+            y: {
+                stacked: true,
+                beginAtZero: true
             }
         }
     };
 
-    return <Bar data={data} options={options} />;
+    return <Bar data={chartData} options={options} />;
 };
 
 export default BarChart;
