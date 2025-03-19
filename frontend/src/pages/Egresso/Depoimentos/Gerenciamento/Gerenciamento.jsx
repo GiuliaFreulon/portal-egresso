@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarDepoimentoCard from "../../../../components/Egresso/GerenciarDepoimentoCard.jsx";
+import Pagination from "../../../../components/common/Pagination/Pagination.jsx";
 import {Link} from "react-router-dom";
 
 const Gerenciamento = () => {
@@ -22,6 +23,10 @@ const Gerenciamento = () => {
                     <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Enviado'}/>
                     <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Rejeitado'}/>
                     <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Aprovado'}/>
+
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
 
                 </div>
             </section>

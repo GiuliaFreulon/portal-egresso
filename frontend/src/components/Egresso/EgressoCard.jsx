@@ -1,9 +1,9 @@
 import React from 'react';
 import './EgressoCard.css'
-import {redirect, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../contexts/AuthContext.jsx";
 
-const EgressoCard = ({ foto, nome, curso, descricao }) => {
+const EgressoCard = ({ id, foto, nome, curso, descricao }) => {
     const navigate = useNavigate();
     const { user } = useAuth();
 
@@ -11,15 +11,13 @@ const EgressoCard = ({ foto, nome, curso, descricao }) => {
         window.scrollTo(0, 0);
 
         if (!user) {
-            navigate(`/egressos/perfil/:id`);
-        }
-
-        if (user.role === "ROLE_COORDENADOR") {
-            navigate(`/coordenador/egressos/perfil/:id`);
+            navigate(`/egressos/perfil/${id}`);
+        } else if (user.role === "ROLE_COORDENADOR") {
+            navigate(`/coordenador/egressos/perfil/${id}`);
         } else if (user.role === "ROLE_EGRESSO") {
-            navigate(`/egresso/egressos/perfil/:id`);
+            navigate(`/egresso/egressos/perfil/${id}`);
         } else {
-            navigate(`/egressos/perfil/:id`);
+            navigate(`/egressos/perfil/${id}`);
         }
     };
 
@@ -29,7 +27,7 @@ const EgressoCard = ({ foto, nome, curso, descricao }) => {
                 <img src={foto} alt={`Foto de ${nome}`} className="egresso-foto" />
                 <div className="text-container">
                     <h2 className="egresso-nome">{nome}</h2>
-                    <h2 className="egresso-curso">Curso: {curso}</h2>
+                    <h2 className="egresso-curso">Curso(s): {curso}</h2>
                     <span className="egresso-descricao">{descricao}</span>
                 </div>
             </div>

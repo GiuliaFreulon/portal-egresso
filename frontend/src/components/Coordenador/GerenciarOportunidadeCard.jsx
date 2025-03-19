@@ -1,5 +1,5 @@
 import React from 'react';
-import './OportunidadeCard.css'
+import './GerenciarOportunidadeCard.css'
 import {faCircleCheck, faCircleXmark} from "@fortawesome/free-regular-svg-icons";
 import {faUpRightAndDownLeftFromCenter} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

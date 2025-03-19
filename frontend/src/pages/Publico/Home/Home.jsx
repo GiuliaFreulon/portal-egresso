@@ -1,23 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './Home.css';
 import BarChart from "../../../components/common/charts/BarChart.jsx";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../../contexts/AuthContext.jsx";
 
 const Home = () => {
-
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
+    const [role, setRole] = useState("");
     const { user } = useAuth();
 
-    let role = "";
-    if (user) {
-        if (user.role === "ROLE_COORDENADOR") {
-            role = "/coordenador";
-        } else if (user.role === "ROLE_EGRESSO") {
-            role = "/egresso";
+    useEffect(() => {
+        if (user) {
+            if (user.role === "ROLE_COORDENADOR") {
+                setRole("/coordenador");
+            } else if (user.role === "ROLE_EGRESSO") {
+                setRole("/egresso");
+            }
         }
-    }
+    })
 
     return (
         <div className="main__container">

@@ -67,10 +67,8 @@ const AppRoutes = () => {
                 <Route path="/egresso/login" element={<EgressoLogin />} />
             </Route>
 
-
-            todo descomentar PrivateRoute
             {/*Rotas do Egresso*/}
-            {/*<Route element={<PrivateRoute allowedRoles={"ROLE_EGRESSO"}/>}>*/}
+            <Route element={<PrivateRoute allowedRoles={"ROLE_EGRESSO"}/>}>
                 <Route element={<EgressoLayout />} >
                     <Route path="/egresso/dashboard" element={<EgressoDashboard />} />
                     <Route path="/egresso/discussao/gerenciamento" element={<EgressoDiscussaoGerenciamento />} />
@@ -90,10 +88,10 @@ const AppRoutes = () => {
                     <Route path="/egresso/oportunidades" element={<PublicOportunidades />} />
                     <Route path="/egresso/relatorios" element={<PublicRelatorios />} />
                 </Route>
-            {/*</Route>*/}
+            </Route>
 
             {/*Rotas do Coordenador*/}
-            {/*<Route element={<PrivateRoute allowedRoles={"ROLE_COORDENADOR"}/>}>*/}
+            <Route element={<PrivateRoute allowedRoles={"ROLE_COORDENADOR"}/>}>
                 <Route element={<CoordenadorLayout />}>
                     <Route path="/coordenador/edicao" element={<CoordenadorEdicao />} />
                     <Route path="/coordenador/dashboard" element={<CoordenadorDashboard />} />
@@ -114,7 +112,7 @@ const AppRoutes = () => {
                     <Route path="/coordenador/oportunidades" element={<PublicOportunidades />} />
                     <Route path="/coordenador/relatorios" element={<PublicRelatorios />} />
                 </Route>
-            {/*</Route>*/}
+            </Route>
 
         </Routes>
         </AuthProvider>

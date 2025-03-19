@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import './Atualizacao.css'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 
 const Atualizacao = () => {
 
@@ -86,7 +88,7 @@ const Atualizacao = () => {
                         </div>
 
                         <div className="">
-                            <label htmlFor="curso" className="coordenador-atualizacao-egresso-label">Curso</label>
+                            <label htmlFor="curso" className="coordenador-atualizacao-egresso-label">Curso*</label>
 
                             <select
                                 id="curso"
@@ -115,15 +117,19 @@ const Atualizacao = () => {
                             </div>
 
                             <div className="ano-input">
-                                <label htmlFor="anoFim" className="coordenador-atualizacao-egresso-label">Ano de Início*</label>
+                                <label htmlFor="anoFim" className="coordenador-atualizacao-egresso-label">Ano de Término</label>
                                 <input
                                     type="number"
                                     id="anoFim"
                                     value={anoFim}
                                     onChange={(e) => setAnoFim(e.target.value)}
-                                    required
                                 />
                             </div>
+                        </div>
+
+                        <div className="cadastro-egresso-add-curso">
+                            <FontAwesomeIcon icon={faSquarePlus} className="add-icon-curso" />
+                            <p>Adicionar curso</p>
                         </div>
 
                         <div>

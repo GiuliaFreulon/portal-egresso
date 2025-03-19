@@ -33,9 +33,30 @@
     margin: 2rem 0 0 0;
 }
 
+.ano-input-container {
+    margin: 1rem 0 0 0 !important;
+}
+
 .coordenador-cadastro-egresso-label {
     display: block;
     color: #666;
     align-self: flex-start;
     margin-left: 4rem;
+}
+
+.cadastro-egresso-add-curso{
+    flex-direction: row !important;
+    text-decoration: none;
+    white-space: nowrap;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    margin-left: 20% !important;
+    cursor: pointer;
+    margin-bottom: 2rem !important;
+    margin-top: 1rem !important;
+}
+
+.add-icon-curso {
+    font-size: 2rem;
+    color: #333333;
 }

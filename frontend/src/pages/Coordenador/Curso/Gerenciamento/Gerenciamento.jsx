@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarCursoCard from "../../../../components/Coordenador/GerenciarCursoCard.jsx";
+import Pagination from "../../../../components/common/Pagination/Pagination.jsx";
 import {Link, useNavigate} from "react-router-dom";
 
 const Gerenciamento = () => {
@@ -36,6 +37,10 @@ const Gerenciamento = () => {
                         nome={'Design UX/UI'}
                         nivel={'Graduação'}
                     />
+
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
 
                 </div>
             </section>

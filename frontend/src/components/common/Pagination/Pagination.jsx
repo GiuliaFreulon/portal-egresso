@@ -1,77 +1,82 @@
-import { useState } from "react";
 import './Pagination.css';
 
-export default function Pagination({ totalPages }) {
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const goToPage = (page) => {
-        if (page >= 1 && page <= totalPages) {
-            setCurrentPage(page);
-        }
-    };
-
+export default function Pagination({ currentPage, totalPages, onPageChange }) {
     const renderPages = () => {
-        let pages = [];
-        const MAX_VISIBLE_PAGES = 3; // Número de páginas visíveis no início e no fim
+        const pages = new Set();
+        const MAX_VISIBLE_PAGES = 3;
 
-        // Caso 1: Total de páginas é pequeno (exibe todas as páginas)
-        if (totalPages <= 6) {
-            for (let i = 1; i <= totalPages; i++) {
-                pages.push(i);
-            }
-        }
-        // Caso 2: Total de páginas é grande (exibe páginas com "..." no meio)
-        else {
-            // Sempre exibe as primeiras páginas
-            pages.push(1, 2, 3);
-
-            // Adiciona "..." se a página atual estiver longe do início
-            if (currentPage > MAX_VISIBLE_PAGES + 1) {
-                pages.push("...");
-            }
-
-            // Exibe a página atual e suas vizinhas (se estiver no meio)
-            if (currentPage > MAX_VISIBLE_PAGES && currentPage < totalPages - 2) {
-                pages.push(currentPage - 1, currentPage, currentPage + 1);
-            }
-
-            // Adiciona "..." se a página atual estiver longe do final
-            if (currentPage < totalPages - 2) {
-                pages.push("...");
-            }
-
-            // Sempre exibe as últimas páginas
-            pages.push(totalPages - 2, totalPages - 1, totalPages);
+        // Adiciona as primeiras páginas
+        for (let i = 1; i <= Math.min(MAX_VISIBLE_PAGES, totalPages); i++) {
+            pages.add(i);
         }
 
-        return pages;
+        // Adiciona as últimas páginas
+        const lastStart = Math.max(totalPages - MAX_VISIBLE_PAGES + 1, MAX_VISIBLE_PAGES + 1);
+        for (let i = lastStart; i <= totalPages; i++) {
+            pages.add(i);
+        }
+
+        // Adiciona páginas adjacentes à atual se estiver no meio
+        if (currentPage > MAX_VISIBLE_PAGES && currentPage < lastStart) {
+            pages.add(currentPage - 1);
+            pages.add(currentPage);
+            pages.add(currentPage + 1);
+        }
+
+        // Processa as lacunas e insere "..."
+        const sortedPages = Array.from(pages).sort((a, b) => a - b);
+        const processedPages = [];
+        let prevPage = 0;
+
+        for (const page of sortedPages) {
+            if (page - prevPage > 1) {
+                processedPages.push("...");
+            }
+            processedPages.push(page);
+            prevPage = page;
+        }
+
+        return processedPages;
     };
 
     return (
         <div className="pagination">
+            {/* Botões Anterior/Próximo mantidos */}
             <button
-                onClick={() => goToPage(currentPage - 1)}
+                key="prev"
+                onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
             >
                 {"<"}
             </button>
 
-            {renderPages().map((page, index) =>
-                page === "..." ? (
-                    <span key={index} className="dots">...</span>
-                ) : (
+            {renderPages().map((page, index) => {
+                if (page === "...") {
+                    return (
+                        <span
+                            key={`dots-${index}`}
+                            className="dots"
+                        >
+                ...
+            </span>
+                    );
+                }
+
+                return (
                     <button
-                        key={index}
+                        key={page}
                         className={page === currentPage ? "active" : ""}
-                        onClick={() => goToPage(page)}
+                        onClick={() => onPageChange(page)}
+                        disabled={page === currentPage}
                     >
                         {page}
                     </button>
-                )
-            )}
+                );
+            })}
 
             <button
-                onClick={() => goToPage(currentPage + 1)}
+                key="next"
+                onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
             >
                 {">"}

@@ -9,6 +9,8 @@
 .egresso-foto {
     min-width: 10rem;
     min-height: 10rem;
+    max-width: 10rem;
+    max-height: 10rem;
     border-radius: 50%;
     background-color: #ccc;
     object-fit: cover;
@@ -62,28 +64,10 @@
     align-items: center;
     place-items: center;
     padding: 1rem;
+    width: 80%;
 }
 
 .cargos-titulo {
     font-size: 23px;
-    color: #333333;
-}
-
-.cargo__container {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    border: 3px solid #66666635;
-    border-radius: 15px;
-    text-align: left;
-    padding: 1rem;
-    gap: 0.7rem;
-}
-
-.cargo__title {
-    font-weight: bold;
-}
-
-.cargo__descricao {
     color: #333333;
 }

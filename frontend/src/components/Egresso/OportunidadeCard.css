@@ -1,0 +1,55 @@
+.oportunidade-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    width: 100% !important;
+}
+.oportunidade-container {
+    width: 100% !important;
+    display: flex;
+    flex-direction: column !important;
+    border: 3px solid #66666635;
+    border-radius: 15px;
+    text-align: left;
+    gap: 0.7rem;
+}
+
+.oportunidade-card-egresso-info {
+    display: flex;
+    flex-direction: row;
+    gap: 0.7rem;
+    padding: 1rem 2rem 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    text-align: justify;
+    color: #FFFFFF;
+    font-weight: lighter;
+    justify-content: center;
+}
+
+.oportunidade-titulo {
+    font-weight: bold;
+    font-size: 20px;
+    color: #333333;
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.oportunidade-autor {
+    padding-bottom: 1rem;
+    text-align: left !important;
+}
+
+.oportunidade-descricao {
+    color: #333333;
+    padding-bottom: 1rem;
+}
+
+.oportunidades-card-separator {
+    position: relative;
+}
+
+.oportunidades-card-separator div{
+    bottom: 35%;
+}

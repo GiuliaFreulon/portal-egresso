@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarEgressoCard from "../../../../components/Coordenador/GerenciarEgressoCard.jsx";
+import Pagination from "../../../../components/common/Pagination/Pagination.jsx";
 import {Link} from "react-router-dom";
 
 const Gerenciamento = () => {
@@ -28,6 +29,9 @@ const Gerenciamento = () => {
                     <GerenciarEgressoCard nome={'Giulia de Araujo Freulon'}/>
                     <GerenciarEgressoCard nome={'Nome Completo do Egresso'}/>
 
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
                 </div>
             </section>
         </div>

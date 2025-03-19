@@ -1,6 +1,7 @@
 import React from 'react';
 import './Discussoes.css'
 import DiscussaoCard from "../../../components/Coordenador/DiscussaoCard.jsx";
+import Pagination from "../../../components/common/Pagination/Pagination.jsx";
 
 const Discussoes = () => {
     return (
@@ -18,6 +19,10 @@ const Discussoes = () => {
                     <DiscussaoCard
                         titulo={'Design UX/UI'}
                     />
+
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
 
                 </div>
             </section>

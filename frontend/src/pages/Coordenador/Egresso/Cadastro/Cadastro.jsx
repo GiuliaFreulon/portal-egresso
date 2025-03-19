@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import './Cadastro.css'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
+import {Link} from "react-router-dom";
 
 const Cadastro = () => {
 
@@ -86,7 +89,7 @@ const Cadastro = () => {
                         </div>
 
                         <div className="">
-                            <label htmlFor="curso" className="coordenador-cadastro-egresso-label">Curso</label>
+                            <label htmlFor="curso" className="coordenador-cadastro-egresso-label">Curso*</label>
 
                             <select
                                 id="curso"
@@ -116,7 +119,7 @@ const Cadastro = () => {
                             </div>
 
                             <div className="ano-input">
-                                <label htmlFor="anoFim" className="coordenador-cadastro-egresso-label">Ano de Início*</label>
+                                <label htmlFor="anoFim" className="coordenador-cadastro-egresso-label">Ano de Término</label>
                                 <input
                                     type="number"
                                     id="anoFim"
@@ -124,6 +127,11 @@ const Cadastro = () => {
                                     onChange={(e) => setAnoFim(e.target.value)}
                                 />
                             </div>
+                        </div>
+
+                        <div className="cadastro-egresso-add-curso">
+                            <FontAwesomeIcon icon={faSquarePlus} className="add-icon-curso" />
+                            <p>Adicionar curso</p>
                         </div>
 
                         <div>

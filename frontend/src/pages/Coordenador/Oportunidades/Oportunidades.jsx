@@ -1,6 +1,7 @@
 import React from 'react';
 import './Oportunidades.css'
-import OportunidadeCard from "../../../components/Coordenador/OportunidadeCard.jsx";
+import OportunidadeCard from "../../../components/Coordenador/GerenciarOportunidadeCard.jsx";
+import Pagination from "../../../components/common/Pagination/Pagination.jsx";
 
 const Oportunidades = () => {
     return (
@@ -18,6 +19,10 @@ const Oportunidades = () => {
                     <OportunidadeCard
                         nome={'Titulo da Oportunidade'}
                     />
+
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
 
                 </div>
             </section>

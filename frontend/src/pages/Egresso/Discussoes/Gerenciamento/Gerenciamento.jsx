@@ -3,6 +3,7 @@ import './Gerenciamento.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarDiscussaoCard from "../../../../components/Egresso/GerenciarDiscussaoCard.jsx";
+import Pagination from "../../../../components/common/Pagination/Pagination.jsx";
 import {Link} from "react-router-dom";
 
 const Gerenciamento = () => {
@@ -22,6 +23,10 @@ const Gerenciamento = () => {
                     <GerenciarDiscussaoCard titulo={'Título do Grupo'}/>
                     <GerenciarDiscussaoCard titulo={'Título do Grupo'}/>
                     <GerenciarDiscussaoCard titulo={'Título do Grupo'}/>
+
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
 
                 </div>
             </section>

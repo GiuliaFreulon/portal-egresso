@@ -1,6 +1,7 @@
 import React from 'react';
 import './Depoimentos.css'
 import DepoimentoCard from "../../../components/Coordenador/DepoimentoCard.jsx";
+import Pagination from "../../../components/common/Pagination/Pagination.jsx";
 
 const Depoimentos = () => {
     return (
@@ -19,7 +20,12 @@ const Depoimentos = () => {
                         nome={'Giulia de Araujo Freulon'}
                     />
 
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
+
                 </div>
+
             </section>
         </div>
     );

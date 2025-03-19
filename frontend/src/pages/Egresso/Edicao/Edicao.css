@@ -30,7 +30,11 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin: 2rem 0 0 0;
+    margin: 1rem 0 0 0;
+}
+
+.egresso-edicao-form > div > button {
+    margin-top: 1.5rem;
 }
 
 .egresso-edicao-label {

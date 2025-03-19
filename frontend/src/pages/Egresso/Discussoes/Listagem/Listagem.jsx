@@ -1,6 +1,7 @@
 import React from 'react';
 import './Listagem.css'
 import ListarDiscussaoCard from "../../../../components/Egresso/ListarDiscussaoCard.jsx";
+import Pagination from "../../../../components/common/Pagination/Pagination.jsx";
 
 const Listagem = () => {
     return (
@@ -12,7 +13,12 @@ const Listagem = () => {
                     <ListarDiscussaoCard titulo={'Título do Grupo'}/>
                     <ListarDiscussaoCard titulo={'Título do Grupo'}/>
                     <ListarDiscussaoCard titulo={'Título do Grupo'}/>
+
+                    <div className="pagination-container">
+                        <Pagination/>
+                    </div>
                 </div>
+
             </section>
         </div>
     );
