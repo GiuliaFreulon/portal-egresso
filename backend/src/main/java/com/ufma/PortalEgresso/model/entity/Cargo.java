@@ -1,5 +1,7 @@
 package com.ufma.PortalEgresso.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +27,7 @@ public class Cargo implements Serializable{
     @JoinColumn(name = "id_egresso")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
     private Egresso egresso;
 
     @Column(nullable = false)

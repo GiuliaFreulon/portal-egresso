@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     .getBody();
 
             // Cria a autenticação com roles
-            List<String> roles = (List<String>) claims.get("roles"); // Converte diretamente para List<String>
+            List<String> roles = claims.get("roles", List.class); // Converte diretamente para List<String>
+            if (roles == null) {
+                roles = new ArrayList<>(); // Lista vazia se não houver roles
+            }
             List<GrantedAuthority> authorities = roles.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());

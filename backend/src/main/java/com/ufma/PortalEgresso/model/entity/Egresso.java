@@ -1,5 +1,7 @@
 package com.ufma.PortalEgresso.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,11 +51,10 @@ public class Egresso implements Serializable {
     @Column
     private String curriculo;
 
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "egresso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonManagedReference
     private Set<Cargo> cargos = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -62,10 +63,10 @@ public class Egresso implements Serializable {
     @EqualsAndHashCode.Exclude
     private Set<Depoimento> depoimentos = new HashSet<>();
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "egresso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonManagedReference
     private Set<CursoEgresso> cursos = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

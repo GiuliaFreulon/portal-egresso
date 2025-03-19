@@ -33,6 +33,8 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/egresso/listarTodos").permitAll()
+                        .requestMatchers("/api/egresso/buscarPorId/**").permitAll()
                         .requestMatchers("/api/egresso/**").hasRole("EGRESSO")
                         .requestMatchers("/api/coordenador/**").hasRole("COORDENADOR")
                         .requestMatchers("/api/**","/login").permitAll()
