@@ -9,15 +9,19 @@ const Oportunidades = () => {
     const [oportunidades, setOportunidades] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5); // Itens por página
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
         const fetchOportunidades = async () => {
             try {
+                setLoading(true);
                 const response = await api.get(`/api/oportunidade/listarTodos`);
                 setOportunidades(response.data); // Dados da página atual
             } catch (error) {
                 console.error("Erro ao buscar oportunidades:", error);
+            } finally {
+                setLoading(false);
             }
 
         };
@@ -41,6 +45,15 @@ const Oportunidades = () => {
             <section className="oportunidades">
                 <h1 className="line-text">Painel de Oportunidades</h1>
                 <div className="lista-oportunidades">
+
+                    {loading ? (
+                        <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                            <div className="skeleton-loader"></div>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+
                     <div className="cards-oportunidades">
                         {paginatedOportunidades?.filter((oportunidades) => oportunidades.status === "AGUARDANDO" )
                             .map((oportunidade) => (

@@ -7,6 +7,7 @@ import Pagination from "../../../../components/common/Pagination/Pagination.jsx"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import api from '../../../../services/api.jsx';
+import PieChart from "../../../../components/common/charts/PieChart.jsx";
 
 const Listagem = () => {
 
@@ -14,16 +15,19 @@ const Listagem = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10); // Itens por página
     const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
         const fetchEgressos = async () => {
             try {
+                setLoading(true);
                 const response = await api.get(`/api/egresso/listarTodos`);
                 setEgressos(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error("Erro ao buscar egressos:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -66,13 +70,20 @@ const Listagem = () => {
                     <button className="filter-btn"><FontAwesomeIcon icon={faFilter} /></button>
                 </div>
 
+                {loading ? (
+                    <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                        <div className="skeleton-loader"></div>
+                    </div>
+                ) : (
+                    <></>
+                )}
+
                 <div className="cards-egresso">
                     {paginatedEgressos?.map((egresso) => (
                         <EgressoCard
                             id={egresso.id_egresso}
                             foto={egresso.foto}
                             nome={egresso.nome}
-                            //curso={egresso.cursos[0]?.curso.nome}
                             curso={egresso.cursos?.map((curso) => curso.curso.nome).join(", ")}
                             descricao={egresso.descricao}
                         />

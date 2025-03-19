@@ -29,15 +29,6 @@ const Edicao = () => {
             github,
         };
 
-        // Simula o envio do JSON (substitua por fetch/axios)
-        console.log('Dados enviados:', JSON.stringify(formData, null, 2));
-
-        // Aqui você faria a chamada à API:
-        // fetch('/api/login', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(formData)
-        // })
     };
 
     return (

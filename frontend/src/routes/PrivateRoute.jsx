@@ -9,7 +9,7 @@ const PrivateRoute = ({ allowedRoles }) => {
 
     if (!isAuthenticated) {
         console.log('not Authenticated');
-        return <Navigate to="/" state={{ from: location }} replace />;
+        return <Navigate to="/acesso-negado" state={{ from: location }} replace />;
     }
 
     if (!allowedRoles.includes(user.role)) {

@@ -34,8 +34,6 @@ const Login = () => {
             senha,
         };
 
-        // teste
-        console.log('Dados enviados:', JSON.stringify(formData, null, 2));
 
         try {
             const response = await loginAPI(formData);

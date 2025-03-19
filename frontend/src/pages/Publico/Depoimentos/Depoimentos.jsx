@@ -11,16 +11,19 @@ const Depoimentos = () => {
     const [depoimentos, setDepoimentos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5); // Itens por página
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
         const fetchDepoimentos = async () => {
             try {
+                setLoading(true);
                 const response = await api.get(`/api/depoimento/listarTodos`);
                 setDepoimentos(response.data); // Dados da página atual
-                console.log(response.data);
             } catch (error) {
                 console.error("Erro ao buscar depoimentos:", error);
+            } finally {
+                setLoading(false);
             }
 
         };
@@ -47,6 +50,14 @@ const Depoimentos = () => {
                 <div className="depoimentos-filter-container">
                     <button className="depoimentos-filter-btn"><FontAwesomeIcon icon={faFilter} />Filtros</button>
                 </div>
+
+                {loading ? (
+                    <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                        <div className="skeleton-loader"></div>
+                    </div>
+                ) : (
+                    <></>
+                )}
 
                 <div className="depoimentos-cards-egresso">
                     {paginatedDepoimentos?.filter((depoimento) => depoimento.status === "AGUARDANDO")
