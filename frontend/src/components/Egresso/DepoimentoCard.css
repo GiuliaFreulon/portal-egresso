@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
+    width: 100%;
 }
 .depoimento-card-egresso-info {
     display: flex;
@@ -31,6 +32,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    width: 100%;
 }
 
 .depoimento-card-nome {

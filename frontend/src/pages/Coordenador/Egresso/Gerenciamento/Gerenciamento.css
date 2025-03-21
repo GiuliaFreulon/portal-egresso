@@ -30,6 +30,13 @@
     align-items: center;
 }
 
+.cards-coordenador-gerenciamento-egresso {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
+
 .add-icon {
     font-size: 2rem;
     color: #48A537;

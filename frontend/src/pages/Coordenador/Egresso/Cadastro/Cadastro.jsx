@@ -1,40 +1,104 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Cadastro.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
-import {Link} from "react-router-dom";
+import api from "../../../../services/api.jsx";
+import {useAuth} from "../../../../contexts/AuthContext.jsx";
+import {jwtDecode} from "jwt-decode";
 
 const Cadastro = () => {
+    const { user } = useAuth()
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [curso, setCurso] = useState('');
-    const [anoInicio, setAnoInicio] = useState('');
-    const [anoFim, setAnoFim] = useState('');
+    const [cursos, setCursos] = useState([]);
+    const [currentCurso, setCurrentCurso] = useState('');
+    const [currentAnoInicio, setCurrentAnoInicio] = useState('');
+    const [currentAnoFim, setCurrentAnoFim] = useState('');
+    const [cursosAdicionados, setCursosAdicionados] = useState([]);
 
-    // Lista de cursos exemplo
-    const cursos = [
-        { id: 1, nome: 'Desenvolvimento Web'},
-        { id: 2, nome: 'Ciência de Dados'},
-        { id: 3, nome: 'Design UX/UI'},
-        { id: 4, nome: 'Marketing Digital'},
-    ];
+    useEffect(() => {
+        const fetchCursos = async () => {
+            try {
+                const response = await api.get(`/api/curso/listarTodos`);
+                setCursos(response.data.filter(
+                    (curso) => curso.coordenador.id_coordenador === user.id
+                ));
+            } catch (error) {
+                console.error("Erro ao buscar cursos:", error);
+            } finally {
+            }
+        };
 
-    const handleSubmit = (userType) => {
-        // Previne o comportamento padrão do formulário
+        fetchCursos();
+    }, [user]);
+
+    const handleAddCurso = (e) => {
+        e.preventDefault();
+
+        const anoAtual = new Date().getFullYear();
+
+        if (!currentCurso || !currentAnoInicio) {
+            alert('Por favor, selecione um curso e informe o ano de início');
+            return;
+        }
+
+        if(currentAnoInicio < 1900 || currentAnoInicio > anoAtual) {
+            alert('Ano de início inválido');
+            return;
+        }
+
+        if(currentAnoFim && (currentAnoFim < currentAnoInicio || currentAnoFim > anoAtual)) {
+            alert('Ano de término inválido');
+            return;
+        }
+
+        if (!currentCurso || !currentAnoInicio) {
+            alert('Por favor, selecione um curso e informe o ano de início');
+            return;
+        }
+
+        const novoCurso = {
+            cursoId: currentCurso,
+            anoInicio: currentAnoInicio,
+            anoFim: currentAnoFim
+        };
+
+        setCursosAdicionados([...cursosAdicionados, novoCurso]);
+
+        // Limpa os campos
+        setCurrentCurso('');
+        setCurrentAnoInicio('');
+        setCurrentAnoFim('');
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Cria o objeto com os dados
+        if (cursosAdicionados.length === 0) {
+            alert('Adicione pelo menos um curso');
+            return;
+        }
+
         const formData = {
             nome,
             email,
-            senha,
-            curso,
-            anoInicio,
-            anoFim,
-            userType // 'coordenador' ou 'egresso'
+            senha
         };
+
+        console.log('Dados para cadastro:', formData);
+
+        try {
+            const response = await api.post("/api/coordenador/cadastrarEgresso", formData);
+            alert(response);
+            setNome('');
+            setEmail('');
+            setSenha('');
+            setCursosAdicionados([]);
+        }catch(error) {
+            console.log('Falha no cadastro', error.response?.data || error.message);
+        }
     };
 
     return (
@@ -80,19 +144,16 @@ const Cadastro = () => {
 
                         <div className="">
                             <label htmlFor="curso" className="coordenador-cadastro-egresso-label">Curso*</label>
-
                             <select
                                 id="curso"
-                                value={curso}
-                                onChange={(e) => setCurso(e.target.value)}
-                                required
+                                value={currentCurso}
+                                onChange={(e) => setCurrentCurso(e.target.value)}
                                 className="drop-down-input"
                             >
                                 <option value="">Selecione um curso</option>
                                 {cursos.map((curso) => (
-                                    <option key={curso.id} value={curso.id}>{curso.nome}</option>
-                                    ))
-                                }
+                                    <option key={curso.id} value={curso?.id_curso}>{curso?.nome}</option>
+                                ))}
                             </select>
                         </div>
 
@@ -102,9 +163,8 @@ const Cadastro = () => {
                                 <input
                                     type="number"
                                     id="anoInicio"
-                                    value={anoInicio}
-                                    onChange={(e) => setAnoInicio(e.target.value)}
-                                    required
+                                    value={currentAnoInicio}
+                                    onChange={(e) => setCurrentAnoInicio(e.target.value)}
                                 />
                             </div>
 
@@ -113,22 +173,37 @@ const Cadastro = () => {
                                 <input
                                     type="number"
                                     id="anoFim"
-                                    value={anoFim}
-                                    onChange={(e) => setAnoFim(e.target.value)}
+                                    value={currentAnoFim}
+                                    onChange={(e) => setCurrentAnoFim(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <div className="cadastro-egresso-add-curso">
+                        <div className="cadastro-egresso-add-curso" onClick={handleAddCurso}>
                             <FontAwesomeIcon icon={faSquarePlus} className="add-icon-curso" />
                             <p>Adicionar curso</p>
                         </div>
 
+                        {/* Lista de cursos adicionados */}
+                        {cursosAdicionados.length > 0 && (
+                            <div className="cursos-adicionados">
+                                <h3>Cursos Adicionados:</h3>
+                                <ul>
+                                    {cursosAdicionados.map((curso, index) => (
+                                        <li key={index}>
+                                            {cursos.find(c => c.id_curso === curso.cursoId)?.nome} -
+                                            Início: {curso.anoInicio} -
+                                            Término: {curso.anoFim || 'Não informado'}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
                         <div>
                             <button
                                 className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('coordenador')}>
+                                type="submit">
                                 Cadastrar
                             </button>
                         </div>

@@ -30,6 +30,10 @@
     align-items: center;
 }
 
+.cards-discussoes {
+    width: 100%;
+}
+
 .add-icon {
     font-size: 2rem;
     color: #48A537;

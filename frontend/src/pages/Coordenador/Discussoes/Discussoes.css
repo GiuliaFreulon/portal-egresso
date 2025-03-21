@@ -12,3 +12,10 @@
     justify-content: center;
     text-align: center;
 }
+
+.cards-discussoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}

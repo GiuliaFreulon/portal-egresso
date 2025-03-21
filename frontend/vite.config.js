@@ -7,6 +7,6 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
-    allowedHosts: ['d1ad-45-190-120-66.ngrok-free.app', 'classical-tanzania-delays-novel.trycloudflare.com']
+    allowedHosts: ['d1ad-45-190-120-66.ngrok-free.app', 'rates-along-participated-tcp.trycloudflare.com']
   },
 });

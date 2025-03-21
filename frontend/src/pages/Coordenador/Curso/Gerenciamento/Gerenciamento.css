@@ -30,6 +30,13 @@
     align-items: center;
 }
 
+.cards-coordenador-gerenciamento-cursos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
 .add-icon {
     font-size: 2rem;
     color: #48A537;

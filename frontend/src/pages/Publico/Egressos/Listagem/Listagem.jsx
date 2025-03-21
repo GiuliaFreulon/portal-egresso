@@ -7,7 +7,6 @@ import Pagination from "../../../../components/common/Pagination/Pagination.jsx"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import api from '../../../../services/api.jsx';
-import PieChart from "../../../../components/common/charts/PieChart.jsx";
 
 const Listagem = () => {
 
