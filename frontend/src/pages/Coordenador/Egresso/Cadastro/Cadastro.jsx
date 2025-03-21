@@ -4,7 +4,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import api from "../../../../services/api.jsx";
 import {useAuth} from "../../../../contexts/AuthContext.jsx";
-import {jwtDecode} from "jwt-decode";
 
 const Cadastro = () => {
     const { user } = useAuth()
@@ -90,12 +89,24 @@ const Cadastro = () => {
         console.log('Dados para cadastro:', formData);
 
         try {
+            //cadastra egresso
             const response = await api.post("/api/coordenador/cadastrarEgresso", formData);
-            alert(response);
+            const egressoID = response.data.id_egresso;
+
+            //associa cursos
+            for (const curso of cursosAdicionados) {
+                const responseCurso = await api.post(`/api/coordenador/associarCursoAEgresso/${egressoID}/${curso.cursoId}`, {
+                    anoInicio: curso.anoInicio,
+                    anoFim: curso.anoFim,
+                });
+            }
+
             setNome('');
             setEmail('');
             setSenha('');
             setCursosAdicionados([]);
+            alert("Egresso cadastrado com sucesso");
+
         }catch(error) {
             console.log('Falha no cadastro', error.response?.data || error.message);
         }
