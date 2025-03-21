@@ -34,9 +34,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/egresso/listarTodos").permitAll()
+                        .requestMatchers("/api/egresso/listarNomeIdTodos").permitAll()
                         .requestMatchers("/api/egresso/buscarPorId/**").permitAll()
-                        .requestMatchers("/api/egresso/**").hasRole("EGRESSO")
-                        .requestMatchers("/api/coordenador/**").hasRole("COORDENADOR")
+                        .requestMatchers("/api/egresso/**").hasAuthority("ROLE_EGRESSO")
+                        .requestMatchers("/api/coordenador/**").hasAuthority("ROLE_COORDENADOR")
                         .requestMatchers("/api/**","/login").permitAll()
                         .anyRequest().denyAll()
                 )

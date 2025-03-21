@@ -3,6 +3,7 @@ package com.ufma.PortalEgresso.service;
 import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
+import com.ufma.PortalEgresso.model.entity.DTOs.EgressoResumoDTO;
 import com.ufma.PortalEgresso.model.entity.DTOs.UsuarioCadastradoDTO;
 import com.ufma.PortalEgresso.model.repo.EgressoRepo;
 import jakarta.persistence.EntityManager;
@@ -127,6 +128,17 @@ public class EgressoService {
     @Transactional
     public List<Egresso> listarTodos() {
         List<Egresso> lista = repo.findAll();
+
+        if (lista.isEmpty()){
+            throw new BuscaVaziaRunTime();
+        }
+
+        return lista;
+    }
+
+    @Transactional
+    public List<EgressoResumoDTO> listarNomeIdTodos() {
+        List<EgressoResumoDTO> lista = repo.findNomeAndIdOfAll();
 
         if (lista.isEmpty()){
             throw new BuscaVaziaRunTime();

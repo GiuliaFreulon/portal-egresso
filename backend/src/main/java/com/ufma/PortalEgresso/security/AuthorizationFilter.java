@@ -55,14 +55,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     .parseClaimsJws(token)
                     .getBody();
 
-            // Cria a autenticação com roles
-            List<String> roles = claims.get("roles", List.class); // Converte diretamente para List<String>
-            if (roles == null) {
-                roles = new ArrayList<>(); // Lista vazia se não houver roles
+            // Cria a autenticação com role
+            String role = claims.get("role", String.class);
+
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            if (role != null) {
+                authorities.add(new SimpleGrantedAuthority(role)); // Adiciona a role como authority
             }
-            List<GrantedAuthority> authorities = roles.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     claims.getSubject(),

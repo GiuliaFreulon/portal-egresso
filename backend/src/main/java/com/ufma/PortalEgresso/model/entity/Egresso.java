@@ -1,10 +1,10 @@
 package com.ufma.PortalEgresso.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;

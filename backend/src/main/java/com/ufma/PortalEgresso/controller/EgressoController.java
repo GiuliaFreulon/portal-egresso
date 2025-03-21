@@ -4,7 +4,6 @@ import com.ufma.PortalEgresso.exception.BuscaVaziaRunTime;
 import com.ufma.PortalEgresso.exception.RegraNegocioRunTime;
 import com.ufma.PortalEgresso.model.entity.*;
 import com.ufma.PortalEgresso.model.entity.DTOs.*;
-import com.ufma.PortalEgresso.model.entity.ENUMs.Status;
 import com.ufma.PortalEgresso.service.CargoService;
 import com.ufma.PortalEgresso.service.CursoService;
 import com.ufma.PortalEgresso.service.DiscussaoService;
@@ -258,5 +257,15 @@ public class EgressoController {
         }
     }
 
+    @GetMapping("/listarNomeIdTodos")
+    public ResponseEntity listarNomeIdTodos() {
+        try {
+            List<EgressoResumoDTO> lista = egressoService.listarNomeIdTodos();
+            return ResponseEntity.ok(lista);
+
+        } catch (RegraNegocioRunTime | BuscaVaziaRunTime e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
     
 }
