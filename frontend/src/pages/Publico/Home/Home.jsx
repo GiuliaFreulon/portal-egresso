@@ -4,7 +4,6 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../../contexts/AuthContext.jsx";
 import api from "../../../services/api.jsx";
 import PieChart from "../../../components/common/charts/PieChart.jsx";
-import EgressoCard from "../../../components/Egresso/EgressoCard.jsx";
 import DepoimentoCard from "../../../components/Egresso/DepoimentoCard.jsx";
 import OportunidadeCard from "../../../components/Egresso/OportunidadeCard.jsx";
 

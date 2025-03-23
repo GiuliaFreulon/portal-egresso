@@ -1,21 +1,44 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Edicao.css'
+import api from "../../../services/api.jsx";
+import {useAuth} from "../../../contexts/AuthContext.jsx";
 
 const Edicao = () => {
+    const { user } = useAuth()
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (userType) => {
-        // Previne o comportamento padrão do formulário
+    useEffect(() => {
+        setLogin(user.name)
+    }, [user.name]);
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         // Cria o objeto com os dados
         const formData = {
             login,
-            password,
-            userType // 'coordenador' ou 'egresso'
+            senha: password
         };
+
+        try {
+            //atualiza coordenador
+            setLoading(true);
+            const response = await api.put(`/api/coordenador/${user.id}`, formData);
+
+            //reseta campos após cadastro
+            setLogin(login);
+            setPassword('');
+
+            alert("Coordenador atualizado com sucesso");
+
+        }catch(error) {
+            console.log("Erro ao atualizar coordenador:", error);
+        } finally {
+            setLoading(false);
+        }
 
     };
 
@@ -33,7 +56,6 @@ const Edicao = () => {
                                 name="login"
                                 value={login}
                                 onChange={(e) => setLogin(e.target.value)}
-                                required
                             />
                         </div>
 
@@ -44,18 +66,24 @@ const Edicao = () => {
                                 id="senha"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                required
                             />
                         </div>
 
                         <div>
-                            <button
-                                className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('coordenador')}>
-                                Confirmar
-                            </button>
+                            {loading ? (
+                                <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                                    <div className="skeleton-loader"></div>
+                                </div>
+                            ) : (
+                                <button
+                                    className="formulario-button"
+                                    type="submit"
+                                    onClick={() => handleSubmit()}>
+                                    Confirmar
+                                </button>
+                            )}
                         </div>
+
                     </form>
                 </div>
             </section>

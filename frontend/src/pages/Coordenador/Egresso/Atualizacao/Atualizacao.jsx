@@ -24,7 +24,6 @@ const Atualizacao = () => {
         const fetchEgresso = async () => {
             try {
                 const response = await api.get(`/api/egresso/buscarPorId/${id}`);
-                console.log(response.data);
 
                 setNome(response.data.nome);
                 setEmail(response.data.email);

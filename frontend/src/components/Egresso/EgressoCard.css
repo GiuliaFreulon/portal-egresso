@@ -1,5 +1,6 @@
 .egresso-card {
     padding: 2rem 1rem;
+    width: 100%;
 }
 .egresso-info {
     display: flex;

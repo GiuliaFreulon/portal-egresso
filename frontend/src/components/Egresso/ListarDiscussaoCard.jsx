@@ -3,7 +3,7 @@ import './ListarDiscussaoCard.css'
 import {faArrowAltCircleRight} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const ListarDiscussaoCard = ({ titulo }) => {
+const ListarDiscussaoCard = ({ titulo, id }) => {
     return (
         <div className="egresso-listagem-discussao-card-container">
             <div className="egresso-listagem-discussao-card-titulo">

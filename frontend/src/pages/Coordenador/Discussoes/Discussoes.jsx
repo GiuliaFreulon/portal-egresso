@@ -67,6 +67,7 @@ const Discussoes = () => {
                         {paginatedDiscussoes?.map((discussao) => (
                                 <DiscussaoCard
                                     titulo={discussao.titulo}
+                                    id={discussao?.id_discussao}
                                 />
                             ))}
                     </div>

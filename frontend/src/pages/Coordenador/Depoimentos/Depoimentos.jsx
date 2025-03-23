@@ -25,6 +25,8 @@ const Depoimentos = () => {
                     )
                 );
 
+                console.log(depoimentosFiltrados);
+
                 setDepoimentos(depoimentosFiltrados);
             } catch (error) {
                 console.error("Erro ao buscar depoimentos:", error);
@@ -67,14 +69,10 @@ const Depoimentos = () => {
                         {paginatedDepoimentos?.filter((depoimentos) => depoimentos.status === "AGUARDANDO" )
                             .map((depoimento) => (
                                 <DepoimentoCard
-                                    nome={depoimento.egresso.nome}
+                                    depoimento={depoimento}
                                 />
                             ))}
                     </div>
-
-                    <DepoimentoCard
-                        nome={'Nome Completo do Egresso'}
-                    />
 
                     <div className="pagination-container">
                         <Pagination

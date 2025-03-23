@@ -71,6 +71,7 @@ const Gerenciamento = () => {
                         {paginatedDiscussoes?.map((discussao) => (
                                 <GerenciarDiscussaoCard
                                     titulo={discussao.titulo}
+                                    id={discussao?.id_discussao}
                                 />
                             ))}
                     </div>
