@@ -19,7 +19,6 @@ public class EgressoDTO {
     private String nome;
     @Email(message = "E-mail inválido. Verifique o formato")
     private String email;
-    @Size(min = 8, message = "Senha deve ter ao menos 8 caracteres")
     private String senha;
     private String descricao;
     private String foto;

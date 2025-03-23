@@ -3,6 +3,7 @@ package com.ufma.PortalEgresso.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +37,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/egresso/listarTodos").permitAll()
                         .requestMatchers("/api/egresso/listarNomeIdTodos").permitAll()
                         .requestMatchers("/api/egresso/buscarPorId/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/egresso/**").hasAnyAuthority("ROLE_COORDENADOR", "ROLE_EGRESSO")
                         .requestMatchers("/api/egresso/**").hasAuthority("ROLE_EGRESSO")
+                        .requestMatchers(HttpMethod.PUT, "/api/curso/**").hasAuthority("ROLE_COORDENADOR")
                         .requestMatchers("/api/coordenador/**").hasAuthority("ROLE_COORDENADOR")
                         .requestMatchers("/api/**","/login").permitAll()
                         .anyRequest().denyAll()

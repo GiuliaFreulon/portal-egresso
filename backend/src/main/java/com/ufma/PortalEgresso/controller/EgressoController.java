@@ -92,7 +92,7 @@ public class EgressoController {
                 egressoExistente.setEmail(request.getEmail());
             }
             if (request.getSenha() != null && !request.getSenha().trim().isEmpty()) {
-                egressoExistente.setSenha(request.getSenha());
+                egressoExistente.setSenha(passwordEncoder.encode(request.getSenha()));
             }
             if (request.getDescricao() != null) {
                 egressoExistente.setDescricao(request.getDescricao());
