@@ -64,11 +64,11 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        setTimeout(() => {}, 100);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         setUser(null);
-        navigate('/');
+        setTimeout(() => {}, 100);
+        navigate("/");
     };
 
     const value = {

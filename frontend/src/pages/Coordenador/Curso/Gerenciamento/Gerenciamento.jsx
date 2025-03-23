@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import GerenciarCursoCard from "../../../../components/Coordenador/GerenciarCursoCard.jsx";
 import Pagination from "../../../../components/common/Pagination/Pagination.jsx";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import api from "../../../../services/api.jsx";
 import {useAuth} from "../../../../contexts/AuthContext.jsx";
 
@@ -86,6 +86,7 @@ const Gerenciamento = () => {
                             <GerenciarCursoCard
                                 nome={cursos.nome}
                                 nivel={cursos.nivel}
+                                id={cursos?.id_curso}
                             />
                         ))}
                     </div>

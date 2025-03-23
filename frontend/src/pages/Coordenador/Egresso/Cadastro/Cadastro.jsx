@@ -16,6 +16,7 @@ const Cadastro = () => {
     const [currentAnoInicio, setCurrentAnoInicio] = useState('');
     const [currentAnoFim, setCurrentAnoFim] = useState('');
     const [cursosAdicionados, setCursosAdicionados] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchCursos = async () => {
@@ -26,7 +27,6 @@ const Cadastro = () => {
                 ));
             } catch (error) {
                 console.error("Erro ao buscar cursos:", error);
-            } finally {
             }
         };
 
@@ -90,6 +90,7 @@ const Cadastro = () => {
 
         try {
             //cadastra egresso
+            setLoading(true);
             const response = await api.post("/api/coordenador/cadastrarEgresso", formData);
             const egressoID = response.data.id_egresso;
 
@@ -101,6 +102,7 @@ const Cadastro = () => {
                 });
             }
 
+            //reseta campos após cadastro
             setNome('');
             setEmail('');
             setSenha('');
@@ -108,7 +110,10 @@ const Cadastro = () => {
             alert("Egresso cadastrado com sucesso");
 
         }catch(error) {
+            alert("falha no cadastro" + error.message);
             console.log('Falha no cadastro', error.response?.data || error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -212,11 +217,17 @@ const Cadastro = () => {
                         )}
 
                         <div>
-                            <button
-                                className="formulario-button"
-                                type="submit">
-                                Cadastrar
-                            </button>
+                            {loading ? (
+                                <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                                    <div className="skeleton-loader"></div>
+                                </div>
+                            ) : (
+                                <button
+                                    className="formulario-button"
+                                    type="submit">
+                                    Cadastrar
+                                </button>
+                            )}
                         </div>
                     </form>
                 </div>

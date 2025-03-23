@@ -97,10 +97,10 @@ const AppRoutes = () => {
                     <Route path="/coordenador/dashboard" element={<CoordenadorDashboard />} />
                     <Route path="/coordenador/egresso/gerenciamento" element={<CoordenadorEgressoGerenciamento />} />
                     <Route path="/coordenador/egresso/cadastro" element={<CoordenadorEgressoCadastro />} />
-                    <Route path="/coordenador/egresso/atualizacao" element={<CoordenadorEgressoAtualizacao />} />
+                    <Route path="/coordenador/egresso/atualizacao/:id" element={<CoordenadorEgressoAtualizacao />} />
                     <Route path="/coordenador/curso/gerenciamento" element={<CoordenadorCursoGerenciamento />} />
                     <Route path="/coordenador/curso/cadastro" element={<CoordenadorCursoCadastro />} />
-                    <Route path="/coordenador/curso/atualizacao" element={<CoordenadorCursoAtualizacao />} />
+                    <Route path="/coordenador/curso/atualizacao/:id" element={<CoordenadorCursoAtualizacao />} />
                     <Route path="/coordenador/discussao/gerenciamento" element={<CoordenadorDiscussaoGerenciamento />} />
                     <Route path="/coordenador/depoimento/homologacao" element={<CoordenadorDepoimentoHomologacao />} />
                     <Route path="/coordenador/oportunidade/homologacao" element={<CoordenadorOportunidadeHomologacao />} />

@@ -1,39 +1,130 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Atualizacao.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
+import {useParams} from "react-router-dom";
+import api from "../../../../services/api.jsx";
+import {useAuth} from "../../../../contexts/AuthContext.jsx";
 
 const Atualizacao = () => {
+    const { id } = useParams();
+    const { user } = useAuth()
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [curso, setCurso] = useState('');
-    const [anoInicio, setAnoInicio] = useState('');
-    const [anoFim, setAnoFim] = useState('');
+    const [cursos, setCursos] = useState([]);
+    const [currentCurso, setCurrentCurso] = useState('');
+    const [currentAnoInicio, setCurrentAnoInicio] = useState('');
+    const [currentAnoFim, setCurrentAnoFim] = useState('');
+    const [cursosAdicionados, setCursosAdicionados] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    // Lista de cursos exemplo
-    const cursos = [
-        { id: 1, nome: 'Desenvolvimento Web'},
-        { id: 2, nome: 'Ciência de Dados'},
-        { id: 3, nome: 'Design UX/UI'},
-        { id: 4, nome: 'Marketing Digital'},
-    ];
+    useEffect(() => {
+        const fetchEgresso = async () => {
+            try {
+                const response = await api.get(`/api/egresso/buscarPorId/${id}`);
+                console.log(response.data);
 
-    const handleSubmit = (userType) => {
-        // Previne o comportamento padrão do formulário
-        event.preventDefault();
+                setNome(response.data.nome);
+                setEmail(response.data.email);
 
-        // Cria o objeto com os dados
+            } catch (error) {
+                console.log("Erro ao buscar egresso:", error);
+            }
+        }
+
+        const fetchCursos = async () => {
+            try {
+                const response = await api.get(`/api/curso/listarTodos`);
+                setCursos(response.data.filter(
+                    (curso) => curso.coordenador.id_coordenador === user.id
+                ));
+            } catch (error) {
+                console.error("Erro ao buscar cursos:", error);
+            }
+        };
+
+        fetchEgresso();
+        fetchCursos();
+    },[id])
+
+    const handleAddCurso = (e) => {
+        e.preventDefault();
+
+        const anoAtual = new Date().getFullYear();
+
+        if (!currentCurso || !currentAnoInicio) {
+            alert('Por favor, selecione um curso e informe o ano de início');
+            return;
+        }
+
+        if(currentAnoInicio < 1900 || currentAnoInicio > anoAtual) {
+            alert('Ano de início inválido');
+            return;
+        }
+
+        if(currentAnoFim && (currentAnoFim < currentAnoInicio || currentAnoFim > anoAtual)) {
+            alert('Ano de término inválido');
+            return;
+        }
+
+        if (!currentCurso || !currentAnoInicio) {
+            alert('Por favor, selecione um curso e informe o ano de início');
+            return;
+        }
+
+        const novoCurso = {
+            cursoId: currentCurso,
+            anoInicio: currentAnoInicio,
+            anoFim: currentAnoFim
+        };
+
+        setCursosAdicionados([...cursosAdicionados, novoCurso]);
+
+        // Limpa os campos
+        setCurrentCurso('');
+        setCurrentAnoInicio('');
+        setCurrentAnoFim('');
+    };
+
+    const handleSubmit = async () => {
         const formData = {
             nome,
             email,
-            senha,
-            curso,
-            anoInicio,
-            anoFim,
-            userType // 'coordenador' ou 'egresso'
+            senha
         };
+
+        console.log('Dados para atualização:', formData);
+
+        try {
+            //atualiza egresso
+            setLoading(true);
+            const response = await api.put(`/api/egresso/${id}`, formData);
+            console.log(response.data);
+            const egressoID = response.data?.id_egresso;
+
+            //associa cursos
+            for (const curso of cursosAdicionados) {
+                const responseCurso = await api.post(`/api/coordenador/associarCursoAEgresso/${egressoID}/${curso.cursoId}`, {
+                    anoInicio: curso.anoInicio,
+                    anoFim: curso.anoFim,
+                });
+            }
+
+            //reseta campos após cadastro
+            setNome('');
+            setEmail('');
+            setSenha('');
+            setCursosAdicionados([]);
+            alert("Egresso atualizado com sucesso");
+
+        }catch(error) {
+            alert("falha no cadastro: " + error.response?.data.senha);
+            console.log('Falha no cadastro: ', error.response?.data || error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -51,7 +142,6 @@ const Atualizacao = () => {
                                 name="nome"
                                 value={nome}
                                 onChange={(e) => setNome(e.target.value)}
-                                required
                             />
                         </div>
 
@@ -62,7 +152,6 @@ const Atualizacao = () => {
                                 id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                required
                             />
                         </div>
 
@@ -73,7 +162,6 @@ const Atualizacao = () => {
                                 id="senha"
                                 value={senha}
                                 onChange={(e) => setSenha(e.target.value)}
-                                required
                             />
                         </div>
 
@@ -82,15 +170,14 @@ const Atualizacao = () => {
 
                             <select
                                 id="curso"
-                                value={curso}
-                                onChange={(e) => setCurso(e.target.value)}
+                                value={currentCurso}
+                                onChange={(e) => setCurrentCurso(e.target.value)}
                                 className="drop-down-input"
                             >
                                 <option value="">Selecione um curso</option>
                                 {cursos.map((curso) => (
-                                    <option key={curso.id} value={curso.id}>{curso.nome}</option>
-                                ))
-                                }
+                                    <option key={curso.id} value={curso?.id_curso}>{curso?.nome}</option>
+                                ))}
                             </select>
                         </div>
 
@@ -100,9 +187,8 @@ const Atualizacao = () => {
                                 <input
                                     type="number"
                                     id="anoInicio"
-                                    value={anoInicio}
-                                    onChange={(e) => setAnoInicio(e.target.value)}
-                                    required
+                                    value={currentAnoInicio}
+                                    onChange={(e) => setCurrentAnoInicio(e.target.value)}
                                 />
                             </div>
 
@@ -111,24 +197,46 @@ const Atualizacao = () => {
                                 <input
                                     type="number"
                                     id="anoFim"
-                                    value={anoFim}
-                                    onChange={(e) => setAnoFim(e.target.value)}
+                                    value={currentAnoFim}
+                                    onChange={(e) => setCurrentAnoFim(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <div className="cadastro-egresso-add-curso">
+                        <div className="cadastro-egresso-add-curso" onClick={handleAddCurso}>
                             <FontAwesomeIcon icon={faSquarePlus} className="add-icon-curso" />
                             <p>Adicionar curso</p>
                         </div>
 
+                        {/* Lista de cursos adicionados */}
+                        {cursosAdicionados.length > 0 && (
+                            <div className="cursos-adicionados">
+                                <h3>Cursos Adicionados:</h3>
+                                <ul>
+                                    {cursosAdicionados.map((curso, index) => (
+                                        <li key={index}>
+                                            {cursos.find(c => c.id_curso === curso.cursoId)?.nome} -
+                                            Início: {curso.anoInicio} -
+                                            Término: {curso.anoFim || 'Não informado'}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
                         <div>
-                            <button
-                                className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('coordenador')}>
-                                Confirmar
-                            </button>
+                            {loading ? (
+                                <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                                    <div className="skeleton-loader"></div>
+                                </div>
+                            ) : (
+                                <button
+                                    className="formulario-button"
+                                    type="button"
+                                    onClick={() => handleSubmit()}>
+                                    Confirmar
+                                </button>
+                            )}
                         </div>
                     </form>
                 </div>

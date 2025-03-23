@@ -1,19 +1,24 @@
 import React, {useState} from 'react';
 import './Cadastro.css'
+import api from "../../../../services/api.jsx";
+import {useAuth} from "../../../../contexts/AuthContext.jsx";
 
 const Cadastro = () => {
+    const { user } = useAuth()
 
     const [nome, setNome] = useState('');
     const [nivel, setNivel] = useState('');
+    const [loading, setLoading] = useState(false);
 
     // Lista de cursos exemplo
     const niveis = [
         { id: 1, nivel: 'Graduação'},
         { id: 2, nivel: 'Pós-Graduação'},
-        { id: 3, nivel: 'Mestrado'}
+        { id: 3, nivel: 'Mestrado'},
+        { id: 4, nivel: 'Doutorado'}
     ];
 
-    const handleSubmit = () => {
+    const handleSubmit = async (event) => {
         // Previne o comportamento padrão do formulário
         event.preventDefault();
 
@@ -22,6 +27,23 @@ const Cadastro = () => {
             nome,
             nivel
         };
+
+        try {
+            //cadastra curso
+            setLoading(true);
+            const response = await api.post(`/api/coordenador/cadastrarCurso/${user.id}`, formData);
+
+            //reseta campos após cadastro
+            setNome('');
+            setNivel('');
+            alert("Curso cadastrado com sucesso");
+
+        }catch(error) {
+            alert("falha no cadastro" + error.message);
+            console.log('Falha no cadastro', error.response?.data || error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -47,7 +69,7 @@ const Cadastro = () => {
                             <label htmlFor="nivel" className="coordenador-cadastro-curso-label">Nível*</label>
 
                             <select
-                                id="curso"
+                                id="nivel"
                                 value={nivel}
                                 onChange={(e) => setNivel(e.target.value)}
                                 required
@@ -62,13 +84,19 @@ const Cadastro = () => {
                         </div>
 
                         <div>
-                            <button
-                                className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('coordenador')}>
-                                Cadastrar
-                            </button>
+                            {loading ? (
+                                <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                                    <div className="skeleton-loader"></div>
+                                </div>
+                            ) : (
+                                <button
+                                    className="formulario-button"
+                                    type="submit">
+                                    Cadastrar
+                                </button>
+                            )}
                         </div>
+
                     </form>
                 </div>
             </section>

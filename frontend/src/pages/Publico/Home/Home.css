@@ -38,8 +38,16 @@
 .depoimentos__list {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 0;
     justify-content: center;
+}
+
+.depoimentos__list .depoimento-card {
+    padding: 1rem;
+}
+
+.depoimentos__list .depoimento-card-separator {
+    display: none;
 }
 
 /* Card de cada depoimento */
@@ -104,8 +112,16 @@
 .oportunidades__list {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0;
     align-items: center;
+}
+
+.oportunidades__list .oportunidade-card {
+    padding: 0 1rem;
+}
+
+.oportunidades__list .oportunidade-card-separator{
+    display: none;
 }
 
 /* Card de cada oportunidade */

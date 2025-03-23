@@ -31,3 +31,7 @@
     background-color: transparent;
     filter: brightness(60%);
 }
+
+.depoimentos-cards-egresso {
+    width: 100%;
+}

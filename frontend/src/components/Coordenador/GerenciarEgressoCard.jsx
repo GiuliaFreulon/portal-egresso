@@ -4,7 +4,7 @@ import {faTrashCan, faRotate} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
 
-const GerenciarEgressoCard = ({ nome }) => {
+const GerenciarEgressoCard = ({ nome, id }) => {
     const navigate = useNavigate()
 
     return (
@@ -12,7 +12,7 @@ const GerenciarEgressoCard = ({ nome }) => {
             <div className="gerenciamento-egresso-card-nome">
                 {nome}
             </div>
-            <button className="refresh-btn" onClick={() => navigate("/coordenador/egresso/atualizacao")}>
+            <button className="refresh-btn" onClick={() => navigate(`/coordenador/egresso/atualizacao/${id}`)}>
                 <FontAwesomeIcon icon={faRotate}/>
             </button>
             <button className="delete-btn">

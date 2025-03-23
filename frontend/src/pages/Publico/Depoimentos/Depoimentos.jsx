@@ -71,14 +71,6 @@ const Depoimentos = () => {
                             data={depoimento.data}
                         />
                     ))}
-
-                    <DepoimentoCard
-                        foto="https://pbs.twimg.com/ext_tw_video_thumb/1451000252190892033/pu/img/omuzIHGdbNc90sQw.jpg"
-                        nome="Hisalana Silva"
-                        curso="Ciência da Computação - Graduação"
-                        descricao="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim libero ipsum, sit amet placerat orci suscipit sed. In ex nisi, sagittis ac odio non, fermentum ultricies mauris sit amet placerat orci suscipit sed. In ex nisi, sagittis ac odio non, fermentum ultricies maurissit amet placerat orci suscipit sed. In ex nisi, sagittis ac odio non, fermentum ultricies maurissit amet placerat orci suscipit sed. In ex nisi, sagittis ac odio non, fermentum ultricies maurissit amet placerat orci suscipit sed. In ex nisi, sagittis ac odio non, fermentum ultricies maurissit amet placerat orci suscipit sed. In ex nisi, sagittis ac odio non, fermentum ultricies maurissit amet placerat orci suscipit sed In ex nisi, sagittis ac odio non, fermentum ultricies maurissit amet placerat orci suscipit sed "
-                        data="26/02/2025"
-                    />
                 </div>
 
                 <div className="pagination-container">

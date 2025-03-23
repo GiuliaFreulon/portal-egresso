@@ -1,19 +1,42 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Atualizacao.css'
+import {useParams} from "react-router-dom";
+import {useAuth} from "../../../../contexts/AuthContext.jsx";
+import api from "../../../../services/api.jsx";
 
 const Atualizacao = () => {
+    const { id } = useParams()
+    const { user } = useAuth()
 
     const [nome, setNome] = useState('');
     const [nivel, setNivel] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    // Lista de cursos exemplo
+    // Lista de cursos
     const niveis = [
         { id: 1, nivel: 'Graduação'},
         { id: 2, nivel: 'Pós-Graduação'},
-        { id: 3, nivel: 'Mestrado'}
+        { id: 3, nivel: 'Mestrado'},
+        { id: 4, nivel: 'Doutorado'}
     ];
 
-    const handleSubmit = () => {
+    useEffect(() => {
+        const fetchEgresso = async () => {
+            try {
+                const response = await api.get(`/api/curso/buscarPorId/${id}`);
+
+                setNome(response.data.nome);
+                setNivel(response.data.nivel);
+
+            } catch (error) {
+                console.log("Erro ao buscar egresso:", error);
+            }
+        }
+
+        fetchEgresso();
+    }, [id]);
+
+    const handleSubmit = async () => {
         // Previne o comportamento padrão do formulário
         event.preventDefault();
 
@@ -22,6 +45,23 @@ const Atualizacao = () => {
             nome,
             nivel
         };
+
+        try {
+            //cadastra curso
+            setLoading(true);
+            const response = await api.put(`/api/curso/${id}`, formData);
+
+            //reseta campos após cadastro
+            setNome('');
+            setNivel('');
+            alert("Curso atualizado com sucesso");
+
+        }catch(error) {
+            alert("falha na atualização" + error.message);
+            console.log('Falha na atualização', error.response?.data || error.message);
+        } finally {
+            setLoading(false);
+        }
 
     };
 
@@ -63,12 +103,19 @@ const Atualizacao = () => {
                         </div>
 
                         <div>
-                            <button
-                                className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('coordenador')}>
-                                Confirmar
-                            </button>
+                            {loading ? (
+                                <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                                    <div className="skeleton-loader"></div>
+                                </div>
+                            ) : (
+                                <button
+                                    className="formulario-button"
+                                    type="button"
+                                    onClick={() => handleSubmit()}>
+                                    Confirmar
+                                </button>
+                            )}
+
                         </div>
                     </form>
                 </div>

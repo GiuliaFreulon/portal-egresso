@@ -89,6 +89,7 @@ const Gerenciamento = () => {
                         {paginatedEgressos?.map((egresso) => (
                             <GerenciarEgressoCard
                                 nome={egresso.nome}
+                                id={egresso?.id_egresso}
                             />
                         ))}
                     </div>

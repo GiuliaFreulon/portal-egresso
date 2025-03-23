@@ -64,20 +64,6 @@ const Oportunidades = () => {
                                 />
                             ))}
                     </div>
-
-                    <div className="oportunidades-card-separator">
-                        <div className="separator-line"></div>
-                    </div>
-
-                    <div className="oportunidade-container">
-                        <p className="oportunidade-titulo">Titulo da Vaga</p>
-                        <p className="oportunidade-autor">Publicado por: Nego ney</p>
-                        <span className="oportunidade-descricao">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim libero ipsum, sit amet placerat orci suscipit sed.</span>
-                    </div>
-
-                    <div className="oportunidades-card-separator">
-                        <div className="separator-line"></div>
-                    </div>
                 </div>
 
                 <div className="pagination-container">
