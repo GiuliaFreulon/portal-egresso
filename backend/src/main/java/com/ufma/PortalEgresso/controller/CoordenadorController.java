@@ -144,8 +144,6 @@ public class CoordenadorController {
         try {
             // Recupera o coordenador existente do banco de dados
             Coordenador coordenadorExistente = coordenadorService.buscarPorId(id).get();
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String senhaCodificada = passwordEncoder.encode(request.getSenha());
 
             if (coordenadorExistente == null) {
                 return ResponseEntity.notFound().build(); // Retorna 404 se o coordenador não for encontrado
@@ -156,6 +154,8 @@ public class CoordenadorController {
                 coordenadorExistente.setLogin(request.getLogin());
             }
             if (request.getSenha() != null && !request.getSenha().trim().isEmpty()) {
+                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String senhaCodificada = passwordEncoder.encode(request.getSenha());
                 coordenadorExistente.setSenha(senhaCodificada);
             }
 

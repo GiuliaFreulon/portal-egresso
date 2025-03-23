@@ -53,6 +53,9 @@ public class DepoimentoController {
             if (request.getTexto() != null && !request.getTexto().trim().isEmpty()) {
                 depoimentoExistente.setTexto(request.getTexto());
             }
+            if (request.getStatus() != null) {
+                depoimentoExistente.setStatus(request.getStatus());
+            }
             if (request.getData() != null) {
                 depoimentoExistente.setData(request.getData());
             }
