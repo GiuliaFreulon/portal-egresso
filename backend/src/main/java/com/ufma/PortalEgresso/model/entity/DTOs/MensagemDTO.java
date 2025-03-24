@@ -11,5 +11,4 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MensagemDTO {
     private String texto;
-    private LocalDateTime dataHora;
 }
