@@ -1,7 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Edicao.css'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCloudArrowUp} from "@fortawesome/free-solid-svg-icons";
+import {useAuth} from "../../../contexts/AuthContext.jsx";
+import api from "../../../services/api.jsx";
 
 const Edicao = () => {
+    const { user } = useAuth()
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -11,13 +16,35 @@ const Edicao = () => {
     const [curriculo, setCurriculo] = useState(null);
     const [linkedin, setLinkedin] = useState('');
     const [github, setGithub] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await api.get(`api/egresso/buscarPorId/${user.id}`);
+                console.log(response.data);
+                setNome(response.data.nome);
+                setEmail(response.data.email);
+                if (response.data.descricao !== null) {
+                    setDescricao(response.data.descricao);
+                }
+                if (response.data.linkedin !== null) {
+                    setLinkedin(response.data.linkedin);
+                }
+                if (response.data.github !== null) {
+                    setGithub(response.data.github);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchData();
+    }, [user]);
 
 
-    const handleSubmit = () => {
-        // Previne o comportamento padrão do formulário
-        event.preventDefault();
+    const handleSubmit = async () => {
 
-        // Cria o objeto com os dados
         const formData = {
             nome,
             email,
@@ -28,6 +55,29 @@ const Edicao = () => {
             linkedin,
             github,
         };
+
+        console.log('Dados para atualização', formData);
+
+        try {
+            setLoading(true);
+            const reponse = await api.put(`/api/egresso/${user.id}`, formData);
+
+            console.log(reponse.data);
+
+            // reseta campos após atualização
+            setNome('');
+            setEmail('');
+            setSenha('');
+            setDescricao('');
+            setLinkedin('');
+            setGithub('');
+            alert("Egresso atualizado com sucesso!");
+        } catch (error) {
+            alert("Falha ao atualizar" + error.message);
+            console.log('Falha ao atualizar', error.response?.data || error.message);
+        } finally {
+            setLoading(false);
+        }
 
     };
 
@@ -85,25 +135,49 @@ const Edicao = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="foto" className="egresso-edicao-label">Foto de Perfil</label>
-                            <input
-                                type="file"
-                                id="foto"
-                                accept="image/*"
-                                onChange={(e) => setFoto(e.target.files[0])}
-                                className="egresso-edicao-arquivo-input"
-                            />
+                            <label htmlFor="foto" className="egresso-edicao-label">
+                                Foto de Perfil
+                            </label>
+
+                            <div className="egresso-edicao-arquivo-input">
+                                <label htmlFor="foto" className="arquivo-label">
+                                    <div className="arquivo-label-content">
+                                        <span className="arquivo-icone">
+                                            <FontAwesomeIcon icon={faCloudArrowUp} className="add-icon-curso" />
+                                        </span>
+                                        <p>Clique aqui para selecionar o arquivo</p>
+                                    </div>
+                                </label>
+                                <input
+                                    type="file"
+                                    id="foto"
+                                    accept="image/*"
+                                    onChange={(e) => setFoto(e.target.files[0])}
+                                />
+                            </div>
                         </div>
 
                         <div>
-                            <label htmlFor="curriculo" className="egresso-edicao-label">Currículo (PDF)</label>
-                            <input
-                                type="file"
-                                id="curriculo"
-                                accept="application/pdf"
-                                onChange={(e) => setCurriculo(e.target.files[0])}
-                                className="egresso-edicao-arquivo-input"
-                            />
+                            <label htmlFor="curriculo" className="egresso-edicao-label">
+                                Currículo (PDF)
+                            </label>
+
+                            <div className="egresso-edicao-arquivo-input">
+                                <label htmlFor="curriculo" className="arquivo-label">
+                                    <div className="arquivo-label-content">
+                                        <span className="arquivo-icone">
+                                            <FontAwesomeIcon icon={faCloudArrowUp} className="add-icon-curso" />
+                                        </span>
+                                        <p>Clique aqui para selecionar o arquivo</p>
+                                    </div>
+                                </label>
+                                <input
+                                    type="file"
+                                    id="curriculo"
+                                    accept="application/pdf"
+                                    onChange={(e) => setCurriculo(e.target.files[0])}
+                                />
+                            </div>
                         </div>
 
                         <div>
@@ -133,12 +207,19 @@ const Edicao = () => {
                         </div>
 
                         <div>
-                            <button
-                                className="formulario-button"
-                                type="button"
-                                onClick={() => handleSubmit('coordenador')}>
-                                Confirmar
-                            </button>
+
+                            {loading ? (
+                                <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                                    <div className="skeleton-loader"></div>
+                                </div>
+                            ) : (
+                                <button
+                                    className="formulario-button"
+                                    type="button"
+                                    onClick={() => handleSubmit('coordenador')}>
+                                    Confirmar
+                                </button>
+                            )}
                         </div>
 
                     </form>

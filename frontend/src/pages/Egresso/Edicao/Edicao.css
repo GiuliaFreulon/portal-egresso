@@ -50,10 +50,48 @@
     max-height: 25rem;
 }
 
-.egresso-edicao-arquivo-input * {
-    opacity: 0;
+.egresso-edicao-arquivo-input {
+    width: 80%;
+    margin: 0.5rem auto;
 }
 
-input#file-upload-button {
-    opacity: 0;
+.egresso-edicao-arquivo-input input[type="file"] {
+    display: none;
 }
+
+.arquivo-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.3s ease;
+    min-width: 100%;
+}
+
+.arquivo-label:hover {
+    border-color: #999;
+}
+
+.arquivo-label-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.arquivo-icone {
+    font-size: 2rem;
+    opacity: 0.6;
+}
+
+.arquivo-label-content p {
+    margin: 0;
+    font-size: 1rem;
+    color: #666;
+}
+
+
