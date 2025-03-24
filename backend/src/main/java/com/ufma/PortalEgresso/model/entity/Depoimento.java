@@ -29,7 +29,7 @@ public class Depoimento implements Serializable {
     @EqualsAndHashCode.Exclude
     private Egresso egresso;
 
-    @Column
+    @Column(length = 1000)
     @EqualsAndHashCode.Include
     private String texto;
 

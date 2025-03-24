@@ -59,6 +59,10 @@ public class OportunidadeController {
                 oportunidadeExistente.setDescricao(request.getDescricao());
             }
 
+            if (request.getStatus() != null) {
+                oportunidadeExistente.setStatus(request.getStatus());
+            }
+
             // Atualiza a discussão no banco de dados
             Oportunidade atualizado = oportunidadeService.atualizar(oportunidadeExistente);
 

@@ -43,6 +43,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/api/egresso/**").hasAnyAuthority("ROLE_COORDENADOR", "ROLE_EGRESSO")
                         .requestMatchers(HttpMethod.DELETE, "/api/curso/**").hasAuthority("ROLE_COORDENADOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/egresso/**").hasAuthority("ROLE_COORDENADOR")
+                        .requestMatchers(HttpMethod.DELETE, "/api/depoimento/**").hasAuthority("ROLE_EGRESSO")
+                        .requestMatchers(HttpMethod.DELETE, "/api/oportunidade/**").hasAuthority("ROLE_EGRESSO")
                         .requestMatchers(HttpMethod.DELETE, "/api/discussao/**").hasAnyAuthority("ROLE_COORDENADOR", "ROLE_EGRESSO")
                         .requestMatchers("/api/egresso/**").hasAuthority("ROLE_EGRESSO")
                         .requestMatchers("/api/coordenador/**").hasAuthority("ROLE_COORDENADOR")

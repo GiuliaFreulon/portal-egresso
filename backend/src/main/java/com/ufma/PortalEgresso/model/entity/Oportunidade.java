@@ -32,7 +32,7 @@ public class Oportunidade implements Serializable {
     @EqualsAndHashCode.Exclude
     private Egresso egresso;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     @EqualsAndHashCode.Include
     private String descricao;
 
