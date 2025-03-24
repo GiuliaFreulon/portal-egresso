@@ -71,15 +71,10 @@ const Gerenciamento = () => {
                     <div className="cards-oportunidades">
                         {paginatedOportunidades?.map((oportunidade) => (
                             <GerenciarOportunidadeCard
-                                titulo={oportunidade.titulo}
-                                status={oportunidade.status}
+                                oportunidade={oportunidade}
                             />
                         ))}
                     </div>
-
-                    <GerenciarOportunidadeCard titulo={'Título da Oportunidade'} status={'Enviado'}/>
-                    <GerenciarOportunidadeCard titulo={'Título da Oportunidade'} status={'Rejeitado'}/>
-                    <GerenciarOportunidadeCard titulo={'Título da Oportunidade'} status={'Aprovado'}/>
 
                     <div className="pagination-container">
                         <Pagination

@@ -37,6 +37,7 @@
 
 .approve-btn {
     color: green;
+    border-left: none !important;
 }
 
 .deny-btn {

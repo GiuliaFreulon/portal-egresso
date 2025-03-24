@@ -67,7 +67,7 @@ const Oportunidades = () => {
                         {paginatedOportunidades?.filter((oportunidades) => oportunidades.status === "AGUARDANDO" )
                             .map((oportunidade) => (
                                 <OportunidadeCard
-                                    nome={oportunidade.titulo}
+                                    oportunidade={oportunidade}
                                 />
                             ))}
                     </div>

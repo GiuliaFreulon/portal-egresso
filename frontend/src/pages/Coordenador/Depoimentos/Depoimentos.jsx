@@ -22,10 +22,8 @@ const Depoimentos = () => {
                 const depoimentosFiltrados = response.data.filter(depoimento =>
                     depoimento.egresso?.cursos?.some(curso =>
                         curso.curso?.coordenador?.id_coordenador === user.id
-                    )
+                    ) && depoimento.status === "AGUARDANDO"
                 );
-
-                console.log(depoimentosFiltrados);
 
                 setDepoimentos(depoimentosFiltrados);
             } catch (error) {
@@ -66,8 +64,7 @@ const Depoimentos = () => {
                     )}
 
                     <div className="cards-depoimentos">
-                        {paginatedDepoimentos?.filter((depoimentos) => depoimentos.status === "AGUARDANDO" )
-                            .map((depoimento) => (
+                        {paginatedDepoimentos.map((depoimento) => (
                                 <DepoimentoCard
                                     depoimento={depoimento}
                                 />

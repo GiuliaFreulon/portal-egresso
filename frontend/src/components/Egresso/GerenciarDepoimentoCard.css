@@ -1,6 +1,6 @@
 .egresso-gerenciar-depoimento-card-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     border: 2px solid #ccc;
     border-radius: 5px;
     width: 100%;
@@ -11,13 +11,13 @@
     outline: none;
     font-size: 16px;
     flex: 1;
-    padding: 0 1rem;
-    text-align: left;
-    max-height: 1rem;
+    padding: 1.25rem 1rem;
+    min-height: 1rem;
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-align: justify;
 }
 
 .deny-btn, .expand-btn {
@@ -42,7 +42,10 @@
 }
 
 .status-text {
+    display: flex;
+    justify-content: center;
     width: 17%;
+    padding: 1.25rem 0;
 }
 
 .deny-btn {

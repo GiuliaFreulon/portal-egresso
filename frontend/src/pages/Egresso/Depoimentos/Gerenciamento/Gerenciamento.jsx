@@ -70,15 +70,10 @@ const Gerenciamento = () => {
                     <div className="cards-depoimentos">
                         {paginatedDepoimentos?.map((depoimento) => (
                             <GerenciarDepoimentoCard
-                                texto={depoimento.texto}
-                                status={depoimento.status}
+                                depoimento={depoimento}
                             />
                         ))}
                     </div>
-
-                    <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Enviado'}/>
-                    <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Rejeitado'}/>
-                    <GerenciarDepoimentoCard texto={'Texto do Depoimento'} status={'Aprovado'}/>
 
                     <div className="pagination-container">
                         <Pagination
