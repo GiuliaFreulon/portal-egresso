@@ -79,7 +79,7 @@ const AppRoutes = () => {
                     <Route path="/egresso/oportunidade/gerenciamento" element={<EgressoOportunidadeGerenciamento />} />
                     <Route path="/egresso/oportunidade/envio" element={<EgressoOportunidadeEnvio />} />
                     <Route path="/egresso/edicao" element={<EgressoEdicao />} />
-                    <Route path="/egresso/discussao" element={<EgressoDiscussao />} />
+                    <Route path="/egresso/discussao/:id" element={<EgressoDiscussao />} />
                     {/*Rotas Públicas para Egresso*/}
                     <Route path="/egresso/home" element={<PublicHome />} />
                     <Route path="/egresso/depoimentos" element={<PublicDepoimentos />} />

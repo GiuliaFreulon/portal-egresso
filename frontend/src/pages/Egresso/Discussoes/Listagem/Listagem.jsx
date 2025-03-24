@@ -3,7 +3,6 @@ import './Listagem.css'
 import ListarDiscussaoCard from "../../../../components/Egresso/ListarDiscussaoCard.jsx";
 import Pagination from "../../../../components/common/Pagination/Pagination.jsx";
 import api from "../../../../services/api.jsx";
-import {useAuth} from "../../../../contexts/AuthContext.jsx";
 
 const Listagem = () => {
 
@@ -58,6 +57,7 @@ const Listagem = () => {
                         {paginatedDiscussoes?.map((discussao) => (
                             <ListarDiscussaoCard
                                 titulo={discussao.titulo}
+                                id={discussao.id_discussao}
                             />
                         ))}
                     </div>

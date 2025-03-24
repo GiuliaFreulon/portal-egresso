@@ -1,3 +1,8 @@
+.main-container-discussao {
+    padding-top: 1rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
 .egresso-discussao {
     display: flex;
     flex-direction: column;
@@ -6,16 +11,22 @@
     margin: 0 12% 0 12%;
 }
 
+.titulo-discussao-h1 {
+    margin-bottom: 0 !important;
+}
+
 .egresso-discussao-frame {
     width: 75%;
+    height: 75vh;
     display: flex;
     flex-direction: column;
     border: 3px solid #66666635;
     border-radius: 15px;
     text-align: left;
-    padding: 2rem;
+    padding: 1rem 2rem;
     gap: 0.7rem;
     align-items: center;
+    overflow: hidden;
 }
 
 .egresso-discussao-mensagens {
@@ -23,6 +34,10 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    gap: 1rem;
+    flex: 1; /* Ocupa o espaço restante */
+    overflow-y: auto; /* Habilita scroll vertical */
+    padding-bottom: 0.5rem; /* Evita que mensagens toquem a borda */
 }
 
 .egresso-discussao-mensagem-form {
@@ -37,7 +52,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin: 2rem 0 0 0;
 }
 
 .egresso-discussao-envio-mensagem {
