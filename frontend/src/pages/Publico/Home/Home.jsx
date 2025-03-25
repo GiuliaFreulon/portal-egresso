@@ -45,7 +45,7 @@ const Home = () => {
             try {
                 setLoadingDepoimentos(true);
                 const response = await api.get(`/api/depoimento/listarTodos`);
-                setDepoimentos(response.data.filter((depoimento) => depoimento.status === "APROVADO".slice(0,2))); // Dados da página atual
+                setDepoimentos(response.data.filter((depoimento) => depoimento.status === "APROVADO").slice(0,2)); // Dados da página atual
             } catch (error) {
                 console.error("Erro ao buscar depoimentos:", error);
             } finally {
@@ -70,7 +70,7 @@ const Home = () => {
             try {
                 setLoadingOportunidades(true);
                 const response = await api.get(`/api/oportunidade/listarTodos`);
-                setOportunidades(response.data.filter((oportunidade) => oportunidade.status === "APROVADO".slice(0, 2))); // Dados da página atual
+                setOportunidades(response.data.filter((oportunidade) => oportunidade.status === "APROVADO").slice(0, 2)); // Dados da página atual
             } catch (error) {
                 console.error("Erro ao buscar oportunidades:", error);
             } finally {
@@ -141,11 +141,11 @@ const Home = () => {
                 )}
                 <div className="depoimentos__list">
 
-                    {depoimentos?.filter((depoimento) => depoimento.status === "AGUARDANDO")
+                    {depoimentos
                         .map((depoimento) => (
                             <DepoimentoCard
                                 id={depoimento.id}
-                                foto={depoimento.egresso.foto}
+                                foto={depoimento.egresso?.foto}
                                 nome={depoimento.egresso.nome}
                                 curso={depoimento.egresso.cursos?.map((curso) => curso.curso.nome).join(", ")}
                                 descricao={depoimento.texto}
@@ -190,7 +190,7 @@ const Home = () => {
                     <></>
                 )}
                 <div className="oportunidades__list">
-                    {oportunidades?.filter((oportunidades) => oportunidades.status === "AGUARDANDO" )
+                    {oportunidades
                         .map((oportunidade) => (
                             <OportunidadeCard
                                 titulo={oportunidade.titulo}
