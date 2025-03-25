@@ -15,7 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,8 +76,17 @@ public class EgressoController {
         }    
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable UUID id, @RequestBody @Valid EgressoDTO request) {
+    @PutMapping(value = "{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity atualizar(
+            @PathVariable UUID id,
+            @RequestParam("nome") String nome,
+            @RequestParam("email") String email,
+            @RequestParam(value = "senha", required = false) String senha,
+            @RequestParam(value = "descricao", required = false) String descricao,
+            @RequestPart(value = "foto", required = false) MultipartFile foto,
+            @RequestPart(value = "curriculo", required = false) MultipartFile curriculo,
+            @RequestParam(value = "linkedin", required = false) String linkedin,
+            @RequestParam(value = "github", required = false) String github) {
         try {
             // Recupera o egresso existente do banco de dados
             Optional<Egresso> egressoExistenteOptional = egressoService.buscarPorId(id);
@@ -84,30 +96,35 @@ public class EgressoController {
                 return ResponseEntity.notFound().build(); // Retorna 404 se o egresso não for encontrado
             }
 
+            // Se uma nova foto foi enviada, atualiza, senão mantém a existente
+            String fotoBase64 = (foto != null) ? Base64.getEncoder().encodeToString(foto.getBytes()) : egressoExistente.getFoto();
+            // Se um novo currículo foi enviado, atualiza, senão mantém o existente
+            String curriculoBase64 = (curriculo != null) ? Base64.getEncoder().encodeToString(curriculo.getBytes()) : egressoExistente.getCurriculo();
+
             // Atualiza os campos passados no DTO
-            if (request.getNome() != null && !request.getNome().trim().isEmpty()) {
-                egressoExistente.setNome(request.getNome());
+            if (nome != null && !nome.trim().isEmpty()) {
+                egressoExistente.setNome(nome);
             }
-            if (request.getEmail() != null && !request.getEmail().trim().isEmpty()) {
-                egressoExistente.setEmail(request.getEmail());
+            if (email != null && !email.trim().isEmpty()) {
+                egressoExistente.setEmail(email);
             }
-            if (request.getSenha() != null && !request.getSenha().trim().isEmpty()) {
-                egressoExistente.setSenha(passwordEncoder.encode(request.getSenha()));
+            if (senha != null && !senha.trim().isEmpty()) {
+                egressoExistente.setSenha(passwordEncoder.encode(senha));
             }
-            if (request.getDescricao() != null) {
-                egressoExistente.setDescricao(request.getDescricao());
+            if (descricao != null) {
+                egressoExistente.setDescricao(descricao);
             }
-            if (request.getFoto() != null) {
-                egressoExistente.setFoto(request.getFoto());
+            if (foto != null) {
+                egressoExistente.setFoto(fotoBase64);
             }
-            if (request.getLinkedin() != null) {
-                egressoExistente.setLinkedin(request.getLinkedin());
+            if (curriculo != null) {
+                egressoExistente.setCurriculo(curriculoBase64);
             }
-            if (request.getGithub() != null) {
-                egressoExistente.setGithub(request.getGithub());
+            if (linkedin != null) {
+                egressoExistente.setLinkedin(linkedin);
             }
-            if (request.getCurriculo() != null) {
-                egressoExistente.setCurriculo(request.getCurriculo());
+            if (github != null) {
+                egressoExistente.setGithub(github);
             }
 
             // Atualiza o egresso no banco de dados
@@ -116,6 +133,8 @@ public class EgressoController {
             return ResponseEntity.ok(atualizado);
         } catch (RegraNegocioRunTime e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

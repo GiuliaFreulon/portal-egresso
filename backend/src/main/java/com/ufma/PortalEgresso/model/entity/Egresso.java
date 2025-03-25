@@ -39,7 +39,7 @@ public class Egresso implements Serializable {
     @Column
     private String descricao;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String foto;
 
     @Column
@@ -48,7 +48,7 @@ public class Egresso implements Serializable {
     @Column
     private String github;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String curriculo;
 
     @OneToMany(mappedBy = "egresso", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
