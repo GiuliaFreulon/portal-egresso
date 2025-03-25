@@ -14,7 +14,7 @@ const MensagemCard = ({ mensagem }) => {
 
     return (
         <div className={`mensagem-card${mensagemDoUser}`}>
-            <img src={mensagem?.egresso?.foto} alt={`Foto de ${mensagem?.egresso?.nome}`} className={`mensagem-card-foto${mensagemDoUser}`} />
+            <img src={`data:image/jpeg;base64, ${mensagem?.egresso?.foto}`} alt={`Foto de ${mensagem?.egresso?.nome}`} className={`mensagem-card-foto${mensagemDoUser}`} />
             <div className={`mensagem-card-info${mensagemDoUser}`}>
                 <div className="mensagem-card-text-container">
                     <div className="mensagem-card-nome-data">

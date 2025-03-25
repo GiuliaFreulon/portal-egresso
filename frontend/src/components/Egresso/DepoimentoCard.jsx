@@ -5,7 +5,7 @@ const DepoimentoCard = ({ foto, nome, curso, descricao, data }) => {
     return (
         <div className="depoimento-card">
             <div className="depoimento-card-egresso-info">
-                <img src={foto} alt={`Foto de ${nome}`} className="depoimento-card-foto" />
+                <img src={`data:image/jpeg;base64, ${foto}`} alt={`Foto de ${nome}`} className="depoimento-card-foto" />
                 <div className="depoimento-card-text-container">
                     <div className="depoimento-card-nome-data">
                         <span className="depoimento-card-nome">{nome}</span>

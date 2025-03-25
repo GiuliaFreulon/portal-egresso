@@ -40,7 +40,7 @@ const Discussao = () => {
         if (mensagensRef.current) {
             mensagensRef.current.scrollTop = mensagensRef.current.scrollHeight;
         }
-    }, []);
+    }, [listaMensagens]);
 
     //useEffect para polling
     useEffect(() => {

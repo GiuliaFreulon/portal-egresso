@@ -3,10 +3,10 @@
     align-items: center;
     border: 2px solid #ccc;
     border-radius: 1rem;
-    overflow: hidden;
     width: 80%;
     padding: 0.2rem 1rem;
     background-color: #fff;
+    max-height: 4rem;
 }
 
 .filter-btn {
@@ -21,6 +21,25 @@
 .filter-btn:hover {
     background-color: transparent;
     filter: brightness(60%);
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-options div {
+    position: relative;
+    height: 2.5rem;
+}
+
+.filter-opt {
+    position: absolute !important;
+    background-color: white !important;
+    border-radius: 0;
+    width: 6rem;
+    border: 2px #ccc solid;
+    color: #888;
 }
 
 .search-input {

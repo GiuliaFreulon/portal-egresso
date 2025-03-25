@@ -17,7 +17,7 @@ const Oportunidades = () => {
             try {
                 setLoading(true);
                 const response = await api.get(`/api/oportunidade/listarTodos`);
-                setOportunidades(response.data); // Dados da página atual
+                setOportunidades(response.data.filter((oportunidade) => oportunidade.status === "APROVADO")); // Dados da página atual
             } catch (error) {
                 console.error("Erro ao buscar oportunidades:", error);
             } finally {
@@ -55,7 +55,7 @@ const Oportunidades = () => {
                     )}
 
                     <div className="cards-oportunidades">
-                        {paginatedOportunidades?.filter((oportunidades) => oportunidades.status === "AGUARDANDO" )
+                        {paginatedOportunidades
                             .map((oportunidade) => (
                                 <OportunidadeCard
                                     titulo={oportunidade.titulo}

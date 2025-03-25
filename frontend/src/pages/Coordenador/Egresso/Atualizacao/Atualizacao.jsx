@@ -88,18 +88,21 @@ const Atualizacao = () => {
     };
 
     const handleSubmit = async () => {
-        const formData = {
-            nome,
-            email,
-            senha
-        };
+        const formData = new FormData ()
+        formData.append("nome", nome);
+        formData.append("email", email);
+        formData.append("senha", senha);
 
         console.log('Dados para atualização:', formData);
 
         try {
             //atualiza egresso
             setLoading(true);
-            const response = await api.put(`/api/egresso/${id}`, formData);
+            const response = await api.put(`/api/egresso/${id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            });
             console.log(response.data);
             const egressoID = response.data?.id_egresso;
 

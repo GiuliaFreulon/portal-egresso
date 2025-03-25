@@ -15,6 +15,8 @@ const Listagem = () => {
     const [itemsPerPage] = useState(10); // Itens por página
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
+    const [filtro, setFiltro] = useState('nome');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 
     useEffect(() => {
@@ -34,9 +36,26 @@ const Listagem = () => {
     }, []);
 
     // Filtra e divide os dados no cliente
-    const filteredEgressos = egressos.filter(egresso =>
-        egresso.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredEgressos = egressos.filter(egresso => {
+        const termo = searchTerm.toLowerCase();
+
+        if (filtro === 'nome') {
+            return egresso.nome.toLowerCase().includes(termo);
+        }
+        else if (filtro === 'cargo') {
+            return egresso.cargos?.some(cargo =>
+                cargo.descricao.toLowerCase().includes(termo)
+            );
+        }
+        else if (filtro === 'curso') {
+            return egresso.cursos?.some(cursoEgresso =>
+                cursoEgresso.curso.nome.toLowerCase().includes(termo)
+            );
+        }
+
+        return false;
+    });
+
 
     const totalPages = Math.ceil(filteredEgressos.length / itemsPerPage);
     const paginatedEgressos = filteredEgressos.slice(
@@ -66,7 +85,27 @@ const Listagem = () => {
                             setCurrentPage(1); // Reset para primeira página
                         }}
                     />
-                    <button className="filter-btn"><FontAwesomeIcon icon={faFilter} /></button>
+                    {/*<button className="filter-btn"><FontAwesomeIcon icon={faFilter} /></button*/}
+                    <button
+                        className="filter-btn"
+                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                    >
+                        <FontAwesomeIcon icon={faFilter} />
+                    </button>
+
+                    {isFilterOpen && (
+                        <div className="filter-options">
+                            <div>
+                                <button className="filter-opt" onClick={() => { setFiltro('nome'); setIsFilterOpen(false); }}>Nome</button>
+                            </div>
+                            <div>
+                                <button className="filter-opt" onClick={() => { setFiltro('curso'); setIsFilterOpen(false); }}>Curso</button>
+                            </div>
+                            <div>
+                                <button className="filter-opt" onClick={() => { setFiltro('cargo'); setIsFilterOpen(false); }}>Cargo</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {loading ? (

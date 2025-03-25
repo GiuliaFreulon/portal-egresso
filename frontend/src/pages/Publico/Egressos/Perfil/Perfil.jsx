@@ -25,12 +25,42 @@ const Perfil = () => {
         fetchEgresso();
     },[id])
 
+    const handleDownloadCurriculo = () => {
+        if (!egresso?.curriculo) {
+            alert("Currículo não disponível");
+            return;
+        }
+
+        // Decodifica o Base64
+        const byteCharacters = atob(egresso.curriculo);
+        const byteNumbers = new Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+        // Cria link temporário
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${egresso.nome.replace(/\s/g, '_')}_Curriculo.pdf`);
+        document.body.appendChild(link);
+        link.click();
+
+        // Limpeza
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    };
+
 
     return (
         <div className="main__container">
             <section className="egresso-perfil">
                 <div className="egresso-infos">
-                    <img alt={`foto do egresso: ${egresso?.nome}`} className="egresso-foto" src={egresso?.foto} />
+                    <img alt={`foto do egresso: ${egresso?.nome}`} className="egresso-foto" src={`data:image/jpeg;base64, ${egresso?.foto}`} />
                     <h1 className="egresso-nome">{egresso?.nome}</h1>
                     <div className="egresso-descricao-perfil">
                         <div className="egresso-cursos">
@@ -43,7 +73,7 @@ const Perfil = () => {
                         <span className="egresso-biografia">{egresso?.descricao}</span>
                     </div>
 
-                    <button className="button-with-icon">Currículo <MdDownload /></button>
+                    <button className="button-with-icon" onClick={handleDownloadCurriculo}>Currículo <MdDownload /></button>
                     <div className='links'>
                         <a href={egresso?.linkedin} className='link'><FaLinkedin></FaLinkedin></a>
                         <a href={egresso?.github} className='link'><FaGithub></FaGithub></a>

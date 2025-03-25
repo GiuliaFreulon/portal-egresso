@@ -45,7 +45,7 @@ const Home = () => {
             try {
                 setLoadingDepoimentos(true);
                 const response = await api.get(`/api/depoimento/listarTodos`);
-                setDepoimentos(response.data.slice(0,2)); // Dados da página atual
+                setDepoimentos(response.data.filter((depoimento) => depoimento.status === "APROVADO".slice(0,2))); // Dados da página atual
             } catch (error) {
                 console.error("Erro ao buscar depoimentos:", error);
             } finally {
@@ -70,7 +70,7 @@ const Home = () => {
             try {
                 setLoadingOportunidades(true);
                 const response = await api.get(`/api/oportunidade/listarTodos`);
-                setOportunidades(response.data.slice(0, 2)); // Dados da página atual
+                setOportunidades(response.data.filter((oportunidade) => oportunidade.status === "APROVADO".slice(0, 2))); // Dados da página atual
             } catch (error) {
                 console.error("Erro ao buscar oportunidades:", error);
             } finally {
@@ -92,35 +92,35 @@ const Home = () => {
                 <h1 className="line-text">Egressos</h1>
                 <div className="egressos__list">
                     <a>
-                        <img src={egressos[0]?.foto} alt={`perfil do ${egressos[0]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[0]?.foto}`} alt={`perfil do ${egressos[0]?.nome}`} className="egresso__link"/>
                         {egressos[0]?.nome}
                     </a>
                     <a>
-                        <img src={egressos[1]?.foto} alt={`perfil do ${egressos[1]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[1]?.foto}`} alt={`perfil do ${egressos[1]?.nome}`} className="egresso__link"/>
                         {egressos[1]?.nome}
                     </a>
                     <a>
-                        <img src={egressos[2]?.foto} alt={`perfil do ${egressos[2]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[2]?.foto}`} alt={`perfil do ${egressos[2]?.nome}`} className="egresso__link"/>
                         {egressos[2]?.nome}
                     </a>
                     <a>
-                        <img src={egressos[3]?.foto} alt={`perfil do ${egressos[3]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[3]?.foto}`} alt={`perfil do ${egressos[3]?.nome}`} className="egresso__link"/>
                         {egressos[3]?.nome}
                     </a>
                     <a>
-                        <img src={egressos[4]?.foto} alt={`perfil do ${egressos[4]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[4]?.foto}`} alt={`perfil do ${egressos[4]?.nome}`} className="egresso__link"/>
                         {egressos[4]?.nome}
                     </a>
                     <a>
-                        <img src={egressos[5]?.foto} alt={`perfil do ${egressos[5]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[5]?.foto}`} alt={`perfil do ${egressos[5]?.nome}`} className="egresso__link"/>
                         {egressos[5]?.nome}
                     </a>
                     <a>
-                        <img src={egressos[6]?.foto} alt={`perfil do ${egressos[6]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[6]?.foto}`} alt={`perfil do ${egressos[6]?.nome}`} className="egresso__link"/>
                         {egressos[6]?.nome}
                     </a>
                     <a>
-                        <img src={egressos[7]?.foto} alt={`perfil do ${egressos[7]?.nome}`} className="egresso__link"/>
+                        <img src={`data:image/jpeg;base64, ${egressos[7]?.foto}`} alt={`perfil do ${egressos[7]?.nome}`} className="egresso__link"/>
                         {egressos[7]?.nome}
                     </a>
                 </div>
@@ -145,7 +145,7 @@ const Home = () => {
                         .map((depoimento) => (
                             <DepoimentoCard
                                 id={depoimento.id}
-                                foto={depoimento.foto}
+                                foto={depoimento.egresso.foto}
                                 nome={depoimento.egresso.nome}
                                 curso={depoimento.egresso.cursos?.map((curso) => curso.curso.nome).join(", ")}
                                 descricao={depoimento.texto}

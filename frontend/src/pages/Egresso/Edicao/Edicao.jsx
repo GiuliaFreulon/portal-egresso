@@ -42,27 +42,38 @@ const Edicao = () => {
         fetchData();
     }, [user]);
 
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
 
     const handleSubmit = async () => {
 
-        const formData = {
-            nome,
-            email,
-            senha,
-            descricao,
-            foto,
-            curriculo,
-            linkedin,
-            github,
-        };
+        const formData = new FormData();
+        formData.append("nome", nome);
+        formData.append("email", email);
+        formData.append("senha", senha);
+        formData.append("descricao", descricao);
+        if (foto) formData.append("foto", foto);  // Foto selecionada
+        if (curriculo) formData.append("curriculo", curriculo);  // Currículo selecionado
+        formData.append("linkedin", linkedin);
+        formData.append("github", github);
 
         console.log('Dados para atualização', formData);
 
         try {
             setLoading(true);
-            const reponse = await api.put(`/api/egresso/${user.id}`, formData);
+            const response = await api.put(`/api/egresso/${user.id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            });
 
-            console.log(reponse.data);
+            console.log(response.data);
 
             // reseta campos após atualização
             setNome('');
@@ -154,6 +165,7 @@ const Edicao = () => {
                                     accept="image/*"
                                     onChange={(e) => setFoto(e.target.files[0])}
                                 />
+                                {foto && <p className="arquivo-nome">{foto.name}</p>}
                             </div>
                         </div>
 
@@ -177,6 +189,7 @@ const Edicao = () => {
                                     accept="application/pdf"
                                     onChange={(e) => setCurriculo(e.target.files[0])}
                                 />
+                                {curriculo && <p className="arquivo-nome">{curriculo.name}</p>}
                             </div>
                         </div>
 

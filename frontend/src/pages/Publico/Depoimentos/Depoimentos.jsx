@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import './Depoimentos.css'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFilter} from "@fortawesome/free-solid-svg-icons";
 import DepoimentoCard from "../../../components/Egresso/DepoimentoCard.jsx";
 import Pagination from "../../../components/common/Pagination/Pagination.jsx";
 import api from "../../../services/api.jsx";
@@ -12,14 +10,29 @@ const Depoimentos = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5); // Itens por página
     const [loading, setLoading] = useState(true);
+    const [filtro, setFiltro] = useState('')
+    const [searchTermAno, setSearchTermAno] = useState('');
+    const [searchTermCurso, setSearchTermCurso] = useState('');
+    const [filteredDepoimentos, setFilteredDepoimentos] = useState([]);
 
 
     useEffect(() => {
         const fetchDepoimentos = async () => {
             try {
                 setLoading(true);
-                const response = await api.get(`/api/depoimento/listarTodos`);
-                setDepoimentos(response.data); // Dados da página atual
+
+                let response;
+
+                if (filtro === 'recentes') {
+                    response = await api.get(`/api/depoimento/buscarRecentes`);
+                } else {
+                    response = await api.get(`/api/depoimento/listarTodos`);
+                }
+
+                // setDepoimentos(response.data.filter((depoimento) => depoimento.status === "APROVADO"));
+                setDepoimentos(response.data);
+
+                console.log(response.data);
             } catch (error) {
                 console.error("Erro ao buscar depoimentos:", error);
             } finally {
@@ -29,10 +42,25 @@ const Depoimentos = () => {
         };
 
         fetchDepoimentos();
-    }, []);
+    }, [filtro]);
 
-    const totalPages = Math.ceil(depoimentos.length / itemsPerPage);
-    const paginatedDepoimentos = depoimentos.slice(
+    // Filtra e divide os dados no cliente
+    useEffect(() => {
+        setFilteredDepoimentos(depoimentos.filter(depoimento => {
+            const ano = searchTermAno.toString();
+            const curso = searchTermCurso.toLowerCase()
+
+            return depoimento.egresso.cursos?.some(cursoEgresso =>
+                cursoEgresso.curso.nome.toLowerCase().includes(curso)
+                && depoimento.data?.[0].toString().toLowerCase().includes(ano)
+            );
+        }));
+    }, [searchTermAno, searchTermCurso, depoimentos]);
+
+
+
+    const totalPages = Math.ceil(filteredDepoimentos.length / itemsPerPage);
+    const paginatedDepoimentos = filteredDepoimentos.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
@@ -48,7 +76,42 @@ const Depoimentos = () => {
                 <h1 className="line-text">Painel de Depoimentos</h1>
 
                 <div className="depoimentos-filter-container">
-                    <button className="depoimentos-filter-btn"><FontAwesomeIcon icon={faFilter} />Filtros</button>
+                    <div className="filters">
+                        <div>
+                            {/* Campo de Input para Ano */}
+                            <input
+                                type="text"
+                                name="ano"
+                                placeholder="Filtrar por ano"
+                                value={searchTermAno}
+                                onChange={(e) => {
+                                    setSearchTermAno(e.target.value);
+                                    setCurrentPage(1); // Reset para primeira página
+                                }}
+                            />
+
+                            {/* Filtro de Curso */}
+                            <input
+                                type="text"
+                                name="curso"
+                                placeholder="Filtrar por curso"
+                                value={searchTermCurso}
+                                onChange={(e) => {
+                                    setSearchTermCurso(e.target.value);
+                                    setCurrentPage(1); // Reset para primeira página
+                                }}
+                            />
+                        </div>
+                        <select
+                            className="depoimentos-filter-btn"
+                            value={filtro}
+                            onChange={(e) => setFiltro(e.target.value)}
+                        >
+                            <option value="recentes">Mais Recentes</option>
+                            <option value="antigos">Mais Antigos</option>
+                        </select>
+
+                    </div>
                 </div>
 
                 {loading ? (
@@ -60,11 +123,11 @@ const Depoimentos = () => {
                 )}
 
                 <div className="depoimentos-cards-egresso">
-                    {paginatedDepoimentos?.filter((depoimento) => depoimento.status === "AGUARDANDO")
+                    {paginatedDepoimentos
                         .map((depoimento) => (
                         <DepoimentoCard
                             id={depoimento.id}
-                            foto={depoimento.foto}
+                            foto={depoimento.egresso.foto}
                             nome={depoimento.egresso.nome}
                             curso={depoimento.egresso.cursos?.map((curso) => curso.curso.nome).join(", ")}
                             descricao={depoimento.texto}

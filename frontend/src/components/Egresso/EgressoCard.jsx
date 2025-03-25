@@ -24,7 +24,7 @@ const EgressoCard = ({ id, foto, nome, curso, descricao }) => {
     return (
         <div className="egresso-card">
             <div className="egresso-info">
-                <img src={foto} alt={`Foto de ${nome}`} className="egresso-foto" />
+                <img src={`data:image/jpeg;base64, ${foto}`} alt={`Foto de ${nome}`} className="egresso-foto" />
                 <div className="text-container">
                     <h2 className="egresso-nome">{nome}</h2>
                     <h2 className="egresso-curso">Curso(s): {curso}</h2>
