@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 // Crie uma instância do Axios com configurações padrão
+const API_BASE_URL = import.meta.env.VITE_API_URL || window.location.origin;
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL, // URL do backend
+    baseURL: API_BASE_URL, // URL do backend
     // http://localhost:8080
     headers: {
         'Content-Type': 'application/json',
