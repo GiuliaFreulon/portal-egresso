@@ -12,7 +12,10 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         }
-      }
+      },
+      host: true,
+      port: 3000,
+      strictPort: true,
     },
     build: {
       sourcemap: true
