@@ -15,6 +15,7 @@ const Home = () => {
     const [depoimentos, setDepoimentos] = useState([]);
     const [egressosPorNivel, setEgressosPorNivel] = useState([]);
     const [oportunidades, setOportunidades] = useState([]);
+    const [loadingEgressos, setLoadingEgressos] = useState(false);
     const [loadingDepoimentos, setLoadingDepoimentos] = useState(true);
     const [loadingOportunidades, setLoadingOportunidades] = useState(true);
     const [loadingRelatorio, setLoadingRelatorio] = useState(true);
@@ -33,11 +34,13 @@ const Home = () => {
 
         const fetchEgressos = async () => {
             try {
+                setLoadingEgressos(true);
                 const response = await api.get(`/api/egresso/listarNomeIdTodos`);
                 setEgressos(response.data.slice(0, 8));
             } catch (error) {
                 console.error("Erro ao buscar egressos:", error);
             } finally {
+                setLoadingEgressos(false);
             }
         };
 
@@ -90,40 +93,46 @@ const Home = () => {
         <div className="main__container">
             <section className="Egressos">
                 <h1 className="line-text">Egressos</h1>
-                <div className="egressos__list">
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[0]?.foto}`} alt={`perfil do ${egressos[0]?.nome}`} className="egresso__link"/>
-                        {egressos[0]?.nome}
-                    </a>
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[1]?.foto}`} alt={`perfil do ${egressos[1]?.nome}`} className="egresso__link"/>
-                        {egressos[1]?.nome}
-                    </a>
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[2]?.foto}`} alt={`perfil do ${egressos[2]?.nome}`} className="egresso__link"/>
-                        {egressos[2]?.nome}
-                    </a>
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[3]?.foto}`} alt={`perfil do ${egressos[3]?.nome}`} className="egresso__link"/>
-                        {egressos[3]?.nome}
-                    </a>
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[4]?.foto}`} alt={`perfil do ${egressos[4]?.nome}`} className="egresso__link"/>
-                        {egressos[4]?.nome}
-                    </a>
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[5]?.foto}`} alt={`perfil do ${egressos[5]?.nome}`} className="egresso__link"/>
-                        {egressos[5]?.nome}
-                    </a>
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[6]?.foto}`} alt={`perfil do ${egressos[6]?.nome}`} className="egresso__link"/>
-                        {egressos[6]?.nome}
-                    </a>
-                    <a>
-                        <img src={`data:image/jpeg;base64, ${egressos[7]?.foto}`} alt={`perfil do ${egressos[7]?.nome}`} className="egresso__link"/>
-                        {egressos[7]?.nome}
-                    </a>
-                </div>
+                {loadingEgressos ? (
+                    <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
+                        <div className="skeleton-loader"></div>
+                    </div>
+                ) : (
+                    <div className="egressos__list">
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[0]?.foto}`} alt={`perfil do ${egressos[0]?.nome}`} className="egresso__link"/>
+                            {egressos[0]?.nome}
+                        </a>
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[1]?.foto}`} alt={`perfil do ${egressos[1]?.nome}`} className="egresso__link"/>
+                            {egressos[1]?.nome}
+                        </a>
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[2]?.foto}`} alt={`perfil do ${egressos[2]?.nome}`} className="egresso__link"/>
+                            {egressos[2]?.nome}
+                        </a>
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[3]?.foto}`} alt={`perfil do ${egressos[3]?.nome}`} className="egresso__link"/>
+                            {egressos[3]?.nome}
+                        </a>
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[4]?.foto}`} alt={`perfil do ${egressos[4]?.nome}`} className="egresso__link"/>
+                            {egressos[4]?.nome}
+                        </a>
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[5]?.foto}`} alt={`perfil do ${egressos[5]?.nome}`} className="egresso__link"/>
+                            {egressos[5]?.nome}
+                        </a>
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[6]?.foto}`} alt={`perfil do ${egressos[6]?.nome}`} className="egresso__link"/>
+                            {egressos[6]?.nome}
+                        </a>
+                        <a>
+                            <img src={`data:image/jpeg;base64, ${egressos[7]?.foto}`} alt={`perfil do ${egressos[7]?.nome}`} className="egresso__link"/>
+                            {egressos[7]?.nome}
+                        </a>
+                    </div>
+                )}
                 <button className="botaoVerMais" onClick={() => {
                     navigate(`${role}/egressos`);
                     window.scrollTo(0, 0);

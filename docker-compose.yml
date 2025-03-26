@@ -4,10 +4,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DATABASE_URL=jdbc:postgresql://ep-lucky-smoke-a5g3zujx.us-east-2.aws.neon.tech/portal-egresso
-      - DATABASE_USER=portal-egresso_owner
-      - DATABASE_PASSWORD=bW86eYpNgVwJ
-      - JWT_SECRET_KEY=rlMT7aEZSePCUiVpkMBZLr0vtrCPB6uuDNpKQ2AoHgMoUir/xm7PwvXlgqDmVLR4//+yADBCM9savCMKUCxaAw==
+      - DATABASE_URL=${NEON_DATABASE_URL}
+      - DATABASE_USER=${NEON_DATABASE_USER}
+      - DATABASE_PASSWORD=${NEON_DATABASE_PASSWORD}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
 
   frontend:
     build: ./frontend
@@ -16,4 +16,4 @@ services:
     depends_on:
       - backend
     environment:
-      - VITE_API_URL="http://localhost:8080"
+      - VITE_API_URL=${PUBLIC_URL}
