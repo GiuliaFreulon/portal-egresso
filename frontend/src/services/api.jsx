@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "portal-egresso.railway.internal", // URL do backend
+    baseURL: import.meta.env.VITE_API_URL || "https://portal-egresso.railway.internal", // URL do backend
     // http://localhost:8080
     headers: {
         'Content-Type': 'application/json',
