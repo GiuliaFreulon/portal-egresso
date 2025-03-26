@@ -48,7 +48,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/api/discussao/**").hasAnyAuthority("ROLE_COORDENADOR", "ROLE_EGRESSO")
                         .requestMatchers("/api/egresso/**").hasAuthority("ROLE_EGRESSO")
                         .requestMatchers("/api/coordenador/**").hasAuthority("ROLE_COORDENADOR")
-                        .requestMatchers("/api/**","/login").permitAll()
+                        .requestMatchers("/api/**","/login","/**").permitAll()
                         .anyRequest().denyAll()
                 )
                 .sessionManagement(session -> session
