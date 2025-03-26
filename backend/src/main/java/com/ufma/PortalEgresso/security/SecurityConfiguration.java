@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/egresso/listarTodos").permitAll()
                         .requestMatchers("/api/egresso/listarNomeIdTodos").permitAll()
                         .requestMatchers("/api/egresso/buscarPorId/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/cargo/**").hasAuthority("ROLE_EGRESSO")
                         .requestMatchers(HttpMethod.PUT, "/api/curso/**").hasAuthority("ROLE_COORDENADOR")
                         .requestMatchers(HttpMethod.PUT, "/api/depoimento/**").hasAuthority("ROLE_COORDENADOR")
                         .requestMatchers(HttpMethod.PUT, "/api/oportunidade/**").hasAuthority("ROLE_COORDENADOR")

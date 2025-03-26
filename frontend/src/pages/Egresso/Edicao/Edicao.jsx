@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './Edicao.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCloudArrowUp} from "@fortawesome/free-solid-svg-icons";
+import {faCloudArrowUp, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import {useAuth} from "../../../contexts/AuthContext.jsx";
 import api from "../../../services/api.jsx";
 
@@ -16,6 +16,13 @@ const Edicao = () => {
     const [curriculo, setCurriculo] = useState(null);
     const [linkedin, setLinkedin] = useState('');
     const [github, setGithub] = useState('');
+
+    const [currentCargo, setCurrentCargo] = useState('');
+    const [currentCargoDescricao, setCurrentCargoDescricao] = useState('');
+    const [currentAnoInicio, setCurrentAnoInicio] = useState('');
+    const [currentAnoFim, setCurrentAnoFim] = useState('');
+    const [cargosAdicionados, setCargosAdicionados] = useState([]);
+
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -42,14 +49,46 @@ const Edicao = () => {
         fetchData();
     }, [user]);
 
-    function toBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
+    const handleAddCargo = (e) => {
+        e.preventDefault();
+
+        const anoAtual = new Date().getFullYear();
+
+        if (!currentCargo || !currentAnoInicio || !currentCargoDescricao) {
+            alert('Por favor, informe o nome da empresa, a descrição e o ano de início');
+            return;
+        }
+
+        if(currentAnoInicio < 1900 || currentAnoInicio > anoAtual) {
+            alert('Ano de início inválido');
+            return;
+        }
+
+        if(currentAnoFim && (currentAnoFim < currentAnoInicio || currentAnoFim > anoAtual)) {
+            alert('Ano de término inválido');
+            return;
+        }
+
+        if (!currentCargo || !currentAnoInicio || !currentCargoDescricao) {
+            alert('Por favor, informe o nome da empresa, a descrição e o ano de início');
+            return;
+        }
+
+        const novoCargo = {
+            local: currentCargo,
+            anoInicio: currentAnoInicio,
+            anoFim: currentAnoFim,
+            descricao: currentCargoDescricao
+        };
+
+        setCargosAdicionados([...cargosAdicionados, novoCargo]);
+
+        // Limpa os campos
+        setCurrentCargo('');
+        setCurrentCargoDescricao('');
+        setCurrentAnoInicio('');
+        setCurrentAnoFim('');
+    };
 
     const handleSubmit = async () => {
 
@@ -73,7 +112,15 @@ const Edicao = () => {
                 }
             });
 
-            console.log(response.data);
+            //associa cursos
+            for (const cargo of cargosAdicionados) {
+                const responseCargo = await api.post(`/api/cargo/${user.id}`, {
+                    local: cargo.local,
+                    anoInicio: cargo.anoInicio,
+                    anoFim: cargo.anoFim,
+                    descricao: cargo.descricao,
+                });
+            }
 
             // reseta campos após atualização
             setNome('');
@@ -220,6 +267,73 @@ const Edicao = () => {
                         </div>
 
                         <div>
+                            <h2 className="line-text cargos-titulo">Cargos</h2>
+                            <label htmlFor="currentCargo" className="egresso-edicao-label">Nome da Empresa</label>
+                            <input
+                                type="text"
+                                id="currentCargo"
+                                name="currentCargo"
+                                value={currentCargo}
+                                onChange={(e) => setCurrentCargo(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="">
+                            <label htmlFor="currentCargoDescricao" className="egresso-edicao-label">Descrição</label>
+
+                            <textarea
+                                id="currentCargoDescricao"
+                                name="currentCargoDescricao"
+                                value={currentCargoDescricao}
+                                onChange={(e) => setCurrentCargoDescricao(e.target.value)}
+                                className="texto-input"
+                            />
+                        </div>
+
+                        <div className="ano-input-container">
+                            <div className="ano-input">
+                                <label htmlFor="anoInicio" className="coordenador-cadastro-egresso-label">Ano de Início*</label>
+                                <input
+                                    type="number"
+                                    id="anoInicio"
+                                    value={currentAnoInicio}
+                                    onChange={(e) => setCurrentAnoInicio(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="ano-input">
+                                <label htmlFor="anoFim" className="coordenador-cadastro-egresso-label">Ano de Término</label>
+                                <input
+                                    type="number"
+                                    id="anoFim"
+                                    value={currentAnoFim}
+                                    onChange={(e) => setCurrentAnoFim(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="cadastro-egresso-add-curso" onClick={handleAddCargo}>
+                            <FontAwesomeIcon icon={faSquarePlus} className="add-icon-curso" />
+                            <p>Adicionar cargo</p>
+                        </div>
+
+                        {/* Lista de cursos adicionados */}
+                        {cargosAdicionados.length > 0 && (
+                            <div className="cursos-adicionados">
+                                <h3>Cargos Adicionados:</h3>
+                                <ul>
+                                    {cargosAdicionados.map((cargo, index) => (
+                                        <li key={index}>
+                                            {cargo.local} -
+                                            Início: {cargo.anoInicio} -
+                                            Término: {cargo.anoFim || 'Não informado'}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        <div>
 
                             {loading ? (
                                 <div className="chart-skeleton" style={{marginTop: '1rem', height: '1.5rem', width: '80%'}}>
@@ -229,7 +343,7 @@ const Edicao = () => {
                                 <button
                                     className="formulario-button"
                                     type="button"
-                                    onClick={() => handleSubmit('coordenador')}>
+                                    onClick={() => handleSubmit()}>
                                     Confirmar
                                 </button>
                             )}

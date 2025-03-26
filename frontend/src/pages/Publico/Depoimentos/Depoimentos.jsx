@@ -29,8 +29,7 @@ const Depoimentos = () => {
                     response = await api.get(`/api/depoimento/listarTodos`);
                 }
 
-                // setDepoimentos(response.data.filter((depoimento) => depoimento.status === "APROVADO"));
-                setDepoimentos(response.data);
+                setDepoimentos(response.data.filter((depoimento) => depoimento.status === "APROVADO"));
 
                 console.log(response.data);
             } catch (error) {
