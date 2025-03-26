@@ -1,14 +1,12 @@
-# Usar imagem base do Java
-FROM eclipse-temurin:21-jdk-jammy
-
-# Diretório de trabalho
+FROM maven:3.8.6-openjdk-17 AS build
 WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copiar o arquivo JAR (ajuste o nome do seu arquivo)
-COPY target/PortalEgresso-0.0.1-SNAPSHOT.jar app.jar
-
-# Expor a porta da aplicação
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+COPY --from=build /app/target/PortalEgresso-*.jar app.jar
 EXPOSE 8080
-
-# Comando para executar a aplicação
 CMD ["java", "-jar", "app.jar"]
