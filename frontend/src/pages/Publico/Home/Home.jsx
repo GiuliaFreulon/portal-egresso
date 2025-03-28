@@ -10,7 +10,8 @@ import OportunidadeCard from "../../../components/Egresso/OportunidadeCard.jsx";
 const Home = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
-    const { checkAuth } = useAuth();
+    const { isTokenExpired } = useAuth();
+    const { logout } = useAuth();
     const [role, setRole] = useState("");
     const [egressos, setEgressos] = useState([]);
     const [depoimentos, setDepoimentos] = useState([]);
@@ -23,7 +24,9 @@ const Home = () => {
 
     useEffect(() => {
 
-        checkAuth();
+        if (isTokenExpired) {
+            logout()
+        }
 
         const decideRole = async () => {
             if (user) {
