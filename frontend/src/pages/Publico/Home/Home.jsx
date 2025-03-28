@@ -10,6 +10,7 @@ import OportunidadeCard from "../../../components/Egresso/OportunidadeCard.jsx";
 const Home = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { checkAuth } = useAuth();
     const [role, setRole] = useState("");
     const [egressos, setEgressos] = useState([]);
     const [depoimentos, setDepoimentos] = useState([]);
@@ -21,6 +22,8 @@ const Home = () => {
     const [loadingRelatorio, setLoadingRelatorio] = useState(true);
 
     useEffect(() => {
+
+        checkAuth();
 
         const decideRole = async () => {
             if (user) {
