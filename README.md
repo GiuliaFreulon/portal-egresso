@@ -1,5 +1,9 @@
 # Portal Egresso
 
+<p align="center">
+  <img src="frontend/public/PortalEgresso.PNG" alt="Portal Egresso Banner" />
+</p>
+
 ## Visão Geral
 
 - Portal Egresso é uma plataforma que permite a gestão e interação entre egressos de uma universidade
